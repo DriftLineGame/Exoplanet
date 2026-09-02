@@ -4787,8 +4787,9 @@ function seededGaussian(rng){
 }
 
 function trueFlux(x){
-  // x in [0,1] across baseline-transit-baseline window; transit occupies middle third
-  if(x < 1/3 || x > 2/3) return 1.0;
+  // x in [0,1] across baseline-transit-baseline window; transit occupies middle third.
+  // Returns the dimming fraction: 0 = no dimming (baseline), 1 = full transit depth.
+  if(x < 1/3 || x > 2/3) return 0.0;
   const t = (x - 1/3) / (1/3); // 0..1 within transit window
   // smoothed trapezoid: ramp in/out over first and last 20%, flat bottom between
   let depth_frac;
