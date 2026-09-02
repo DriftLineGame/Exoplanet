@@ -26,6 +26,9 @@
     padding:10px 14px;
     margin:16px 0 28px;
     font-size:0.92rem;
+    position:sticky;
+    top:0;
+    z-index:20;
   }
   nav a{margin-right:14px; white-space:nowrap;}
   table{
@@ -121,6 +124,56 @@
     display:inline-block; background:#222; color:#fff; font-size:0.72rem;
     padding:1px 6px; border-radius:3px; margin-left:6px;
   }
+
+  .filter-bar{
+    background:#f7f7f7;
+    border:1px solid #ccc;
+    padding:10px 12px;
+    margin:8px 0 4px;
+    display:flex;
+    flex-wrap:wrap;
+    align-items:center;
+    gap:10px;
+    font-size:0.86rem;
+  }
+  .filter-bar input[type="text"]{
+    font-family:inherit; font-size:0.86rem; padding:4px 7px;
+    border:1px solid #999; width:180px;
+  }
+  .filter-bar input[type="number"]{
+    font-family:inherit; font-size:0.86rem; padding:4px 5px;
+    border:1px solid #999; width:56px;
+  }
+  .filter-bar label{white-space:nowrap;}
+  .filter-bar button{
+    font-family:inherit; font-size:0.82rem;
+    padding:4px 10px; border:1px solid #888; background:#eee; cursor:pointer;
+  }
+  .filter-bar button:hover{background:#ddd;}
+  .filter-bar button.preset-active{background:#0645ad; color:#fff; border-color:#0645ad;}
+  .count-line{
+    font-size:0.82rem; color:#555; margin:4px 0 2px;
+  }
+  .no-results{padding:14px; text-align:center; color:#777; font-style:italic;}
+
+  .view-events-link{font-size:0.86rem;}
+
+  #backToTop{
+    position:fixed;
+    bottom:20px;
+    right:20px;
+    background:#222;
+    color:#fff;
+    border:none;
+    padding:9px 14px;
+    font-size:0.82rem;
+    cursor:pointer;
+    display:none;
+    z-index:30;
+  }
+  #backToTop:hover{background:#444;}
+
+  .row-highlight{outline:3px solid #0645ad; outline-offset:-3px;}
 </style>
 </head>
 <body>
@@ -191,6 +244,7 @@
 <tr><td>Data source</td><td>Kokori et al. 2023; NASA Exoplanet Archive</td></tr>
 <tr><td>Events in this catalog</td><td>3, best ranked is number 1</td></tr>
 </table>
+<p class="view-events-link"><a href="#ranked" onclick="filterToStar('HD 189733 b'); return true;">View all 3 events for HD 189733 b in the ranked table &rarr;</a></p>
 </details>
 <details>
 <summary>WASP-33 b <span class="badge">margin 9.0&times;</span> <span class="badge">rank 8</span></summary>
@@ -212,6 +266,7 @@
 <tr><td>Data source</td><td>NASA Exoplanet Archive; Herrero et al. 2011</td></tr>
 <tr><td>Events in this catalog</td><td>30, best ranked is number 8</td></tr>
 </table>
+<p class="view-events-link"><a href="#ranked" onclick="filterToStar('WASP-33 b'); return true;">View all 30 events for WASP-33 b in the ranked table &rarr;</a></p>
 </details>
 <details>
 <summary>HD 209458 b <span class="badge">margin 13.2&times;</span> <span class="badge">rank 6</span></summary>
@@ -233,6 +288,7 @@
 <tr><td>Data source</td><td>Charbonneau et al. 2000; Henry et al. 2000; NASA Exoplanet Archive</td></tr>
 <tr><td>Events in this catalog</td><td>2, best ranked is number 6</td></tr>
 </table>
+<p class="view-events-link"><a href="#ranked" onclick="filterToStar('HD 209458 b'); return true;">View all 2 events for HD 209458 b in the ranked table &rarr;</a></p>
 </details>
 <details>
 <summary>KELT-20 b <span class="badge">margin 14.5&times;</span> <span class="badge">rank 4</span></summary>
@@ -254,6 +310,7 @@
 <tr><td>Data source</td><td>Lund et al. 2017; NASA Exoplanet Archive</td></tr>
 <tr><td>Events in this catalog</td><td>2, best ranked is number 4</td></tr>
 </table>
+<p class="view-events-link"><a href="#ranked" onclick="filterToStar('KELT-20 b'); return true;">View all 2 events for KELT-20 b in the ranked table &rarr;</a></p>
 </details>
 <details>
 <summary>KELT-4 A b <span class="badge">margin 3.6&times;</span> <span class="badge">rank 97</span></summary>
@@ -275,6 +332,7 @@
 <tr><td>Data source</td><td>Eastman et al. 2016; NASA Exoplanet Archive</td></tr>
 <tr><td>Events in this catalog</td><td>28, best ranked is number 97</td></tr>
 </table>
+<p class="view-events-link"><a href="#ranked" onclick="filterToStar('KELT-4 A b'); return true;">View all 28 events for KELT-4 A b in the ranked table &rarr;</a></p>
 </details>
 <details>
 <summary>HAT-P-22 b <span class="badge">margin 4.8&times;</span> <span class="badge">rank 49</span></summary>
@@ -296,6 +354,7 @@
 <tr><td>Data source</td><td>Bakos et al. 2011; NASA Exoplanet Archive</td></tr>
 <tr><td>Events in this catalog</td><td>13, best ranked is number 49</td></tr>
 </table>
+<p class="view-events-link"><a href="#ranked" onclick="filterToStar('HAT-P-22 b'); return true;">View all 13 events for HAT-P-22 b in the ranked table &rarr;</a></p>
 </details>
 <details>
 <summary>KELT-17 b <span class="badge">margin 4.0&times;</span> <span class="badge">rank 90</span></summary>
@@ -317,6 +376,7 @@
 <tr><td>Data source</td><td>Zhou et al. 2016; NASA Exoplanet Archive</td></tr>
 <tr><td>Events in this catalog</td><td>5, best ranked is number 90</td></tr>
 </table>
+<p class="view-events-link"><a href="#ranked" onclick="filterToStar('KELT-17 b'); return true;">View all 5 events for KELT-17 b in the ranked table &rarr;</a></p>
 </details>
 <details>
 <summary>TOI-1518 b <span class="badge">margin 4.8&times;</span> <span class="badge">rank 68</span></summary>
@@ -338,6 +398,7 @@
 <tr><td>Data source</td><td>Cabot et al. 2021; NASA Exoplanet Archive</td></tr>
 <tr><td>Events in this catalog</td><td>22, best ranked is number 68</td></tr>
 </table>
+<p class="view-events-link"><a href="#ranked" onclick="filterToStar('TOI-1518 b'); return true;">View all 22 events for TOI-1518 b in the ranked table &rarr;</a></p>
 </details>
 <details>
 <summary>KELT-7 b <span class="badge">margin 5.4&times;</span> <span class="badge">rank 38</span></summary>
@@ -359,6 +420,7 @@
 <tr><td>Data source</td><td>Bieryla et al. 2015; NASA Exoplanet Archive</td></tr>
 <tr><td>Events in this catalog</td><td>11, best ranked is number 38</td></tr>
 </table>
+<p class="view-events-link"><a href="#ranked" onclick="filterToStar('KELT-7 b'); return true;">View all 11 events for KELT-7 b in the ranked table &rarr;</a></p>
 </details>
 <details>
 <summary>K2-232 b <span class="badge">margin 3.3&times;</span> <span class="badge">rank 125</span></summary>
@@ -380,6 +442,7 @@
 <tr><td>Data source</td><td>Brahm et al. 2018; NASA Exoplanet Archive</td></tr>
 <tr><td>Events in this catalog</td><td>2, best ranked is number 125</td></tr>
 </table>
+<p class="view-events-link"><a href="#ranked" onclick="filterToStar('K2-232 b'); return true;">View all 2 events for K2-232 b in the ranked table &rarr;</a></p>
 </details>
 <details>
 <summary>HAT-P-1 b <span class="badge">margin 4.8&times;</span> <span class="badge">rank 51</span></summary>
@@ -401,6 +464,7 @@
 <tr><td>Data source</td><td>Bakos et al. 2007; Johnson et al. 2008; NASA Exoplanet Archive</td></tr>
 <tr><td>Events in this catalog</td><td>6, best ranked is number 51</td></tr>
 </table>
+<p class="view-events-link"><a href="#ranked" onclick="filterToStar('HAT-P-1 b'); return true;">View all 6 events for HAT-P-1 b in the ranked table &rarr;</a></p>
 </details>
 <details>
 <summary>KELT-19 A b <span class="badge">margin 3.8&times;</span> <span class="badge">rank 95</span></summary>
@@ -422,6 +486,7 @@
 <tr><td>Data source</td><td>Siverd et al. 2018; NASA Exoplanet Archive</td></tr>
 <tr><td>Events in this catalog</td><td>2, best ranked is number 95</td></tr>
 </table>
+<p class="view-events-link"><a href="#ranked" onclick="filterToStar('KELT-19 A b'); return true;">View all 2 events for KELT-19 A b in the ranked table &rarr;</a></p>
 </details>
 </section><section id="soonest">
 <h2>Soonest Upcoming Event</h2>
@@ -431,6 +496,18 @@
 <section id="ranked">
 <h2>Ranked Transit Events, Full Catalog</h2>
 <p class="small">Click any column header to sort by that column. Click any row to see full detail for that event. Rows highlighted in yellow are the top 10 ranked events.</p>
+
+<div class="filter-bar">
+  <input type="text" id="rankedSearch" placeholder="Search star name...">
+  <label>Min margin <input type="number" id="rankedMinMargin" step="0.1"></label>
+  <label>Max moon % <input type="number" id="rankedMaxMoon"></label>
+  <label>Min obs+base % <input type="number" id="rankedMinObs"></label>
+  <button id="rankedUpcomingBtn" onclick="toggleRankedPreset('upcomingOnly', this)">Upcoming only</button>
+  <button id="rankedTop10Btn" onclick="toggleRankedPreset('top10Only', this)">Top 10 only</button>
+  <button onclick="resetRankedFilters()">Reset</button>
+</div>
+<div class="count-line" id="rankedCount"></div>
+
 <div class="table-wrap">
 <table id="rankedTable">
 <thead><tr>
@@ -454,6 +531,14 @@
 <section id="chron">
 <h2>Chronological Index</h2>
 <p class="small">Same 126 events, default sorted soonest to latest. Click any column header to re-sort. Click any row for full detail.</p>
+
+<div class="filter-bar">
+  <input type="text" id="chronSearch" placeholder="Search star name...">
+  <button id="chronUpcomingBtn" onclick="toggleChronPreset('upcomingOnly', this)">Upcoming only</button>
+  <button onclick="resetChronFilters()">Reset</button>
+</div>
+<div class="count-line" id="chronCount"></div>
+
 <div class="table-wrap">
 <table id="chronTable">
 <thead><tr>
@@ -507,6 +592,8 @@
 <footer>
 Project Ingress &middot; Campbell River Astronomy Club Research Team &middot; Campbell River, BC
 </footer>
+
+<button id="backToTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">&uarr; Top</button>
 
 <script id="site-data" type="application/json">
 {
@@ -4290,11 +4377,30 @@ const EVENTS = DATA.events;
 
 function fmtNum(v){ return (v===null || v===undefined) ? '' : v; }
 
+function isUpcoming(e){
+  const now = new Date();
+  const d = new Date(e.date + 'T' + e.t_mid + ':00');
+  return d >= now;
+}
+
 function renderTable(tbodyId, rows, cols){
   const tbody = document.getElementById(tbodyId);
   tbody.innerHTML = '';
+  if(rows.length === 0){
+    const tr = document.createElement('tr');
+    const td = document.createElement('td');
+    td.colSpan = cols.length;
+    td.className = 'no-results';
+    td.textContent = 'No events match the current filters.';
+    tr.appendChild(td);
+    tbody.appendChild(tr);
+    return;
+  }
   for(const e of rows){
     const tr = document.createElement('tr');
+    tr.dataset.star = e.star;
+    tr.dataset.date = e.date;
+    tr.dataset.tin = e.t_in;
     if(e.rank <= 10) tr.style.background = '#fff3d6';
     tr.onclick = () => showDetail(e);
     tr.innerHTML = cols.map(c => `<td>${fmtNum(e[c])}</td>`).join('');
@@ -4305,11 +4411,17 @@ function renderTable(tbodyId, rows, cols){
 const rankedCols = ['rank','margin','star','date','t_in','t_mid','t_eg','airmass_min','moon','obs_b','depth'];
 const chronCols = ['rank','star','date','t_mid','margin','moon','obs_b','depth'];
 
-let rankedSort = {key:'rank', dir:1};
-let chronSort = {key:'date', dir:1};
+const rankedState = {
+  sort: {key:'rank', dir:1},
+  filter: {search:'', minMargin:null, maxMoon:null, minObs:null, upcomingOnly:false, top10Only:false}
+};
+const chronState = {
+  sort: {key:'date', dir:1},
+  filter: {search:'', upcomingOnly:false}
+};
 
-function sortRows(key, dir, type){
-  return [...EVENTS].sort((a,b)=>{
+function sortRows(rows, key, dir, type){
+  return [...rows].sort((a,b)=>{
     let av=a[key], bv=b[key];
     if(type==='num'){ av=Number(av); bv=Number(bv); }
     if(av<bv) return -1*dir;
@@ -4318,29 +4430,119 @@ function sortRows(key, dir, type){
   });
 }
 
-function wireSortable(tableId, cols, getState, setState, tbodyId){
+function filterRanked(events, f){
+  return events.filter(e => {
+    if(f.search && !e.star.toLowerCase().includes(f.search.toLowerCase())) return false;
+    if(f.minMargin !== null && !isNaN(f.minMargin) && e.margin < f.minMargin) return false;
+    if(f.maxMoon !== null && !isNaN(f.maxMoon) && e.moon > f.maxMoon) return false;
+    if(f.minObs !== null && !isNaN(f.minObs) && e.obs_b < f.minObs) return false;
+    if(f.upcomingOnly && !isUpcoming(e)) return false;
+    if(f.top10Only && e.rank > 10) return false;
+    return true;
+  });
+}
+
+function filterChron(events, f){
+  return events.filter(e => {
+    if(f.search && !e.star.toLowerCase().includes(f.search.toLowerCase())) return false;
+    if(f.upcomingOnly && !isUpcoming(e)) return false;
+    return true;
+  });
+}
+
+function getTypeForKey(cols, table, key){
+  const th = document.querySelector('#'+table+' th[data-key="'+key+'"]');
+  return th ? th.dataset.type : 'str';
+}
+
+function updateRanked(){
+  const f = rankedState.filter;
+  f.search = document.getElementById('rankedSearch').value.trim();
+  const mm = document.getElementById('rankedMinMargin').value;
+  const mo = document.getElementById('rankedMaxMoon').value;
+  const ob = document.getElementById('rankedMinObs').value;
+  f.minMargin = mm === '' ? null : parseFloat(mm);
+  f.maxMoon = mo === '' ? null : parseFloat(mo);
+  f.minObs = ob === '' ? null : parseFloat(ob);
+
+  let rows = filterRanked(EVENTS, f);
+  const type = getTypeForKey(rankedCols, 'rankedTable', rankedState.sort.key);
+  rows = sortRows(rows, rankedState.sort.key, rankedState.sort.dir, type);
+  renderTable('rankedBody', rows, rankedCols);
+  document.getElementById('rankedCount').textContent = `Showing ${rows.length} of ${EVENTS.length} events`;
+}
+
+function updateChron(){
+  const f = chronState.filter;
+  f.search = document.getElementById('chronSearch').value.trim();
+
+  let rows = filterChron(EVENTS, f);
+  const type = getTypeForKey(chronCols, 'chronTable', chronState.sort.key);
+  rows = sortRows(rows, chronState.sort.key, chronState.sort.dir, type);
+  renderTable('chronBody', rows, chronCols);
+  document.getElementById('chronCount').textContent = `Showing ${rows.length} of ${EVENTS.length} events`;
+}
+
+function toggleRankedPreset(name, btn){
+  rankedState.filter[name] = !rankedState.filter[name];
+  btn.classList.toggle('preset-active', rankedState.filter[name]);
+  updateRanked();
+}
+function toggleChronPreset(name, btn){
+  chronState.filter[name] = !chronState.filter[name];
+  btn.classList.toggle('preset-active', chronState.filter[name]);
+  updateChron();
+}
+
+function resetRankedFilters(){
+  document.getElementById('rankedSearch').value = '';
+  document.getElementById('rankedMinMargin').value = '';
+  document.getElementById('rankedMaxMoon').value = '';
+  document.getElementById('rankedMinObs').value = '';
+  rankedState.filter = {search:'', minMargin:null, maxMoon:null, minObs:null, upcomingOnly:false, top10Only:false};
+  document.getElementById('rankedUpcomingBtn').classList.remove('preset-active');
+  document.getElementById('rankedTop10Btn').classList.remove('preset-active');
+  updateRanked();
+}
+function resetChronFilters(){
+  document.getElementById('chronSearch').value = '';
+  chronState.filter = {search:'', upcomingOnly:false};
+  document.getElementById('chronUpcomingBtn').classList.remove('preset-active');
+  updateChron();
+}
+
+function filterToStar(name){
+  document.getElementById('rankedSearch').value = name;
+  updateRanked();
+}
+
+function wireSortable(tableId, getState, updateFn){
   const table = document.getElementById(tableId);
   const headers = table.querySelectorAll('th');
   headers.forEach(th => {
     th.addEventListener('click', () => {
       const key = th.dataset.key;
-      const type = th.dataset.type;
       const state = getState();
-      const dir = (state.key === key) ? -state.dir : 1;
-      setState({key, dir});
+      const dir = (state.sort.key === key) ? -state.sort.dir : 1;
+      state.sort = {key, dir};
       headers.forEach(h=>h.classList.remove('sorted-asc','sorted-desc'));
       th.classList.add(dir===1?'sorted-asc':'sorted-desc');
-      const sorted = sortRows(key, dir, type);
-      renderTable(tbodyId, sorted, cols);
+      updateFn();
     });
   });
 }
 
-renderTable('rankedBody', sortRows('rank',1,'num'), rankedCols);
-renderTable('chronBody', sortRows('date',1,'str'), chronCols);
+document.getElementById('rankedSearch').addEventListener('input', updateRanked);
+document.getElementById('rankedMinMargin').addEventListener('input', updateRanked);
+document.getElementById('rankedMaxMoon').addEventListener('input', updateRanked);
+document.getElementById('rankedMinObs').addEventListener('input', updateRanked);
+document.getElementById('chronSearch').addEventListener('input', updateChron);
 
-wireSortable('rankedTable', rankedCols, ()=>rankedSort, s=>rankedSort=s, 'rankedBody');
-wireSortable('chronTable', chronCols, ()=>chronSort, s=>chronSort=s, 'chronBody');
+wireSortable('rankedTable', ()=>rankedState, updateRanked);
+wireSortable('chronTable', ()=>chronState, updateChron);
+
+updateRanked();
+updateChron();
 
 function airmassNote(min_elev, airmass){
   if(min_elev >= 45) return `Elevation stays comfortably high throughout, never dropping below ${min_elev}\u00b0 (airmass ${airmass}).`;
@@ -4411,10 +4613,15 @@ function renderSoonest(){
   }
   box.innerHTML = `<h3>${e.star} &mdash; ${e.date} (${e.weekday})</h3>
     <p>Mid-transit at ${e.t_mid} local time. Ranked #${e.rank} of 126, detection margin ${e.margin}&times;, moon ${e.moon}%, ${e.obs_b}% of transit and baseline observable.</p>
-    <p><a href="#" onclick="showDetail(EVENTS.find(x=>x.date==='${e.date}'&&x.star==='${e.star.replace(/'/g,"\\'")}'&&x.t_in==='${e.t_in}')); return false;">View full detail &rarr;</a></p>`;
+    <p><a href="#" id="soonestDetailLink">View full detail &rarr;</a></p>`;
+  document.getElementById('soonestDetailLink').onclick = (evt) => { evt.preventDefault(); showDetail(e); };
 }
 
 renderSoonest();
+
+window.addEventListener('scroll', () => {
+  document.getElementById('backToTop').style.display = (window.scrollY > 600) ? 'block' : 'none';
+});
 </script>
 
 </body>
