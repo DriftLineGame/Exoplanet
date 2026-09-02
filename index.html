@@ -1,0 +1,4421 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Project Ingress — Exoplanet Transit Observation Reference</title>
+<style>
+  body{
+    font-family: Georgia, "Times New Roman", serif;
+    background:#ffffff;
+    color:#111;
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 20px 24px 80px;
+    line-height:1.5;
+  }
+  h1{font-size:1.7rem; margin-bottom:2px;}
+  h1 .sub{display:block; font-size:0.95rem; font-weight:normal; font-style:italic; color:#444; margin-top:4px;}
+  h2{font-size:1.25rem; border-bottom:2px solid #222; padding-bottom:4px; margin-top:42px;}
+  h3{font-size:1.05rem; margin-top:22px;}
+  a{color:#0645ad;}
+  a:visited{color:#0645ad;}
+  nav{
+    background:#f2f2f2;
+    border:1px solid #ccc;
+    padding:10px 14px;
+    margin:16px 0 28px;
+    font-size:0.92rem;
+  }
+  nav a{margin-right:14px; white-space:nowrap;}
+  table{
+    border-collapse: collapse;
+    width:100%;
+    font-size:0.86rem;
+    margin:10px 0 20px;
+  }
+  th, td{
+    border:1px solid #999;
+    padding:5px 8px;
+    text-align:left;
+    vertical-align:top;
+  }
+  th{
+    background:#e8e8e8;
+    cursor:pointer;
+    user-select:none;
+    position:sticky;
+    top:0;
+  }
+  th:hover{background:#dcdcdc;}
+  th.sorted-asc::after{content:" \25B2";}
+  th.sorted-desc::after{content:" \25BC";}
+  tbody tr:nth-child(even){background:#fafafa;}
+  tbody tr:hover{background:#fff3d6; cursor:pointer;}
+  .table-wrap{max-height:560px; overflow-y:auto; border:1px solid #999;}
+  .table-wrap table{margin:0;}
+  .table-wrap th{top:0;}
+
+  .criteria-table td:first-child, .criteria-table th:first-child{width:40%;}
+  .param-table td:first-child, .param-table th:first-child{width:38%;}
+
+  .soon-box{
+    border:2px solid #222;
+    background:#fffef2;
+    padding:16px 18px;
+    margin:16px 0 30px;
+  }
+  .soon-box h3{margin-top:0;}
+
+  .detail-box{
+    display:none;
+    border:2px solid #0645ad;
+    background:#f5f8ff;
+    padding:16px 18px;
+    margin:16px 0 30px;
+  }
+  .detail-box h3{margin-top:0;}
+  .detail-box table{font-size:0.88rem;}
+  .detail-box .close-btn{
+    float:right;
+    cursor:pointer;
+    font-size:0.85rem;
+    color:#0645ad;
+    text-decoration:underline;
+  }
+  .assessment{margin-top:10px; padding:10px; background:#fff; border:1px solid #ccc; font-size:0.9rem;}
+
+  .toggle-row{margin:10px 0 4px;}
+  .toggle-row button{
+    font-family:inherit;
+    font-size:0.86rem;
+    padding:5px 12px;
+    margin-right:6px;
+    border:1px solid #888;
+    background:#eee;
+    cursor:pointer;
+  }
+  .toggle-row button.active{background:#0645ad; color:#fff; border-color:#0645ad;}
+
+  details{
+    border:1px solid #ccc;
+    margin-bottom:8px;
+    padding:6px 10px;
+  }
+  details summary{cursor:pointer; font-weight:bold;}
+  details .desc{margin:8px 0;}
+
+  .formula{
+    font-family: "Courier New", monospace;
+    background:#f2f2f2;
+    border:1px solid #ccc;
+    padding:10px 14px;
+    margin:10px 0;
+    font-size:0.95rem;
+  }
+  dt{font-weight:bold; margin-top:10px;}
+  dd{margin-left:0; color:#333;}
+  footer{margin-top:60px; border-top:1px solid #ccc; padding-top:14px; font-size:0.82rem; color:#555;}
+  .small{font-size:0.82rem; color:#555;}
+  .badge{
+    display:inline-block; background:#222; color:#fff; font-size:0.72rem;
+    padding:1px 6px; border-radius:3px; margin-left:6px;
+  }
+</style>
+</head>
+<body>
+
+<h1>Project Ingress
+<span class="sub">Exoplanet Transit Observation Reference — interactive edition</span>
+</h1>
+<p class="small">Campbell River Astronomy Club Research Team &middot; Campbell River, BC &middot; Prepared September 1, 2026</p>
+
+<nav>
+  <a href="#overview">Overview</a>
+  <a href="#method">Method</a>
+  <a href="#targets">Targets</a>
+  <a href="#soonest">Soonest event</a>
+  <a href="#ranked">Ranked table</a>
+  <a href="#chron">Chronological table</a>
+  <a href="#glossary">Glossary</a>
+  <a href="#sources">Sources</a>
+</nav>
+
+<section id="overview">
+<h2>Overview</h2>
+<p><strong>Project Ingress</strong> is an attempt to detect an exoplanet transit using a commercially available telescope. The goal is to measure how far a consumer-grade instrument can be pushed before it hits its limit of precision, and to prove it by actually catching a transit.</p>
+<p>This page compiles every predicted exoplanet transit observable from Campbell River, British Columbia, cross-referenced against the NASA Exoplanet Archive and generated using the Swarthmore College Transit/Eclipse Observability tool (Tapir). It began as a printed reference booklet; this page mirrors that same data interactively, so the two big tables can be sorted however you need, and any event can be opened for full detail with one click.</p>
+<p class="small">Predicted times carry inherent uncertainty from each system's published orbital ephemeris. That uncertainty compounds with the number of orbits between now and the predicted date, so an event next week is far more reliable than one predicted months out. Always re-check a date shortly before relying on it.</p>
+</section>
+
+<section id="method">
+<h2>Search Criteria and Ranking Method</h2>
+<table class="criteria-table">
+<tr><th>Parameter</th><th>Value used</th></tr>
+<tr><td>Observing coordinates</td><td>Latitude 50.0163&deg; N, Longitude 125.2461&deg; W</td></tr>
+<tr><td>Timezone</td><td>Pacific Time (PST8PDT)</td></tr>
+<tr><td>Minimum elevation, ingress and egress</td><td>33&deg;, combined with AND logic</td></tr>
+<tr><td>Minimum V magnitude</td><td>brighter than V = 12.0</td></tr>
+<tr><td>Minimum transit depth</td><td>6 ppt (0.6%)</td></tr>
+<tr><td>Out-of-transit baseline</td><td>1.5 hours before ingress and after egress</td></tr>
+<tr><td>Night definition</td><td>Nautical twilight (Sun at &minus;12&deg; altitude)</td></tr>
+<tr><td>Search window</td><td>250 days from date of search</td></tr>
+</table>
+
+<h3>Ranking method</h3>
+<p>Each event is ranked by an estimated detection margin: how many multiples of the expected photometric noise floor the transit depth represents on a 30mm optical system. A 10 second, in-focus exposure of a V=7.7 star was measured to collect roughly 26,000 electrons on the sensor. Scaling that to any other magnitude, and binning across a fixed 5 minute window, gives an expected precision at that magnitude. The margin is simply the transit depth divided by that expected precision.</p>
+<div class="formula">M(V, d) = d &times; 883.2 &times; 10<sup>&minus;0.2(V &minus; 7.7)</sup></div>
+<p class="small">V is the host star's apparent magnitude, d is the transit depth as a decimal fraction, M is the resulting margin. Ties are broken first by percent of transit plus baseline observable, then by moon illumination.</p>
+</section>
+
+<section id="targets">
+<h2>Targets</h2>
+<p class="small">Click any star to expand its full profile. Margin is the estimated detection margin described above.</p>
+<details>
+<summary>HD 189733 b <span class="badge">margin 21.2&times;</span> <span class="badge">rank 1</span></summary>
+<p class="desc">HD 189733 is one of the brightest stars known to host a transiting hot Jupiter, and it doubles as its own variable star, cataloged as V452 Vulpeculae because starspots slowly modulate its brightness as the star rotates. Its planet, HD 189733 b, was discovered in 2005 and completes an orbit in just over two days, producing a deep, easily measured 2.4 percent dip in brightness. Because the star is so bright and the transit so deep, this system has become a standard first target for both professional atmospheric studies and amateur transit photometry.</p>
+<table class="param-table">
+<tr><td>Host star</td><td>HD 189733</td></tr>
+<tr><td>Other designations</td><td>V452 Vulpeculae, BD+22 3887, HIP 98505</td></tr>
+<tr><td>Constellation</td><td>Vulpecula</td></tr>
+<tr><td>Right ascension (J2000)</td><td>20h 00m 43.71s</td></tr>
+<tr><td>Declination (J2000)</td><td>+22° 42' 35.2"</td></tr>
+<tr><td>Apparent magnitude (V)</td><td>7.7</td></tr>
+<tr><td>Spectral type</td><td>K1.5 V</td></tr>
+<tr><td>Distance</td><td>64.5 light-years (19.8 pc)</td></tr>
+<tr><td>Planet orbital period</td><td>2.219 days</td></tr>
+<tr><td>Transit duration</td><td>1 hr 49 min</td></tr>
+<tr><td>Transit depth</td><td>24.0 ppt (2.4%)</td></tr>
+<tr><td>Estimated detection margin</td><td>21.2&times; noise floor</td></tr>
+<tr><td>Discovery year</td><td>2005</td></tr>
+<tr><td>Data source</td><td>Kokori et al. 2023; NASA Exoplanet Archive</td></tr>
+<tr><td>Events in this catalog</td><td>3, best ranked is number 1</td></tr>
+</table>
+</details>
+<details>
+<summary>WASP-33 b <span class="badge">margin 9.0&times;</span> <span class="badge">rank 8</span></summary>
+<p class="desc">WASP-33, also cataloged as HD 15082, is an A-type star spinning so quickly that its own light varies in brightness independent of its planet, making it the first star ever confirmed to be both a delta Scuti pulsating variable and an exoplanet host. Its planet, WASP-33 b, orbits in just 1.22 days on a retrograde, tilted path relative to the star's own spin. Because the star's pulsations ripple through the light curve, this target is scientifically interesting but genuinely more complex to analyze than most, since part of what shows up in the data is starlight variability, not just the planet.</p>
+<table class="param-table">
+<tr><td>Host star</td><td>WASP-33 (HD 15082)</td></tr>
+<tr><td>Other designations</td><td>HD 15082, V807 And, TOI-1599</td></tr>
+<tr><td>Constellation</td><td>Andromeda</td></tr>
+<tr><td>Right ascension (J2000)</td><td>02h 26m 51.06s</td></tr>
+<tr><td>Declination (J2000)</td><td>+37° 33' 01.7"</td></tr>
+<tr><td>Apparent magnitude (V)</td><td>8.1</td></tr>
+<tr><td>Spectral type</td><td>A5 (kA5hA8mF4, fast-rotating delta Scuti pulsator)</td></tr>
+<tr><td>Distance</td><td>397 light-years (121.6 pc)</td></tr>
+<tr><td>Planet orbital period</td><td>1.220 days</td></tr>
+<tr><td>Transit duration</td><td>2 hr 51 min</td></tr>
+<tr><td>Transit depth</td><td>12.2 ppt (1.22%)</td></tr>
+<tr><td>Estimated detection margin</td><td>9.0&times; noise floor</td></tr>
+<tr><td>Discovery year</td><td>2006 (candidate), 2010 (confirmed)</td></tr>
+<tr><td>Data source</td><td>NASA Exoplanet Archive; Herrero et al. 2011</td></tr>
+<tr><td>Events in this catalog</td><td>30, best ranked is number 8</td></tr>
+</table>
+</details>
+<details>
+<summary>HD 209458 b <span class="badge">margin 13.2&times;</span> <span class="badge">rank 6</span></summary>
+<p class="desc">HD 209458 holds a permanent place in the history of exoplanet science. In 1999 it became the first star ever observed to have a planet transit in front of it, and its planet, nicknamed Osiris, went on to become the first exoplanet confirmed to have an atmosphere at all. The planet is only slightly less massive than Jupiter but noticeably larger, giving it a low density consistent with a puffed up, highly irradiated gas giant. Its brightness, magnitude 7.7, and its 1.5 percent transit depth make it a very approachable target for a modest amateur telescope.</p>
+<table class="param-table">
+<tr><td>Host star</td><td>HD 209458</td></tr>
+<tr><td>Other designations</td><td>Osiris (planet), V376 Peg, BD+18 4917</td></tr>
+<tr><td>Constellation</td><td>Pegasus</td></tr>
+<tr><td>Right ascension (J2000)</td><td>not confirmed in sources consulted</td></tr>
+<tr><td>Declination (J2000)</td><td>not confirmed in sources consulted</td></tr>
+<tr><td>Apparent magnitude (V)</td><td>7.7</td></tr>
+<tr><td>Spectral type</td><td>G0 V (sometimes classified F9V)</td></tr>
+<tr><td>Distance</td><td>150 light-years (47 pc)</td></tr>
+<tr><td>Planet orbital period</td><td>3.525 days</td></tr>
+<tr><td>Transit duration</td><td>3 hr 4 min</td></tr>
+<tr><td>Transit depth</td><td>15.0 ppt (1.5%)</td></tr>
+<tr><td>Estimated detection margin</td><td>13.2&times; noise floor</td></tr>
+<tr><td>Discovery year</td><td>1999</td></tr>
+<tr><td>Data source</td><td>Charbonneau et al. 2000; Henry et al. 2000; NASA Exoplanet Archive</td></tr>
+<tr><td>Events in this catalog</td><td>2, best ranked is number 6</td></tr>
+</table>
+</details>
+<details>
+<summary>KELT-20 b <span class="badge">margin 14.5&times;</span> <span class="badge">rank 4</span></summary>
+<p class="desc">KELT-20 is a hot, fast spinning A-type star that hosts one of the most extreme planets in this catalog. KELT-20 b is classified as an ultra-hot Jupiter, meaning its dayside temperature is pushed to roughly 2300 Kelvin by the intense radiation of its host star. The star itself is quite young, only about 58 million years old, and is among the brightest known hosts of a transiting giant planet. Astronomers have already detected sodium, iron, and other metals directly in the planet's atmosphere using this same transit method.</p>
+<table class="param-table">
+<tr><td>Host star</td><td>KELT-20 (HD 185603, MASCARA-2)</td></tr>
+<tr><td>Other designations</td><td>HD 185603, HIP 96618, MASCARA-2</td></tr>
+<tr><td>Constellation</td><td>Cygnus</td></tr>
+<tr><td>Right ascension (J2000)</td><td>19h 38m 38.735s</td></tr>
+<tr><td>Declination (J2000)</td><td>+31° 31' 09.22"</td></tr>
+<tr><td>Apparent magnitude (V)</td><td>7.6</td></tr>
+<tr><td>Spectral type</td><td>A2 V</td></tr>
+<tr><td>Distance</td><td>447 light-years (137.0 pc)</td></tr>
+<tr><td>Planet orbital period</td><td>3.474 days</td></tr>
+<tr><td>Transit duration</td><td>3 hr 19 min</td></tr>
+<tr><td>Transit depth</td><td>15.7 ppt (1.57%)</td></tr>
+<tr><td>Estimated detection margin</td><td>14.5&times; noise floor</td></tr>
+<tr><td>Discovery year</td><td>2017</td></tr>
+<tr><td>Data source</td><td>Lund et al. 2017; NASA Exoplanet Archive</td></tr>
+<tr><td>Events in this catalog</td><td>2, best ranked is number 4</td></tr>
+</table>
+</details>
+<details>
+<summary>KELT-4 A b <span class="badge">margin 3.6&times;</span> <span class="badge">rank 97</span></summary>
+<p class="desc">KELT-4 A is the brightest known host star of a hot Jupiter that sits inside a hierarchical triple star system, meaning it has two additional stellar companions, KELT-4 B and C, orbiting the system as a close pair further out. The planet, KELT-4 A b, is a typical hot Jupiter on a three day orbit, discovered in 2016. Because two extra stars share the field of view, careful comparison star selection matters even more than usual when measuring this system's transit.</p>
+<table class="param-table">
+<tr><td>Host star</td><td>KELT-4 A</td></tr>
+<tr><td>Other designations</td><td>primary of a hierarchical triple star system (KELT-4 A/B/C)</td></tr>
+<tr><td>Constellation</td><td>Leo</td></tr>
+<tr><td>Right ascension (J2000)</td><td>not confirmed in sources consulted</td></tr>
+<tr><td>Declination (J2000)</td><td>not confirmed in sources consulted</td></tr>
+<tr><td>Apparent magnitude (V)</td><td>10.0</td></tr>
+<tr><td>Spectral type</td><td>F-type</td></tr>
+<tr><td>Distance</td><td>760 light-years (230 pc)</td></tr>
+<tr><td>Planet orbital period</td><td>2.990 days</td></tr>
+<tr><td>Transit duration</td><td>3 hr 28 min</td></tr>
+<tr><td>Transit depth</td><td>11.9 ppt (1.19%)</td></tr>
+<tr><td>Estimated detection margin</td><td>3.6&times; noise floor</td></tr>
+<tr><td>Discovery year</td><td>2016</td></tr>
+<tr><td>Data source</td><td>Eastman et al. 2016; NASA Exoplanet Archive</td></tr>
+<tr><td>Events in this catalog</td><td>28, best ranked is number 97</td></tr>
+</table>
+</details>
+<details>
+<summary>HAT-P-22 b <span class="badge">margin 4.8&times;</span> <span class="badge">rank 49</span></summary>
+<p class="desc">HAT-P-22 is a G-type dwarf star very close in character to the Sun, located in the constellation Ursa Major, with a faint red dwarf companion orbiting far out in the same system. Its planet, HAT-P-22 b, is a genuinely massive hot Jupiter, over twice the mass of Jupiter itself, discovered in 2010. The host star has the lowest mass of any star in its original discovery survey's comparison sample, making this a useful benchmark system for studying how a lower mass star supports a heavy planet in a tight orbit.</p>
+<table class="param-table">
+<tr><td>Host star</td><td>HAT-P-22 (HD 233731)</td></tr>
+<tr><td>Other designations</td><td>HD 233731, has a wide M-dwarf companion at 9 arcsec separation</td></tr>
+<tr><td>Constellation</td><td>Ursa Major</td></tr>
+<tr><td>Right ascension (J2000)</td><td>10h 22m 43.59s</td></tr>
+<tr><td>Declination (J2000)</td><td>+50° 07' 42.1"</td></tr>
+<tr><td>Apparent magnitude (V)</td><td>9.8</td></tr>
+<tr><td>Spectral type</td><td>G5 dwarf</td></tr>
+<tr><td>Distance</td><td>267 light-years (81.5 pc)</td></tr>
+<tr><td>Planet orbital period</td><td>3.212 days</td></tr>
+<tr><td>Transit duration</td><td>2 hr 39 min</td></tr>
+<tr><td>Transit depth</td><td>14.4 ppt (1.44%)</td></tr>
+<tr><td>Estimated detection margin</td><td>4.8&times; noise floor</td></tr>
+<tr><td>Discovery year</td><td>2010</td></tr>
+<tr><td>Data source</td><td>Bakos et al. 2011; NASA Exoplanet Archive</td></tr>
+<tr><td>Events in this catalog</td><td>13, best ranked is number 49</td></tr>
+</table>
+</details>
+<details>
+<summary>KELT-17 b <span class="badge">margin 4.0&times;</span> <span class="badge">rank 90</span></summary>
+<p class="desc">KELT-17 is an unusual host star known as an Am star, short for metallic-line A star, a class of chemically peculiar star whose atmosphere shows an overabundance of certain heavy elements like titanium, chromium, and iron. It was the first exoplanet host ever confirmed to belong to this specific chemical class. Its planet, KELT-17 b, orbits in just over three days and was discovered in 2016 using Doppler tomography, a technique that measures how tilted a planet's orbit is relative to its star's spin.</p>
+<table class="param-table">
+<tr><td>Host star</td><td>KELT-17</td></tr>
+<tr><td>Other designations</td><td>a chemically peculiar Am star</td></tr>
+<tr><td>Constellation</td><td>not confirmed in sources consulted</td></tr>
+<tr><td>Right ascension (J2000)</td><td>08h 22m 28.18s</td></tr>
+<tr><td>Declination (J2000)</td><td>+13° 44' 07.1"</td></tr>
+<tr><td>Apparent magnitude (V)</td><td>9.2</td></tr>
+<tr><td>Spectral type</td><td>A-type (Am, chemically peculiar)</td></tr>
+<tr><td>Distance</td><td>739 light-years (226.5 pc)</td></tr>
+<tr><td>Planet orbital period</td><td>3.081 days</td></tr>
+<tr><td>Transit duration</td><td>3 hr 29 min</td></tr>
+<tr><td>Transit depth</td><td>9.1 ppt (0.91%)</td></tr>
+<tr><td>Estimated detection margin</td><td>4.0&times; noise floor</td></tr>
+<tr><td>Discovery year</td><td>2016</td></tr>
+<tr><td>Data source</td><td>Zhou et al. 2016; NASA Exoplanet Archive</td></tr>
+<tr><td>Events in this catalog</td><td>5, best ranked is number 90</td></tr>
+</table>
+</details>
+<details>
+<summary>TOI-1518 b <span class="badge">margin 4.8&times;</span> <span class="badge">rank 68</span></summary>
+<p class="desc">TOI-1518 is a hot F0-type star discovered by NASA's TESS mission to host one of the more extreme ultra-hot Jupiters in this catalog. TOI-1518 b orbits in under two days and is inflated to nearly twice the radius of Jupiter, with iron directly detected in its atmosphere, a rare and notable find that makes it a strong candidate for future spectroscopy aimed at detecting a thermal inversion layer. At magnitude 9.0, it sits at the fainter end of what this project's search criteria allow, but its very deep transit helps compensate.</p>
+<table class="param-table">
+<tr><td>Host star</td><td>TOI-1518</td></tr>
+<tr><td>Other designations</td><td>AG+66 1198, BD+66 1610, TIC 427761355</td></tr>
+<tr><td>Constellation</td><td>Cepheus</td></tr>
+<tr><td>Right ascension (J2000)</td><td>23h 29m 04.22s</td></tr>
+<tr><td>Declination (J2000)</td><td>+67° 02' 05.4"</td></tr>
+<tr><td>Apparent magnitude (V)</td><td>9.0</td></tr>
+<tr><td>Spectral type</td><td>F0 (main sequence)</td></tr>
+<tr><td>Distance</td><td>747 light-years (229.0 pc)</td></tr>
+<tr><td>Planet orbital period</td><td>1.903 days</td></tr>
+<tr><td>Transit duration</td><td>2 hr 24 min</td></tr>
+<tr><td>Transit depth</td><td>9.9 ppt (0.99%)</td></tr>
+<tr><td>Estimated detection margin</td><td>4.8&times; noise floor</td></tr>
+<tr><td>Discovery year</td><td>2021</td></tr>
+<tr><td>Data source</td><td>Cabot et al. 2021; NASA Exoplanet Archive</td></tr>
+<tr><td>Events in this catalog</td><td>22, best ranked is number 68</td></tr>
+</table>
+</details>
+<details>
+<summary>KELT-7 b <span class="badge">margin 5.4&times;</span> <span class="badge">rank 38</span></summary>
+<p class="desc">KELT-7 orbits the brightest star of any planet discovered by the entire KELT survey, an F-type star spinning rapidly enough to make precise radial velocity measurements difficult. KELT-7 b is a substantial hot Jupiter, roughly 1.4 times the mass of Jupiter, discovered in 2015, and has since been studied with the James Webb Space Telescope, which found evidence of a metal-enriched atmosphere. Its brightness and depth make it one of the more forgiving targets in this catalog.</p>
+<table class="param-table">
+<tr><td>Host star</td><td>KELT-7</td></tr>
+<tr><td>Other designations</td><td>brightest host star among all KELT-survey discoveries</td></tr>
+<tr><td>Constellation</td><td>not confirmed in sources consulted</td></tr>
+<tr><td>Right ascension (J2000)</td><td>05h 13m 10.94s</td></tr>
+<tr><td>Declination (J2000)</td><td>+33° 19' 04.6"</td></tr>
+<tr><td>Apparent magnitude (V)</td><td>8.6</td></tr>
+<tr><td>Spectral type</td><td>F-type (rapid rotator)</td></tr>
+<tr><td>Distance</td><td>446 light-years (136.7 pc)</td></tr>
+<tr><td>Planet orbital period</td><td>2.735 days</td></tr>
+<tr><td>Transit duration</td><td>3 hr 13 min</td></tr>
+<tr><td>Transit depth</td><td>9.2 ppt (0.92%)</td></tr>
+<tr><td>Estimated detection margin</td><td>5.4&times; noise floor</td></tr>
+<tr><td>Discovery year</td><td>2015</td></tr>
+<tr><td>Data source</td><td>Bieryla et al. 2015; NASA Exoplanet Archive</td></tr>
+<tr><td>Events in this catalog</td><td>11, best ranked is number 38</td></tr>
+</table>
+</details>
+<details>
+<summary>K2-232 b <span class="badge">margin 3.3&times;</span> <span class="badge">rank 125</span></summary>
+<p class="desc">K2-232 is a late F-type star observed by NASA's K2 mission, and its planet, K2-232 b, stands out for its unusually elongated, eccentric orbit rather than the nearly circular path most hot Jupiters follow. Classified as a warm Saturn, the planet takes over eleven days to complete one orbit, considerably longer than most targets in this catalog, and is one of only a handful of well characterized warm giant planets with a host star brighter than tenth magnitude. Its long period means suitable transit windows appear far less often than for the tighter orbiting hot Jupiters elsewhere in this list.</p>
+<table class="param-table">
+<tr><td>Host star</td><td>K2-232</td></tr>
+<tr><td>Other designations</td><td>identified via NASA's K2 mission, Campaign 13</td></tr>
+<tr><td>Constellation</td><td>not confirmed in sources consulted</td></tr>
+<tr><td>Right ascension (J2000)</td><td>04h 55m 04.03s</td></tr>
+<tr><td>Declination (J2000)</td><td>+18° 39' 15.6"</td></tr>
+<tr><td>Apparent magnitude (V)</td><td>9.8</td></tr>
+<tr><td>Spectral type</td><td>late F-type</td></tr>
+<tr><td>Distance</td><td>426 light-years (130.7 pc)</td></tr>
+<tr><td>Planet orbital period</td><td>11.2 days</td></tr>
+<tr><td>Transit duration</td><td>5 hr 2 min</td></tr>
+<tr><td>Transit depth</td><td>9.7 ppt (0.97%)</td></tr>
+<tr><td>Estimated detection margin</td><td>3.3&times; noise floor</td></tr>
+<tr><td>Discovery year</td><td>2018</td></tr>
+<tr><td>Data source</td><td>Brahm et al. 2018; NASA Exoplanet Archive</td></tr>
+<tr><td>Events in this catalog</td><td>2, best ranked is number 125</td></tr>
+</table>
+</details>
+<details>
+<summary>HAT-P-1 b <span class="badge">margin 4.8&times;</span> <span class="badge">rank 51</span></summary>
+<p class="desc">HAT-P-1 is one half of a wide visual binary system, paired with an almost identical Sun-like star roughly 1500 astronomical units away, a companion close enough in brightness and color that astronomers have used it as a built in comparison star for unusually precise differential photometry. Its planet, HAT-P-1 b, was discovered in 2006 and is notably large and low density for its mass, a puzzle that helped motivate later theoretical models of how irradiation inflates close-in giant planets. The wide binary companion is a genuine practical advantage for amateur observers too, since a bright, reliable comparison star sits right in the same field.</p>
+<table class="param-table">
+<tr><td>Host star</td><td>HAT-P-1</td></tr>
+<tr><td>Other designations</td><td>ADS 16402 A; part of a wide visual binary system with ADS 16402 B</td></tr>
+<tr><td>Constellation</td><td>Lacerta</td></tr>
+<tr><td>Right ascension (J2000)</td><td>22h 57m 46.8s</td></tr>
+<tr><td>Declination (J2000)</td><td>+38° 40' 28"</td></tr>
+<tr><td>Apparent magnitude (V)</td><td>9.8</td></tr>
+<tr><td>Spectral type</td><td>G0 V</td></tr>
+<tr><td>Distance</td><td>approximately 450 light-years</td></tr>
+<tr><td>Planet orbital period</td><td>4.465 days</td></tr>
+<tr><td>Transit duration</td><td>2 hr 30 min</td></tr>
+<tr><td>Transit depth</td><td>14.4 ppt (1.44%)</td></tr>
+<tr><td>Estimated detection margin</td><td>4.8&times; noise floor</td></tr>
+<tr><td>Discovery year</td><td>2006</td></tr>
+<tr><td>Data source</td><td>Bakos et al. 2007; Johnson et al. 2008; NASA Exoplanet Archive</td></tr>
+<tr><td>Events in this catalog</td><td>6, best ranked is number 51</td></tr>
+</table>
+</details>
+<details>
+<summary>KELT-19 A b <span class="badge">margin 3.8&times;</span> <span class="badge">rank 95</span></summary>
+<p class="desc">KELT-19 A is another Am star, a chemically peculiar type of A-type star, and like KELT-17 it has a distant bound stellar companion, KELT-19 B, further out in the same system. Its planet, KELT-19 A b, is a substantial hot Jupiter of roughly four Jupiter masses on a 4.6 day orbit, discovered in 2017 as part of the same survey and follow-up program that found KELT-17 b. Because the host star spins rapidly, its physical parameters carry more uncertainty than most other stars in this catalog.</p>
+<table class="param-table">
+<tr><td>Host star</td><td>KELT-19 A</td></tr>
+<tr><td>Other designations</td><td>primary of a system with a distant bound stellar companion, KELT-19 B</td></tr>
+<tr><td>Constellation</td><td>not confirmed in sources consulted</td></tr>
+<tr><td>Right ascension (J2000)</td><td>not confirmed in sources consulted</td></tr>
+<tr><td>Declination (J2000)</td><td>not confirmed in sources consulted</td></tr>
+<tr><td>Apparent magnitude (V)</td><td>9.9</td></tr>
+<tr><td>Spectral type</td><td>A-type (Am, chemically peculiar)</td></tr>
+<tr><td>Distance</td><td>not confirmed in sources consulted</td></tr>
+<tr><td>Planet orbital period</td><td>4.6 days</td></tr>
+<tr><td>Transit duration</td><td>4 hr 4 min</td></tr>
+<tr><td>Transit depth</td><td>11.9 ppt (1.19%)</td></tr>
+<tr><td>Estimated detection margin</td><td>3.8&times; noise floor</td></tr>
+<tr><td>Discovery year</td><td>2017</td></tr>
+<tr><td>Data source</td><td>Siverd et al. 2018; NASA Exoplanet Archive</td></tr>
+<tr><td>Events in this catalog</td><td>2, best ranked is number 95</td></tr>
+</table>
+</details>
+</section><section id="soonest">
+<h2>Soonest Upcoming Event</h2>
+<div class="soon-box" id="soonBox">Loading...</div>
+</section>
+
+<section id="ranked">
+<h2>Ranked Transit Events, Full Catalog</h2>
+<p class="small">Click any column header to sort by that column. Click any row to see full detail for that event. Rows highlighted in yellow are the top 10 ranked events.</p>
+<div class="table-wrap">
+<table id="rankedTable">
+<thead><tr>
+  <th data-key="rank" data-type="num">#</th>
+  <th data-key="margin" data-type="num">Margin</th>
+  <th data-key="star" data-type="str">Star</th>
+  <th data-key="date" data-type="str">Date</th>
+  <th data-key="t_in" data-type="str">Ingress</th>
+  <th data-key="t_mid" data-type="str">Mid</th>
+  <th data-key="t_eg" data-type="str">Egress</th>
+  <th data-key="airmass_min" data-type="num">Airmass</th>
+  <th data-key="moon" data-type="num">Moon %</th>
+  <th data-key="obs_b" data-type="num">Obs+Base %</th>
+  <th data-key="depth" data-type="num">Depth (ppt)</th>
+</tr></thead>
+<tbody id="rankedBody"></tbody>
+</table>
+</div>
+</section>
+
+<section id="chron">
+<h2>Chronological Index</h2>
+<p class="small">Same 126 events, default sorted soonest to latest. Click any column header to re-sort. Click any row for full detail.</p>
+<div class="table-wrap">
+<table id="chronTable">
+<thead><tr>
+  <th data-key="rank" data-type="num">#</th>
+  <th data-key="star" data-type="str">Star</th>
+  <th data-key="date" data-type="str">Date</th>
+  <th data-key="t_mid" data-type="str">Mid-transit</th>
+  <th data-key="margin" data-type="num">Margin</th>
+  <th data-key="moon" data-type="num">Moon %</th>
+  <th data-key="obs_b" data-type="num">Obs+Base %</th>
+  <th data-key="depth" data-type="num">Depth (ppt)</th>
+</tr></thead>
+<tbody id="chronBody"></tbody>
+</table>
+</div>
+</section>
+
+<div class="detail-box" id="detailBox">
+  <span class="close-btn" onclick="closeDetail()">close &times;</span>
+  <h3 id="detailTitle"></h3>
+  <table id="detailTable"></table>
+  <div class="assessment" id="detailAssessment"></div>
+</div>
+
+<section id="glossary">
+<h2>Glossary</h2>
+<dl>
+<dt>Ingress</dt><dd>The beginning of a transit, when the planet first begins to cross in front of the star.</dd>
+<dt>Egress</dt><dd>The end of a transit, when the planet finishes crossing the star's disk.</dd>
+<dt>Mid-transit</dt><dd>The moment the planet is at the center of its crossing, when brightness is lowest.</dd>
+<dt>Transit depth</dt><dd>The fraction of starlight blocked at mid-transit, in parts per thousand (ppt) or percent.</dd>
+<dt>Baseline</dt><dd>Observation time before ingress and after egress, used to establish the star's normal brightness.</dd>
+<dt>BJD_TDB &minus; 2,450,000</dt><dd>Barycentric Julian Date with 2,450,000 subtracted to keep figures short. Add it back for the full date.</dd>
+<dt>Elevation / Airmass</dt><dd>Elevation is the star's angle above the horizon. Airmass (1/sin of elevation) measures how much atmosphere its light passes through; higher airmass means more distortion and noise.</dd>
+<dt>Nautical twilight</dt><dd>The point at which the Sun is 12&deg; below the horizon, used as this project's definition of usable darkness.</dd>
+<dt>V magnitude</dt><dd>Apparent brightness as seen from Earth. Lower numbers are brighter; each step of 1 is about 2.5&times; dimmer.</dd>
+<dt>Detection margin</dt><dd>How many multiples of the expected photometric noise floor a transit's depth represents on this project's instrument. See the Method section above for the formula.</dd>
+<dt>Hot Jupiter / Ultra-hot Jupiter</dt><dd>A gas giant orbiting very close to its star, with short periods and high temperatures. "Ultra-hot" hosts are typically hot A or F-type stars exceeding ~2200K on the dayside.</dd>
+<dt>Am star</dt><dd>Short for metallic-line A star: a chemically peculiar A-type star with an excess of certain heavy elements in its atmosphere.</dd>
+<dt>Delta Scuti variable</dt><dd>A class of pulsating star that brightens and dims on a timescale of hours from internal oscillation, unrelated to any orbiting planet.</dd>
+</dl>
+</section>
+
+<section id="sources">
+<h2>Sources</h2>
+<p>Every event on this page was generated by the Swarthmore College Transit/Eclipse Observability tool (Tapir), cross-referenced against the NASA Exoplanet Archive. Full citation list, including discovery papers for all 12 systems, is in the printed reference booklet.</p>
+<p><a href="https://astro.swarthmore.edu/transits/" target="_blank" rel="noopener">astro.swarthmore.edu/transits</a></p>
+<p class="small">All predicted times are subject to change based on ephemeris refinement. This page is a planning aid, not a substitute for re-checking the live source before an observation.</p>
+</section>
+
+<footer>
+Project Ingress &middot; Campbell River Astronomy Club Research Team &middot; Campbell River, BC
+</footer>
+
+<script id="site-data" type="application/json">
+{
+ "events": [
+  {
+   "rank": 124,
+   "date": "2027-04-15",
+   "weekday": "Thu",
+   "star": "KELT-4 A b",
+   "vmag": 10.0,
+   "t_start": "20:05",
+   "t_in": "21:35",
+   "t_mid": "23:18",
+   "t_eg": "01:02",
+   "t_end": "02:32",
+   "elev_s": 55,
+   "elev_i": 64,
+   "elev_m": 62,
+   "elev_e": 49,
+   "elev_end": 35,
+   "airmass_min": 1.74,
+   "bjd_i": "11511.6946",
+   "bjd_m": "11511.7666",
+   "bjd_e": "11511.8387",
+   "moon": 75,
+   "moonsep": "17",
+   "obs_b": "51",
+   "sugg_s": "21:32",
+   "sugg_e": "02:34",
+   "depth": 11.9,
+   "margin": 3.6
+  },
+  {
+   "rank": 119,
+   "date": "2027-04-12",
+   "weekday": "Mon",
+   "star": "KELT-4 A b",
+   "vmag": 10.0,
+   "t_start": "20:19",
+   "t_in": "21:49",
+   "t_mid": "23:33",
+   "t_eg": "01:17",
+   "t_end": "02:47",
+   "elev_s": 55,
+   "elev_i": 64,
+   "elev_m": 62,
+   "elev_e": 49,
+   "elev_end": 35,
+   "airmass_min": 1.74,
+   "bjd_i": "11508.7050",
+   "bjd_m": "11508.7771",
+   "bjd_e": "11508.8491",
+   "moon": 42,
+   "moonsep": "47",
+   "obs_b": "61",
+   "sugg_s": "21:26",
+   "sugg_e": "02:46",
+   "depth": 11.9,
+   "margin": 3.6
+  },
+  {
+   "rank": 57,
+   "date": "2027-04-12",
+   "weekday": "Mon",
+   "star": "HAT-P-22 b",
+   "vmag": 9.8,
+   "t_start": "23:01",
+   "t_in": "00:31",
+   "t_mid": "01:51",
+   "t_eg": "03:10",
+   "t_end": "04:40",
+   "elev_s": 83,
+   "elev_i": 69,
+   "elev_m": 57,
+   "elev_e": 45,
+   "elev_end": 33,
+   "airmass_min": 1.84,
+   "bjd_i": "11508.8162",
+   "bjd_m": "11508.8714",
+   "bjd_e": "11508.9266",
+   "moon": 43,
+   "moonsep": "46",
+   "obs_b": "92",
+   "sugg_s": "23:01",
+   "sugg_e": "04:27",
+   "depth": 14.4,
+   "margin": 4.8
+  },
+  {
+   "rank": 112,
+   "date": "2027-04-09",
+   "weekday": "Fri",
+   "star": "KELT-4 A b",
+   "vmag": 10.0,
+   "t_start": "20:34",
+   "t_in": "22:04",
+   "t_mid": "23:48",
+   "t_eg": "01:32",
+   "t_end": "03:02",
+   "elev_s": 56,
+   "elev_i": 65,
+   "elev_m": 62,
+   "elev_e": 49,
+   "elev_end": 34,
+   "airmass_min": 1.79,
+   "bjd_i": "11505.7154",
+   "bjd_m": "11505.7875",
+   "bjd_e": "11505.8596",
+   "moon": 12,
+   "moonsep": "87",
+   "obs_b": "70",
+   "sugg_s": "21:20",
+   "sugg_e": "02:57",
+   "depth": 11.9,
+   "margin": 3.6
+  },
+  {
+   "rank": 105,
+   "date": "2027-04-06",
+   "weekday": "Tue",
+   "star": "KELT-4 A b",
+   "vmag": 10.0,
+   "t_start": "20:49",
+   "t_in": "22:19",
+   "t_mid": "00:02",
+   "t_eg": "01:46",
+   "t_end": "03:16",
+   "elev_s": 56,
+   "elev_i": 65,
+   "elev_m": 62,
+   "elev_e": 48,
+   "elev_end": 34,
+   "airmass_min": 1.79,
+   "bjd_i": "11502.7258",
+   "bjd_m": "11502.7979",
+   "bjd_e": "11502.8700",
+   "moon": 0,
+   "moonsep": "126",
+   "obs_b": "80",
+   "sugg_s": "21:14",
+   "sugg_e": "03:09",
+   "depth": 11.9,
+   "margin": 3.6
+  },
+  {
+   "rank": 99,
+   "date": "2027-04-03",
+   "weekday": "Sat",
+   "star": "KELT-4 A b",
+   "vmag": 10.0,
+   "t_start": "21:03",
+   "t_in": "22:33",
+   "t_mid": "00:17",
+   "t_eg": "02:01",
+   "t_end": "03:31",
+   "elev_s": 56,
+   "elev_i": 65,
+   "elev_m": 61,
+   "elev_e": 48,
+   "elev_end": 33,
+   "airmass_min": 1.84,
+   "bjd_i": "11499.7362",
+   "bjd_m": "11499.8083",
+   "bjd_e": "11499.8804",
+   "moon": 8,
+   "moonsep": "160",
+   "obs_b": "89",
+   "sugg_s": "21:09",
+   "sugg_e": "03:21",
+   "depth": 11.9,
+   "margin": 3.6
+  },
+  {
+   "rank": 97,
+   "date": "2027-03-31",
+   "weekday": "Wed",
+   "star": "KELT-4 A b",
+   "vmag": 10.0,
+   "t_start": "21:18",
+   "t_in": "22:48",
+   "t_mid": "00:32",
+   "t_eg": "02:16",
+   "t_end": "03:46",
+   "elev_s": 57,
+   "elev_i": 65,
+   "elev_m": 61,
+   "elev_e": 47,
+   "elev_end": 33,
+   "airmass_min": 1.84,
+   "bjd_i": "11496.7466",
+   "bjd_m": "11496.8187",
+   "bjd_e": "11496.8908",
+   "moon": 29,
+   "moonsep": "154",
+   "obs_b": "92",
+   "sugg_s": "21:16",
+   "sugg_e": "03:33",
+   "depth": 11.9,
+   "margin": 3.6
+  },
+  {
+   "rank": 98,
+   "date": "2027-03-28",
+   "weekday": "Sun",
+   "star": "KELT-4 A b",
+   "vmag": 10.0,
+   "t_start": "21:33",
+   "t_in": "23:03",
+   "t_mid": "00:47",
+   "t_eg": "02:30",
+   "t_end": "04:00",
+   "elev_s": 57,
+   "elev_i": 65,
+   "elev_m": 61,
+   "elev_e": 47,
+   "elev_end": 32,
+   "airmass_min": 1.89,
+   "bjd_i": "11493.7570",
+   "bjd_m": "11493.8291",
+   "bjd_e": "11493.9012",
+   "moon": 56,
+   "moonsep": "122",
+   "obs_b": "90",
+   "sugg_s": "21:30",
+   "sugg_e": "03:45",
+   "depth": 11.9,
+   "margin": 3.6
+  },
+  {
+   "rank": 54,
+   "date": "2027-03-27",
+   "weekday": "Sat",
+   "star": "HAT-P-22 b",
+   "vmag": 9.8,
+   "t_start": "21:32",
+   "t_in": "23:02",
+   "t_mid": "00:21",
+   "t_eg": "01:41",
+   "t_end": "03:11",
+   "elev_s": 72,
+   "elev_i": 86,
+   "elev_m": 81,
+   "elev_e": 68,
+   "elev_end": 54,
+   "airmass_min": 1.24,
+   "bjd_i": "11492.7550",
+   "bjd_m": "11492.8103",
+   "bjd_e": "11492.8655",
+   "moon": 66,
+   "moonsep": "118",
+   "obs_b": "100",
+   "sugg_s": "21:32",
+   "sugg_e": "03:11",
+   "depth": 14.4,
+   "margin": 4.8
+  },
+  {
+   "rank": 100,
+   "date": "2027-03-25",
+   "weekday": "Thu",
+   "star": "KELT-4 A b",
+   "vmag": 10.0,
+   "t_start": "21:47",
+   "t_in": "23:17",
+   "t_mid": "01:01",
+   "t_eg": "02:45",
+   "t_end": "04:15",
+   "elev_s": 58,
+   "elev_i": 65,
+   "elev_m": 60,
+   "elev_e": 46,
+   "elev_end": 32,
+   "airmass_min": 1.89,
+   "bjd_i": "11490.7675",
+   "bjd_m": "11490.8395",
+   "bjd_e": "11490.9116",
+   "moon": 83,
+   "moonsep": "87",
+   "obs_b": "89",
+   "sugg_s": "21:45",
+   "sugg_e": "03:56",
+   "depth": 11.9,
+   "margin": 3.6
+  },
+  {
+   "rank": 101,
+   "date": "2027-03-22",
+   "weekday": "Mon",
+   "star": "KELT-4 A b",
+   "vmag": 10.0,
+   "t_start": "22:02",
+   "t_in": "23:32",
+   "t_mid": "01:16",
+   "t_eg": "03:00",
+   "t_end": "04:30",
+   "elev_s": 58,
+   "elev_i": 65,
+   "elev_m": 60,
+   "elev_e": 46,
+   "elev_end": 32,
+   "airmass_min": 1.89,
+   "bjd_i": "11487.7779",
+   "bjd_m": "11487.8499",
+   "bjd_e": "11487.9220",
+   "moon": 99,
+   "moonsep": "49",
+   "obs_b": "87",
+   "sugg_s": "22:00",
+   "sugg_e": "04:08",
+   "depth": 11.9,
+   "margin": 3.6
+  },
+  {
+   "rank": 102,
+   "date": "2027-03-19",
+   "weekday": "Fri",
+   "star": "KELT-4 A b",
+   "vmag": 10.0,
+   "t_start": "22:17",
+   "t_in": "23:47",
+   "t_mid": "01:31",
+   "t_eg": "03:15",
+   "t_end": "04:45",
+   "elev_s": 58,
+   "elev_i": 65,
+   "elev_m": 60,
+   "elev_e": 45,
+   "elev_end": 31,
+   "airmass_min": 1.94,
+   "bjd_i": "11484.7883",
+   "bjd_m": "11484.8604",
+   "bjd_e": "11484.9324",
+   "moon": 94,
+   "moonsep": "17",
+   "obs_b": "85",
+   "sugg_s": "22:15",
+   "sugg_e": "04:20",
+   "depth": 11.9,
+   "margin": 3.6
+  },
+  {
+   "rank": 103,
+   "date": "2027-03-16",
+   "weekday": "Tue",
+   "star": "KELT-4 A b",
+   "vmag": 10.0,
+   "t_start": "22:32",
+   "t_in": "00:02",
+   "t_mid": "01:46",
+   "t_eg": "03:29",
+   "t_end": "04:59",
+   "elev_s": 59,
+   "elev_i": 65,
+   "elev_m": 59,
+   "elev_e": 45,
+   "elev_end": 31,
+   "airmass_min": 1.94,
+   "bjd_i": "11481.7987",
+   "bjd_m": "11481.8708",
+   "bjd_e": "11481.9429",
+   "moon": 68,
+   "moonsep": "43",
+   "obs_b": "84",
+   "sugg_s": "22:29",
+   "sugg_e": "04:32",
+   "depth": 11.9,
+   "margin": 3.6
+  },
+  {
+   "rank": 62,
+   "date": "2027-03-14",
+   "weekday": "Sun",
+   "star": "HAT-P-22 b",
+   "vmag": 9.8,
+   "t_start": "01:08",
+   "t_in": "02:38",
+   "t_mid": "03:58",
+   "t_eg": "05:17",
+   "t_end": "06:47",
+   "elev_s": 81,
+   "elev_i": 67,
+   "elev_m": 55,
+   "elev_e": 43,
+   "elev_end": 32,
+   "airmass_min": 1.89,
+   "bjd_i": "11479.9061",
+   "bjd_m": "11479.9613",
+   "bjd_e": "11480.0165",
+   "moon": 47,
+   "moonsep": "61",
+   "obs_b": "85",
+   "sugg_s": "01:08",
+   "sugg_e": "06:21",
+   "depth": 14.4,
+   "margin": 4.8
+  },
+  {
+   "rank": 104,
+   "date": "2027-03-13",
+   "weekday": "Sat",
+   "star": "KELT-4 A b",
+   "vmag": 10.0,
+   "t_start": "21:47",
+   "t_in": "23:17",
+   "t_mid": "01:00",
+   "t_eg": "03:44",
+   "t_end": "05:14",
+   "elev_s": 59,
+   "elev_i": 65,
+   "elev_m": 59,
+   "elev_e": 44,
+   "elev_end": 30,
+   "airmass_min": 2.0,
+   "bjd_i": "11478.8091",
+   "bjd_m": "11478.8812",
+   "bjd_e": "11478.9533",
+   "moon": 35,
+   "moonsep": "83",
+   "obs_b": "82",
+   "sugg_s": "21:44",
+   "sugg_e": "04:44",
+   "depth": 11.9,
+   "margin": 3.6
+  },
+  {
+   "rank": 61,
+   "date": "2027-03-11",
+   "weekday": "Thu",
+   "star": "HAT-P-22 b",
+   "vmag": 9.8,
+   "t_start": "19:03",
+   "t_in": "20:33",
+   "t_mid": "21:52",
+   "t_eg": "23:12",
+   "t_end": "00:42",
+   "elev_s": 49,
+   "elev_i": 62,
+   "elev_m": 75,
+   "elev_e": 88,
+   "elev_end": 78,
+   "airmass_min": 1.33,
+   "bjd_i": "11476.6939",
+   "bjd_m": "11476.7491",
+   "bjd_e": "11476.8043",
+   "moon": 15,
+   "moonsep": "96",
+   "obs_b": "85",
+   "sugg_s": "19:29",
+   "sugg_e": "00:42",
+   "depth": 14.4,
+   "margin": 4.8
+  },
+  {
+   "rank": 93,
+   "date": "2027-03-11",
+   "weekday": "Thu",
+   "star": "KELT-17 b",
+   "vmag": 9.2,
+   "t_start": "19:37",
+   "t_in": "21:07",
+   "t_mid": "22:51",
+   "t_eg": "00:35",
+   "t_end": "02:05",
+   "elev_s": 47,
+   "elev_i": 53,
+   "elev_m": 50,
+   "elev_e": 37,
+   "elev_end": 23,
+   "airmass_min": 2.56,
+   "bjd_i": "11476.7177",
+   "bjd_m": "11476.7902",
+   "bjd_e": "11476.8627",
+   "moon": 15,
+   "moonsep": "88",
+   "obs_b": "58",
+   "sugg_s": "19:36",
+   "sugg_e": "00:50",
+   "depth": 9.1,
+   "margin": 4.0
+  },
+  {
+   "rank": 106,
+   "date": "2027-03-10",
+   "weekday": "Wed",
+   "star": "KELT-4 A b",
+   "vmag": 10.0,
+   "t_start": "22:02",
+   "t_in": "23:32",
+   "t_mid": "01:15",
+   "t_eg": "02:59",
+   "t_end": "04:29",
+   "elev_s": 59,
+   "elev_i": 65,
+   "elev_m": 59,
+   "elev_e": 44,
+   "elev_end": 30,
+   "airmass_min": 2.0,
+   "bjd_i": "11475.8195",
+   "bjd_m": "11475.8916",
+   "bjd_e": "11475.9637",
+   "moon": 9,
+   "moonsep": "121",
+   "obs_b": "80",
+   "sugg_s": "21:59",
+   "sugg_e": "03:55",
+   "depth": 11.9,
+   "margin": 3.6
+  },
+  {
+   "rank": 107,
+   "date": "2027-03-07",
+   "weekday": "Sun",
+   "star": "KELT-4 A b",
+   "vmag": 10.0,
+   "t_start": "22:16",
+   "t_in": "23:46",
+   "t_mid": "01:30",
+   "t_eg": "03:14",
+   "t_end": "04:44",
+   "elev_s": 60,
+   "elev_i": 65,
+   "elev_m": 58,
+   "elev_e": 44,
+   "elev_end": 29,
+   "airmass_min": 2.06,
+   "bjd_i": "11472.8299",
+   "bjd_m": "11472.9020",
+   "bjd_e": "11472.9741",
+   "moon": 0,
+   "moonsep": "156",
+   "obs_b": "79",
+   "sugg_s": "22:14",
+   "sugg_e": "04:07",
+   "depth": 11.9,
+   "margin": 3.6
+  },
+  {
+   "rank": 108,
+   "date": "2027-03-04",
+   "weekday": "Thu",
+   "star": "KELT-4 A b",
+   "vmag": 10.0,
+   "t_start": "22:31",
+   "t_in": "00:01",
+   "t_mid": "01:45",
+   "t_eg": "03:29",
+   "t_end": "04:59",
+   "elev_s": 60,
+   "elev_i": 65,
+   "elev_m": 58,
+   "elev_e": 43,
+   "elev_end": 29,
+   "airmass_min": 2.06,
+   "bjd_i": "11469.8403",
+   "bjd_m": "11469.9124",
+   "bjd_e": "11469.9845",
+   "moon": 8,
+   "moonsep": "158",
+   "obs_b": "77",
+   "sugg_s": "22:29",
+   "sugg_e": "04:19",
+   "depth": 11.9,
+   "margin": 3.6
+  },
+  {
+   "rank": 109,
+   "date": "2027-03-01",
+   "weekday": "Mon",
+   "star": "KELT-4 A b",
+   "vmag": 10.0,
+   "t_start": "22:46",
+   "t_in": "00:16",
+   "t_mid": "02:00",
+   "t_eg": "03:44",
+   "t_end": "05:14",
+   "elev_s": 60,
+   "elev_i": 65,
+   "elev_m": 58,
+   "elev_e": 43,
+   "elev_end": 28,
+   "airmass_min": 2.13,
+   "bjd_i": "11466.8508",
+   "bjd_m": "11466.9228",
+   "bjd_e": "11466.9949",
+   "moon": 29,
+   "moonsep": "126",
+   "obs_b": "75",
+   "sugg_s": "22:44",
+   "sugg_e": "04:31",
+   "depth": 11.9,
+   "margin": 3.6
+  },
+  {
+   "rank": 53,
+   "date": "2027-02-26",
+   "weekday": "Fri",
+   "star": "HAT-P-22 b",
+   "vmag": 9.8,
+   "t_start": "22:39",
+   "t_in": "00:09",
+   "t_mid": "01:29",
+   "t_eg": "02:48",
+   "t_end": "04:18",
+   "elev_s": 74,
+   "elev_i": 89,
+   "elev_m": 79,
+   "elev_e": 66,
+   "elev_end": 52,
+   "airmass_min": 1.27,
+   "bjd_i": "11463.8450",
+   "bjd_m": "11463.9002",
+   "bjd_e": "11463.9554",
+   "moon": 57,
+   "moonsep": "104",
+   "obs_b": "100",
+   "sugg_s": "22:39",
+   "sugg_e": "04:19",
+   "depth": 14.4,
+   "margin": 4.8
+  },
+  {
+   "rank": 110,
+   "date": "2027-02-26",
+   "weekday": "Fri",
+   "star": "KELT-4 A b",
+   "vmag": 10.0,
+   "t_start": "23:01",
+   "t_in": "00:31",
+   "t_mid": "02:15",
+   "t_eg": "03:59",
+   "t_end": "05:29",
+   "elev_s": 61,
+   "elev_i": 65,
+   "elev_m": 57,
+   "elev_e": 42,
+   "elev_end": 28,
+   "airmass_min": 2.13,
+   "bjd_i": "11463.8612",
+   "bjd_m": "11463.9333",
+   "bjd_e": "11464.0053",
+   "moon": 57,
+   "moonsep": "92",
+   "obs_b": "74",
+   "sugg_s": "22:59",
+   "sugg_e": "04:43",
+   "depth": 11.9,
+   "margin": 3.6
+  },
+  {
+   "rank": 66,
+   "date": "2027-02-23",
+   "weekday": "Tue",
+   "star": "HAT-P-22 b",
+   "vmag": 9.8,
+   "t_start": "17:34",
+   "t_in": "19:04",
+   "t_mid": "20:23",
+   "t_eg": "21:43",
+   "t_end": "23:13",
+   "elev_s": 29,
+   "elev_i": 40,
+   "elev_m": 51,
+   "elev_e": 63,
+   "elev_end": 78,
+   "airmass_min": 2.06,
+   "bjd_i": "11460.6327",
+   "bjd_m": "11460.6880",
+   "bjd_e": "11460.7432",
+   "moon": 86,
+   "moonsep": "71",
+   "obs_b": "50",
+   "sugg_s": "19:03",
+   "sugg_e": "23:13",
+   "depth": 14.4,
+   "margin": 4.8
+  },
+  {
+   "rank": 111,
+   "date": "2027-02-23",
+   "weekday": "Tue",
+   "star": "KELT-4 A b",
+   "vmag": 10.0,
+   "t_start": "23:16",
+   "t_in": "00:46",
+   "t_mid": "02:30",
+   "t_eg": "04:14",
+   "t_end": "05:44",
+   "elev_s": 61,
+   "elev_i": 65,
+   "elev_m": 57,
+   "elev_e": 42,
+   "elev_end": 27,
+   "airmass_min": 2.2,
+   "bjd_i": "11460.8716",
+   "bjd_m": "11460.9437",
+   "bjd_e": "11461.0158",
+   "moon": 85,
+   "moonsep": "55",
+   "obs_b": "72",
+   "sugg_s": "23:14",
+   "sugg_e": "04:54",
+   "depth": 11.9,
+   "margin": 3.6
+  },
+  {
+   "rank": 113,
+   "date": "2027-02-20",
+   "weekday": "Sat",
+   "star": "KELT-4 A b",
+   "vmag": 10.0,
+   "t_start": "23:31",
+   "t_in": "01:01",
+   "t_mid": "02:45",
+   "t_eg": "04:29",
+   "t_end": "05:59",
+   "elev_s": 61,
+   "elev_i": 65,
+   "elev_m": 56,
+   "elev_e": 41,
+   "elev_end": 27,
+   "airmass_min": 2.2,
+   "bjd_i": "11457.8820",
+   "bjd_m": "11457.9541",
+   "bjd_e": "11458.0262",
+   "moon": 100,
+   "moonsep": "20",
+   "obs_b": "70",
+   "sugg_s": "23:29",
+   "sugg_e": "05:06",
+   "depth": 11.9,
+   "margin": 3.6
+  },
+  {
+   "rank": 114,
+   "date": "2027-02-17",
+   "weekday": "Wed",
+   "star": "KELT-4 A b",
+   "vmag": 10.0,
+   "t_start": "23:46",
+   "t_in": "01:16",
+   "t_mid": "03:00",
+   "t_eg": "04:44",
+   "t_end": "06:14",
+   "elev_s": 62,
+   "elev_i": 65,
+   "elev_m": 56,
+   "elev_e": 41,
+   "elev_end": 26,
+   "airmass_min": 2.28,
+   "bjd_i": "11454.8924",
+   "bjd_m": "11454.9645",
+   "bjd_e": "11455.0366",
+   "moon": 91,
+   "moonsep": "37",
+   "obs_b": "69",
+   "sugg_s": "23:44",
+   "sugg_e": "05:18",
+   "depth": 11.9,
+   "margin": 3.6
+  },
+  {
+   "rank": 115,
+   "date": "2027-02-14",
+   "weekday": "Sun",
+   "star": "KELT-4 A b",
+   "vmag": 10.0,
+   "t_start": "00:01",
+   "t_in": "01:31",
+   "t_mid": "03:15",
+   "t_eg": "04:59",
+   "t_end": "06:29",
+   "elev_s": 62,
+   "elev_i": 65,
+   "elev_m": 56,
+   "elev_e": 40,
+   "elev_end": 26,
+   "airmass_min": 2.28,
+   "bjd_i": "11451.9028",
+   "bjd_m": "11451.9749",
+   "bjd_e": "11452.0470",
+   "moon": 62,
+   "moonsep": "78",
+   "obs_b": "67",
+   "sugg_s": "23:59",
+   "sugg_e": "05:30",
+   "depth": 11.9,
+   "margin": 3.6
+  },
+  {
+   "rank": 89,
+   "date": "2027-02-13",
+   "weekday": "Sat",
+   "star": "TOI-1518 b",
+   "vmag": 9.0,
+   "t_start": "18:14",
+   "t_in": "19:44",
+   "t_mid": "20:56",
+   "t_eg": "22:08",
+   "t_end": "23:38",
+   "elev_s": 56,
+   "elev_i": 48,
+   "elev_m": 42,
+   "elev_e": 36,
+   "elev_end": 31,
+   "airmass_min": 1.94,
+   "bjd_i": "11450.6553",
+   "bjd_m": "11450.7053",
+   "bjd_e": "11450.7553",
+   "moon": 48,
+   "moonsep": "56",
+   "obs_b": "40",
+   "sugg_s": "18:48",
+   "sugg_e": "22:24",
+   "depth": 9.9,
+   "margin": 4.8
+  },
+  {
+   "rank": 116,
+   "date": "2027-02-11",
+   "weekday": "Thu",
+   "star": "KELT-4 A b",
+   "vmag": 10.0,
+   "t_start": "00:16",
+   "t_in": "01:46",
+   "t_mid": "03:30",
+   "t_eg": "05:14",
+   "t_end": "06:44",
+   "elev_s": 62,
+   "elev_i": 65,
+   "elev_m": 55,
+   "elev_e": 39,
+   "elev_end": 25,
+   "airmass_min": 2.37,
+   "bjd_i": "11448.9132",
+   "bjd_m": "11448.9853",
+   "bjd_e": "11449.0574",
+   "moon": 30,
+   "moonsep": "117",
+   "obs_b": "65",
+   "sugg_s": "00:14",
+   "sugg_e": "05:42",
+   "depth": 11.9,
+   "margin": 3.6
+  },
+  {
+   "rank": 49,
+   "date": "2027-02-10",
+   "weekday": "Wed",
+   "star": "HAT-P-22 b",
+   "vmag": 9.8,
+   "t_start": "21:11",
+   "t_in": "22:41",
+   "t_mid": "00:01",
+   "t_eg": "01:20",
+   "t_end": "02:50",
+   "elev_s": 51,
+   "elev_i": 65,
+   "elev_m": 77,
+   "elev_e": 90,
+   "elev_end": 76,
+   "airmass_min": 1.29,
+   "bjd_i": "11447.7838",
+   "bjd_m": "11447.8390",
+   "bjd_e": "11447.8942",
+   "moon": 20,
+   "moonsep": "113",
+   "obs_b": "100",
+   "sugg_s": "21:11",
+   "sugg_e": "02:50",
+   "depth": 14.4,
+   "margin": 4.8
+  },
+  {
+   "rank": 117,
+   "date": "2027-02-08",
+   "weekday": "Mon",
+   "star": "KELT-4 A b",
+   "vmag": 10.0,
+   "t_start": "00:31",
+   "t_in": "02:01",
+   "t_mid": "03:45",
+   "t_eg": "05:29",
+   "t_end": "06:59",
+   "elev_s": 63,
+   "elev_i": 65,
+   "elev_m": 55,
+   "elev_e": 39,
+   "elev_end": 25,
+   "airmass_min": 2.37,
+   "bjd_i": "11445.9237",
+   "bjd_m": "11445.9957",
+   "bjd_e": "11446.0678",
+   "moon": 7,
+   "moonsep": "152",
+   "obs_b": "63",
+   "sugg_s": "00:29",
+   "sugg_e": "05:53",
+   "depth": 11.9,
+   "margin": 3.6
+  },
+  {
+   "rank": 118,
+   "date": "2027-02-05",
+   "weekday": "Fri",
+   "star": "KELT-4 A b",
+   "vmag": 10.0,
+   "t_start": "00:46",
+   "t_in": "02:16",
+   "t_mid": "04:00",
+   "t_eg": "05:44",
+   "t_end": "07:14",
+   "elev_s": 63,
+   "elev_i": 65,
+   "elev_m": 54,
+   "elev_e": 38,
+   "elev_end": 24,
+   "airmass_min": 2.46,
+   "bjd_i": "11442.9341",
+   "bjd_m": "11443.0061",
+   "bjd_e": "11443.0782",
+   "moon": 0,
+   "moonsep": "161",
+   "obs_b": "62",
+   "sugg_s": "00:44",
+   "sugg_e": "06:05",
+   "depth": 11.9,
+   "margin": 3.6
+  },
+  {
+   "rank": 90,
+   "date": "2027-02-02",
+   "weekday": "Tue",
+   "star": "KELT-17 b",
+   "vmag": 9.2,
+   "t_start": "20:29",
+   "t_in": "21:59",
+   "t_mid": "23:43",
+   "t_eg": "01:28",
+   "t_end": "02:58",
+   "elev_s": 35,
+   "elev_i": 47,
+   "elev_m": 54,
+   "elev_e": 49,
+   "elev_end": 38,
+   "airmass_min": 1.74,
+   "bjd_i": "11439.7555",
+   "bjd_m": "11439.8280",
+   "bjd_e": "11439.9005",
+   "moon": 10,
+   "moonsep": "152",
+   "obs_b": "100",
+   "sugg_s": "20:28",
+   "sugg_e": "02:58",
+   "depth": 9.1,
+   "margin": 4.0
+  },
+  {
+   "rank": 120,
+   "date": "2027-02-02",
+   "weekday": "Tue",
+   "star": "KELT-4 A b",
+   "vmag": 10.0,
+   "t_start": "01:01",
+   "t_in": "02:31",
+   "t_mid": "04:15",
+   "t_eg": "05:59",
+   "t_end": "07:29",
+   "elev_s": 63,
+   "elev_i": 65,
+   "elev_m": 54,
+   "elev_e": 38,
+   "elev_end": 23,
+   "airmass_min": 2.56,
+   "bjd_i": "11439.9445",
+   "bjd_m": "11440.0166",
+   "bjd_e": "11440.0886",
+   "moon": 9,
+   "moonsep": "131",
+   "obs_b": "60",
+   "sugg_s": "00:59",
+   "sugg_e": "06:17",
+   "depth": 11.9,
+   "margin": 3.6
+  },
+  {
+   "rank": 121,
+   "date": "2027-01-30",
+   "weekday": "Sat",
+   "star": "KELT-4 A b",
+   "vmag": 10.0,
+   "t_start": "01:16",
+   "t_in": "02:46",
+   "t_mid": "04:30",
+   "t_eg": "06:14",
+   "t_end": "07:44",
+   "elev_s": 63,
+   "elev_i": 64,
+   "elev_m": 53,
+   "elev_e": 37,
+   "elev_end": 23,
+   "airmass_min": 2.56,
+   "bjd_i": "11436.9549",
+   "bjd_m": "11437.0270",
+   "bjd_e": "11437.0991",
+   "moon": 30,
+   "moonsep": "97",
+   "obs_b": "58",
+   "sugg_s": "01:14",
+   "sugg_e": "06:29",
+   "depth": 11.9,
+   "margin": 3.6
+  },
+  {
+   "rank": 52,
+   "date": "2027-01-28",
+   "weekday": "Thu",
+   "star": "HAT-P-22 b",
+   "vmag": 9.8,
+   "t_start": "00:49",
+   "t_in": "02:19",
+   "t_mid": "03:38",
+   "t_eg": "04:58",
+   "t_end": "06:28",
+   "elev_s": 77,
+   "elev_i": 89,
+   "elev_m": 76,
+   "elev_e": 64,
+   "elev_end": 50,
+   "airmass_min": 1.31,
+   "bjd_i": "11434.9349",
+   "bjd_m": "11434.9901",
+   "bjd_e": "11435.0453",
+   "moon": 49,
+   "moonsep": "88",
+   "obs_b": "100",
+   "sugg_s": "00:48",
+   "sugg_e": "06:28",
+   "depth": 14.4,
+   "margin": 4.8
+  },
+  {
+   "rank": 46,
+   "date": "2027-01-27",
+   "weekday": "Wed",
+   "star": "KELT-7 b",
+   "vmag": 8.6,
+   "t_start": "17:19",
+   "t_in": "18:49",
+   "t_mid": "20:26",
+   "t_eg": "22:02",
+   "t_end": "23:32",
+   "elev_s": 45,
+   "elev_i": 60,
+   "elev_m": 72,
+   "elev_e": 70,
+   "elev_end": 59,
+   "airmass_min": 1.41,
+   "bjd_i": "11433.6221",
+   "bjd_m": "11433.6890",
+   "bjd_e": "11433.7558",
+   "moon": 62,
+   "moonsep": "124",
+   "obs_b": "65",
+   "sugg_s": "18:22",
+   "sugg_e": "23:32",
+   "depth": 9.2,
+   "margin": 5.4
+  },
+  {
+   "rank": 122,
+   "date": "2027-01-27",
+   "weekday": "Wed",
+   "star": "KELT-4 A b",
+   "vmag": 10.0,
+   "t_start": "01:32",
+   "t_in": "03:02",
+   "t_mid": "04:45",
+   "t_eg": "06:29",
+   "t_end": "07:59",
+   "elev_s": 64,
+   "elev_i": 64,
+   "elev_m": 53,
+   "elev_e": 37,
+   "elev_end": 22,
+   "airmass_min": 2.67,
+   "bjd_i": "11433.9653",
+   "bjd_m": "11434.0374",
+   "bjd_e": "11434.1095",
+   "moon": 59,
+   "moonsep": "61",
+   "obs_b": "56",
+   "sugg_s": "01:29",
+   "sugg_e": "06:40",
+   "depth": 11.9,
+   "margin": 3.6
+  },
+  {
+   "rank": 126,
+   "date": "2027-01-26",
+   "weekday": "Tue",
+   "star": "K2-232 b",
+   "vmag": 9.8,
+   "t_start": "18:04",
+   "t_in": "19:34",
+   "t_mid": "22:05",
+   "t_eg": "00:35",
+   "t_end": "02:05",
+   "elev_s": 44,
+   "elev_i": 55,
+   "elev_m": 56,
+   "elev_e": 36,
+   "elev_end": 22,
+   "airmass_min": 2.67,
+   "bjd_i": "11432.6527",
+   "bjd_m": "11432.7575",
+   "bjd_e": "11432.8622",
+   "moon": 71,
+   "moonsep": "116",
+   "obs_b": "44",
+   "sugg_s": "18:20",
+   "sugg_e": "00:42",
+   "depth": 9.7,
+   "margin": 3.3
+  },
+  {
+   "rank": 85,
+   "date": "2027-01-25",
+   "weekday": "Mon",
+   "star": "TOI-1518 b",
+   "vmag": 9.0,
+   "t_start": "17:35",
+   "t_in": "19:05",
+   "t_mid": "20:17",
+   "t_eg": "21:29",
+   "t_end": "22:59",
+   "elev_s": 67,
+   "elev_i": 59,
+   "elev_m": 52,
+   "elev_e": 45,
+   "elev_end": 38,
+   "airmass_min": 1.62,
+   "bjd_i": "11431.6291",
+   "bjd_m": "11431.6791",
+   "bjd_e": "11431.7291",
+   "moon": 82,
+   "moonsep": "115",
+   "obs_b": "75",
+   "sugg_s": "18:19",
+   "sugg_e": "22:59",
+   "depth": 9.9,
+   "margin": 4.8
+  },
+  {
+   "rank": 63,
+   "date": "2027-01-25",
+   "weekday": "Mon",
+   "star": "HAT-P-22 b",
+   "vmag": 9.8,
+   "t_start": "19:43",
+   "t_in": "21:13",
+   "t_mid": "22:33",
+   "t_eg": "23:52",
+   "t_end": "01:22",
+   "elev_s": 31,
+   "elev_i": 42,
+   "elev_m": 54,
+   "elev_e": 66,
+   "elev_end": 80,
+   "airmass_min": 1.94,
+   "bjd_i": "11431.7227",
+   "bjd_m": "11431.7779",
+   "bjd_e": "11431.8331",
+   "moon": 81,
+   "moonsep": "56",
+   "obs_b": "81",
+   "sugg_s": "20:17",
+   "sugg_e": "01:22",
+   "depth": 14.4,
+   "margin": 4.8
+  },
+  {
+   "rank": 95,
+   "date": "2027-01-25",
+   "weekday": "Mon",
+   "star": "KELT-19 A b",
+   "vmag": 9.9,
+   "t_start": "19:45",
+   "t_in": "21:15",
+   "t_mid": "23:17",
+   "t_eg": "01:19",
+   "t_end": "02:49",
+   "elev_s": 27,
+   "elev_i": 39,
+   "elev_m": 47,
+   "elev_e": 41,
+   "elev_end": 30,
+   "airmass_min": 2.2,
+   "bjd_i": "11431.7249",
+   "bjd_m": "11431.8097",
+   "bjd_e": "11431.8945",
+   "moon": 80,
+   "moonsep": "66",
+   "obs_b": "50",
+   "sugg_s": "20:39",
+   "sugg_e": "02:15",
+   "depth": 11.9,
+   "margin": 3.8
+  },
+  {
+   "rank": 123,
+   "date": "2027-01-24",
+   "weekday": "Sun",
+   "star": "KELT-4 A b",
+   "vmag": 10.0,
+   "t_start": "01:47",
+   "t_in": "03:17",
+   "t_mid": "05:00",
+   "t_eg": "06:44",
+   "t_end": "08:14",
+   "elev_s": 64,
+   "elev_i": 64,
+   "elev_m": 52,
+   "elev_e": 36,
+   "elev_end": 22,
+   "airmass_min": 2.67,
+   "bjd_i": "11430.9757",
+   "bjd_m": "11431.0478",
+   "bjd_e": "11431.1199",
+   "moon": 87,
+   "moonsep": "25",
+   "obs_b": "52",
+   "sugg_s": "01:44",
+   "sugg_e": "06:49",
+   "depth": 11.9,
+   "margin": 3.6
+  },
+  {
+   "rank": 28,
+   "date": "2027-01-16",
+   "weekday": "Sat",
+   "star": "WASP-33 b",
+   "vmag": 8.1,
+   "t_start": "17:13",
+   "t_in": "18:43",
+   "t_mid": "20:09",
+   "t_eg": "21:34",
+   "t_end": "23:04",
+   "elev_s": 67,
+   "elev_i": 77,
+   "elev_m": 73,
+   "elev_e": 61,
+   "elev_end": 46,
+   "airmass_min": 1.39,
+   "bjd_i": "11422.6160",
+   "bjd_m": "11422.6753",
+   "bjd_e": "11422.7347",
+   "moon": 64,
+   "moonsep": "17",
+   "obs_b": "70",
+   "sugg_s": "18:06",
+   "sugg_e": "23:06",
+   "depth": 12.2,
+   "margin": 9.0
+  },
+  {
+   "rank": 41,
+   "date": "2027-01-16",
+   "weekday": "Sat",
+   "star": "KELT-7 b",
+   "vmag": 8.6,
+   "t_start": "18:46",
+   "t_in": "20:16",
+   "t_mid": "21:52",
+   "t_eg": "23:29",
+   "t_end": "00:59",
+   "elev_s": 52,
+   "elev_i": 66,
+   "elev_m": 73,
+   "elev_e": 65,
+   "elev_end": 52,
+   "airmass_min": 1.27,
+   "bjd_i": "11422.6830",
+   "bjd_m": "11422.7499",
+   "bjd_e": "11422.8168",
+   "moon": 64,
+   "moonsep": "37",
+   "obs_b": "100",
+   "sugg_s": "18:46",
+   "sugg_e": "00:59",
+   "depth": 9.2,
+   "margin": 5.4
+  },
+  {
+   "rank": 50,
+   "date": "2027-01-12",
+   "weekday": "Tue",
+   "star": "HAT-P-22 b",
+   "vmag": 9.8,
+   "t_start": "23:21",
+   "t_in": "00:51",
+   "t_mid": "02:11",
+   "t_eg": "03:30",
+   "t_end": "05:00",
+   "elev_s": 53,
+   "elev_i": 67,
+   "elev_m": 80,
+   "elev_e": 87,
+   "elev_end": 73,
+   "airmass_min": 1.25,
+   "bjd_i": "11418.8738",
+   "bjd_m": "11418.9290",
+   "bjd_e": "11418.9842",
+   "moon": 26,
+   "moonsep": "128",
+   "obs_b": "100",
+   "sugg_s": "23:21",
+   "sugg_e": "05:00",
+   "depth": 14.4,
+   "margin": 4.8
+  },
+  {
+   "rank": 36,
+   "date": "2027-01-11",
+   "weekday": "Mon",
+   "star": "WASP-33 b",
+   "vmag": 8.1,
+   "t_start": "20:06",
+   "t_in": "21:36",
+   "t_mid": "23:02",
+   "t_eg": "00:27",
+   "t_end": "01:57",
+   "elev_s": 76,
+   "elev_i": 63,
+   "elev_m": 50,
+   "elev_e": 36,
+   "elev_end": 23,
+   "airmass_min": 2.56,
+   "bjd_i": "11417.7365",
+   "bjd_m": "11417.7959",
+   "bjd_e": "11417.8552",
+   "moon": 16,
+   "moonsep": "69",
+   "obs_b": "54",
+   "sugg_s": "20:05",
+   "sugg_e": "00:35",
+   "depth": 12.2,
+   "margin": 9.0
+  },
+  {
+   "rank": 67,
+   "date": "2027-01-08",
+   "weekday": "Fri",
+   "star": "HAT-P-1 b",
+   "vmag": 9.8,
+   "t_start": "17:00",
+   "t_in": "18:30",
+   "t_mid": "19:45",
+   "t_eg": "21:00",
+   "t_end": "22:30",
+   "elev_s": 75,
+   "elev_i": 62,
+   "elev_m": 50,
+   "elev_e": 39,
+   "elev_end": 25,
+   "airmass_min": 2.37,
+   "bjd_i": "11414.6038",
+   "bjd_m": "11414.6559",
+   "bjd_e": "11414.7080",
+   "moon": 1,
+   "moonsep": "71",
+   "obs_b": "31",
+   "sugg_s": "17:57",
+   "sugg_e": "21:23",
+   "depth": 14.4,
+   "margin": 4.8
+  },
+  {
+   "rank": 87,
+   "date": "2027-01-06",
+   "weekday": "Wed",
+   "star": "TOI-1518 b",
+   "vmag": 9.0,
+   "t_start": "16:56",
+   "t_in": "18:26",
+   "t_mid": "19:38",
+   "t_eg": "20:50",
+   "t_end": "22:20",
+   "elev_s": 73,
+   "elev_i": 69,
+   "elev_m": 63,
+   "elev_e": 56,
+   "elev_end": 47,
+   "airmass_min": 1.37,
+   "bjd_i": "11412.6030",
+   "bjd_m": "11412.6530",
+   "bjd_e": "11412.7030",
+   "moon": 1,
+   "moonsep": "109",
+   "obs_b": "67",
+   "sugg_s": "17:54",
+   "sugg_e": "22:20",
+   "depth": 9.9,
+   "margin": 4.8
+  },
+  {
+   "rank": 20,
+   "date": "2027-01-05",
+   "weekday": "Tue",
+   "star": "WASP-33 b",
+   "vmag": 8.1,
+   "t_start": "17:42",
+   "t_in": "19:12",
+   "t_mid": "20:38",
+   "t_eg": "22:03",
+   "t_end": "23:33",
+   "elev_s": 64,
+   "elev_i": 76,
+   "elev_m": 75,
+   "elev_e": 63,
+   "elev_end": 48,
+   "airmass_min": 1.35,
+   "bjd_i": "11411.6371",
+   "bjd_m": "11411.6965",
+   "bjd_e": "11411.7559",
+   "moon": 3,
+   "moonsep": "137",
+   "obs_b": "93",
+   "sugg_s": "17:53",
+   "sugg_e": "23:35",
+   "depth": 12.2,
+   "margin": 9.0
+  },
+  {
+   "rank": 38,
+   "date": "2027-01-05",
+   "weekday": "Tue",
+   "star": "KELT-7 b",
+   "vmag": 8.6,
+   "t_start": "20:13",
+   "t_in": "21:43",
+   "t_mid": "23:19",
+   "t_eg": "00:56",
+   "t_end": "02:26",
+   "elev_s": 59,
+   "elev_i": 71,
+   "elev_m": 71,
+   "elev_e": 59,
+   "elev_end": 45,
+   "airmass_min": 1.41,
+   "bjd_i": "11411.7440",
+   "bjd_m": "11411.8108",
+   "bjd_e": "11411.8777",
+   "moon": 2,
+   "moonsep": "170",
+   "obs_b": "100",
+   "sugg_s": "20:13",
+   "sugg_e": "02:26",
+   "depth": 9.2,
+   "margin": 5.4
+  },
+  {
+   "rank": 70,
+   "date": "2027-01-04",
+   "weekday": "Mon",
+   "star": "TOI-1518 b",
+   "vmag": 9.0,
+   "t_start": "19:16",
+   "t_in": "20:46",
+   "t_mid": "21:58",
+   "t_eg": "23:10",
+   "t_end": "00:40",
+   "elev_s": 65,
+   "elev_i": 57,
+   "elev_m": 50,
+   "elev_e": 43,
+   "elev_end": 36,
+   "airmass_min": 1.7,
+   "bjd_i": "11410.7004",
+   "bjd_m": "11410.7504",
+   "bjd_e": "11410.8004",
+   "moon": 6,
+   "moonsep": "118",
+   "obs_b": "100",
+   "sugg_s": "19:15",
+   "sugg_e": "00:40",
+   "depth": 9.9,
+   "margin": 4.8
+  },
+  {
+   "rank": 32,
+   "date": "2026-12-31",
+   "weekday": "Thu",
+   "star": "WASP-33 b",
+   "vmag": 8.1,
+   "t_start": "20:35",
+   "t_in": "22:05",
+   "t_mid": "23:31",
+   "t_eg": "00:56",
+   "t_end": "02:26",
+   "elev_s": 77,
+   "elev_i": 66,
+   "elev_m": 52,
+   "elev_e": 38,
+   "elev_end": 25,
+   "airmass_min": 2.37,
+   "bjd_i": "11406.7576",
+   "bjd_m": "11406.8170",
+   "bjd_e": "11406.8764",
+   "moon": 34,
+   "moonsep": "156",
+   "obs_b": "62",
+   "sugg_s": "20:34",
+   "sugg_e": "01:18",
+   "depth": 12.2,
+   "margin": 9.0
+  },
+  {
+   "rank": 91,
+   "date": "2026-12-30",
+   "weekday": "Wed",
+   "star": "KELT-17 b",
+   "vmag": 9.2,
+   "t_start": "23:19",
+   "t_in": "00:49",
+   "t_mid": "02:34",
+   "t_eg": "04:18",
+   "t_end": "05:48",
+   "elev_s": 40,
+   "elev_i": 50,
+   "elev_m": 53,
+   "elev_e": 45,
+   "elev_end": 32,
+   "airmass_min": 1.89,
+   "bjd_i": "11405.8735",
+   "bjd_m": "11405.9460",
+   "bjd_e": "11406.0185",
+   "moon": 43,
+   "moonsep": "73",
+   "obs_b": "89",
+   "sugg_s": "23:19",
+   "sugg_e": "05:29",
+   "depth": 9.1,
+   "margin": 4.0
+  },
+  {
+   "rank": 94,
+   "date": "2026-12-27",
+   "weekday": "Sun",
+   "star": "KELT-17 b",
+   "vmag": 9.2,
+   "t_start": "21:24",
+   "t_in": "22:54",
+   "t_mid": "00:39",
+   "t_eg": "02:23",
+   "t_end": "03:53",
+   "elev_s": 21,
+   "elev_i": 35,
+   "elev_m": 48,
+   "elev_e": 54,
+   "elev_end": 49,
+   "airmass_min": 2.79,
+   "bjd_i": "11402.7934",
+   "bjd_m": "11402.8659",
+   "bjd_e": "11402.9384",
+   "moon": 75,
+   "moonsep": "32",
+   "obs_b": "50",
+   "sugg_s": "22:54",
+   "sugg_e": "03:53",
+   "depth": 9.1,
+   "margin": 4.0
+  },
+  {
+   "rank": 59,
+   "date": "2026-12-27",
+   "weekday": "Sun",
+   "star": "HAT-P-22 b",
+   "vmag": 9.8,
+   "t_start": "21:54",
+   "t_in": "23:24",
+   "t_mid": "00:44",
+   "t_eg": "02:03",
+   "t_end": "03:33",
+   "elev_s": 33,
+   "elev_i": 45,
+   "elev_m": 56,
+   "elev_e": 69,
+   "elev_end": 83,
+   "airmass_min": 1.84,
+   "bjd_i": "11402.8126",
+   "bjd_m": "11402.8678",
+   "bjd_e": "11402.9230",
+   "moon": 75,
+   "moonsep": "43",
+   "obs_b": "90",
+   "sugg_s": "22:11",
+   "sugg_e": "03:33",
+   "depth": 14.4,
+   "margin": 4.8
+  },
+  {
+   "rank": 16,
+   "date": "2026-12-25",
+   "weekday": "Fri",
+   "star": "WASP-33 b",
+   "vmag": 8.1,
+   "t_start": "18:12",
+   "t_in": "19:42",
+   "t_mid": "21:07",
+   "t_eg": "22:33",
+   "t_end": "00:03",
+   "elev_s": 62,
+   "elev_i": 75,
+   "elev_m": 76,
+   "elev_e": 65,
+   "elev_end": 51,
+   "airmass_min": 1.29,
+   "bjd_i": "11400.6583",
+   "bjd_m": "11400.7177",
+   "bjd_e": "11400.7770",
+   "moon": 93,
+   "moonsep": "79",
+   "obs_b": "100",
+   "sugg_s": "18:10",
+   "sugg_e": "00:04",
+   "depth": 12.2,
+   "margin": 9.0
+  },
+  {
+   "rank": 42,
+   "date": "2026-12-25",
+   "weekday": "Fri",
+   "star": "KELT-7 b",
+   "vmag": 8.6,
+   "t_start": "21:40",
+   "t_in": "23:10",
+   "t_mid": "00:46",
+   "t_eg": "02:23",
+   "t_end": "03:53",
+   "elev_s": 66,
+   "elev_i": 73,
+   "elev_m": 67,
+   "elev_e": 52,
+   "elev_end": 38,
+   "airmass_min": 1.62,
+   "bjd_i": "11400.8049",
+   "bjd_m": "11400.8718",
+   "bjd_e": "11400.9387",
+   "moon": 92,
+   "moonsep": "48",
+   "obs_b": "100",
+   "sugg_s": "21:40",
+   "sugg_e": "03:53",
+   "depth": 9.2,
+   "margin": 5.4
+  },
+  {
+   "rank": 30,
+   "date": "2026-12-20",
+   "weekday": "Sun",
+   "star": "WASP-33 b",
+   "vmag": 8.1,
+   "t_start": "21:05",
+   "t_in": "22:35",
+   "t_mid": "00:00",
+   "t_eg": "01:26",
+   "t_end": "02:56",
+   "elev_s": 77,
+   "elev_i": 68,
+   "elev_m": 54,
+   "elev_e": 41,
+   "elev_end": 27,
+   "airmass_min": 2.2,
+   "bjd_i": "11395.7788",
+   "bjd_m": "11395.8382",
+   "bjd_e": "11395.8976",
+   "moon": 89,
+   "moonsep": "17",
+   "obs_b": "70",
+   "sugg_s": "21:03",
+   "sugg_e": "02:02",
+   "depth": 12.2,
+   "margin": 9.0
+  },
+  {
+   "rank": 96,
+   "date": "2026-12-19",
+   "weekday": "Sat",
+   "star": "KELT-19 A b",
+   "vmag": 9.9,
+   "t_start": "22:18",
+   "t_in": "23:48",
+   "t_mid": "01:50",
+   "t_eg": "03:53",
+   "t_end": "05:23",
+   "elev_s": 29,
+   "elev_i": 40,
+   "elev_m": 48,
+   "elev_e": 41,
+   "elev_end": 29,
+   "airmass_min": 2.06,
+   "bjd_i": "11394.8311",
+   "bjd_m": "11394.9159",
+   "bjd_e": "11395.0007",
+   "moon": 81,
+   "moonsep": "77",
+   "obs_b": "50",
+   "sugg_s": "23:05",
+   "sugg_e": "04:40",
+   "depth": 11.9,
+   "margin": 3.8
+  },
+  {
+   "rank": 88,
+   "date": "2026-12-18",
+   "weekday": "Fri",
+   "star": "TOI-1518 b",
+   "vmag": 9.0,
+   "t_start": "16:17",
+   "t_in": "17:47",
+   "t_mid": "18:59",
+   "t_eg": "20:11",
+   "t_end": "21:41",
+   "elev_s": 68,
+   "elev_i": 73,
+   "elev_m": 71,
+   "elev_e": 66,
+   "elev_end": 58,
+   "airmass_min": 1.18,
+   "bjd_i": "11393.5769",
+   "bjd_m": "11393.6269",
+   "bjd_e": "11393.6769",
+   "moon": 69,
+   "moonsep": "58",
+   "obs_b": "54",
+   "sugg_s": "17:40",
+   "sugg_e": "21:41",
+   "depth": 9.9,
+   "margin": 4.8
+  },
+  {
+   "rank": 76,
+   "date": "2026-12-16",
+   "weekday": "Wed",
+   "star": "TOI-1518 b",
+   "vmag": 9.0,
+   "t_start": "18:37",
+   "t_in": "20:07",
+   "t_mid": "21:19",
+   "t_eg": "22:31",
+   "t_end": "00:01",
+   "elev_s": 72,
+   "elev_i": 67,
+   "elev_m": 61,
+   "elev_e": 54,
+   "elev_end": 45,
+   "airmass_min": 1.41,
+   "bjd_i": "11391.6743",
+   "bjd_m": "11391.7243",
+   "bjd_e": "11391.7743",
+   "moon": 49,
+   "moonsep": "67",
+   "obs_b": "100",
+   "sugg_s": "18:37",
+   "sugg_e": "00:01",
+   "depth": 9.9,
+   "margin": 4.8
+  },
+  {
+   "rank": 11,
+   "date": "2026-12-14",
+   "weekday": "Mon",
+   "star": "WASP-33 b",
+   "vmag": 8.1,
+   "t_start": "18:41",
+   "t_in": "20:11",
+   "t_mid": "21:37",
+   "t_eg": "23:02",
+   "t_end": "00:32",
+   "elev_s": 60,
+   "elev_i": 73,
+   "elev_m": 77,
+   "elev_e": 67,
+   "elev_end": 53,
+   "airmass_min": 1.25,
+   "bjd_i": "11389.6794",
+   "bjd_m": "11389.7388",
+   "bjd_e": "11389.7982",
+   "moon": 30,
+   "moonsep": "78",
+   "obs_b": "100",
+   "sugg_s": "18:40",
+   "sugg_e": "00:33",
+   "depth": 12.2,
+   "margin": 9.0
+  },
+  {
+   "rank": 74,
+   "date": "2026-12-14",
+   "weekday": "Mon",
+   "star": "TOI-1518 b",
+   "vmag": 9.0,
+   "t_start": "20:57",
+   "t_in": "22:27",
+   "t_mid": "23:39",
+   "t_eg": "00:51",
+   "t_end": "02:21",
+   "elev_s": 64,
+   "elev_i": 55,
+   "elev_m": 48,
+   "elev_e": 42,
+   "elev_end": 35,
+   "airmass_min": 1.74,
+   "bjd_i": "11389.7717",
+   "bjd_m": "11389.8217",
+   "bjd_e": "11389.8717",
+   "moon": 31,
+   "moonsep": "79",
+   "obs_b": "100",
+   "sugg_s": "20:57",
+   "sugg_e": "02:22",
+   "depth": 9.9,
+   "margin": 4.8
+  },
+  {
+   "rank": 43,
+   "date": "2026-12-14",
+   "weekday": "Mon",
+   "star": "KELT-7 b",
+   "vmag": 8.6,
+   "t_start": "23:08",
+   "t_in": "00:38",
+   "t_mid": "02:14",
+   "t_eg": "03:50",
+   "t_end": "05:20",
+   "elev_s": 71,
+   "elev_i": 72,
+   "elev_m": 60,
+   "elev_e": 45,
+   "elev_end": 31,
+   "airmass_min": 1.94,
+   "bjd_i": "11389.8658",
+   "bjd_m": "11389.9327",
+   "bjd_e": "11389.9996",
+   "moon": 32,
+   "moonsep": "108",
+   "obs_b": "85",
+   "sugg_s": "23:08",
+   "sugg_e": "04:53",
+   "depth": 9.2,
+   "margin": 5.4
+  },
+  {
+   "rank": 58,
+   "date": "2026-12-14",
+   "weekday": "Mon",
+   "star": "HAT-P-22 b",
+   "vmag": 9.8,
+   "t_start": "01:33",
+   "t_in": "03:03",
+   "t_mid": "04:22",
+   "t_eg": "05:42",
+   "t_end": "07:12",
+   "elev_s": 56,
+   "elev_i": 70,
+   "elev_m": 83,
+   "elev_e": 85,
+   "elev_end": 70,
+   "airmass_min": 1.21,
+   "bjd_i": "11389.9637",
+   "bjd_m": "11390.0189",
+   "bjd_e": "11390.0741",
+   "moon": 33,
+   "moonsep": "140",
+   "obs_b": "90",
+   "sugg_s": "01:33",
+   "sugg_e": "06:53",
+   "depth": 14.4,
+   "margin": 4.8
+  },
+  {
+   "rank": 26,
+   "date": "2026-12-09",
+   "weekday": "Wed",
+   "star": "WASP-33 b",
+   "vmag": 8.1,
+   "t_start": "21:34",
+   "t_in": "23:04",
+   "t_mid": "00:30",
+   "t_eg": "01:55",
+   "t_end": "03:25",
+   "elev_s": 78,
+   "elev_i": 70,
+   "elev_m": 56,
+   "elev_e": 43,
+   "elev_end": 29,
+   "airmass_min": 2.06,
+   "bjd_i": "11384.8000",
+   "bjd_m": "11384.8593",
+   "bjd_e": "11384.9187",
+   "moon": 2,
+   "moonsep": "133",
+   "obs_b": "77",
+   "sugg_s": "21:33",
+   "sugg_e": "02:45",
+   "depth": 12.2,
+   "margin": 9.0
+  },
+  {
+   "rank": 35,
+   "date": "2026-12-08",
+   "weekday": "Tue",
+   "star": "WASP-33 b",
+   "vmag": 8.1,
+   "t_start": "16:18",
+   "t_in": "17:48",
+   "t_mid": "19:13",
+   "t_eg": "20:39",
+   "t_end": "22:09",
+   "elev_s": 34,
+   "elev_i": 48,
+   "elev_m": 61,
+   "elev_e": 74,
+   "elev_end": 76,
+   "airmass_min": 1.79,
+   "bjd_i": "11383.5801",
+   "bjd_m": "11383.6395",
+   "bjd_e": "11383.6988",
+   "moon": 0,
+   "moonsep": "146",
+   "obs_b": "55",
+   "sugg_s": "17:39",
+   "sugg_e": "22:10",
+   "depth": 12.2,
+   "margin": 9.0
+  },
+  {
+   "rank": 48,
+   "date": "2026-12-06",
+   "weekday": "Sun",
+   "star": "KELT-7 b",
+   "vmag": 8.6,
+   "t_start": "18:13",
+   "t_in": "19:43",
+   "t_mid": "21:20",
+   "t_eg": "22:56",
+   "t_end": "00:26",
+   "elev_s": 22,
+   "elev_i": 36,
+   "elev_m": 51,
+   "elev_e": 66,
+   "elev_end": 73,
+   "airmass_min": 2.67,
+   "bjd_i": "11381.6615",
+   "bjd_m": "11381.7284",
+   "bjd_e": "11381.7953",
+   "moon": 3,
+   "moonsep": "154",
+   "obs_b": "53",
+   "sugg_s": "19:38",
+   "sugg_e": "00:26",
+   "depth": 9.2,
+   "margin": 5.4
+  },
+  {
+   "rank": 10,
+   "date": "2026-12-03",
+   "weekday": "Thu",
+   "star": "WASP-33 b",
+   "vmag": 8.1,
+   "t_start": "19:11",
+   "t_in": "20:41",
+   "t_mid": "22:06",
+   "t_eg": "23:32",
+   "t_end": "01:02",
+   "elev_s": 58,
+   "elev_i": 72,
+   "elev_m": 78,
+   "elev_e": 69,
+   "elev_end": 55,
+   "airmass_min": 1.22,
+   "bjd_i": "11378.7006",
+   "bjd_m": "11378.7600",
+   "bjd_e": "11378.8194",
+   "moon": 20,
+   "moonsep": "147",
+   "obs_b": "100",
+   "sugg_s": "19:10",
+   "sugg_e": "01:03",
+   "depth": 12.2,
+   "margin": 9.0
+  },
+  {
+   "rank": 47,
+   "date": "2026-12-03",
+   "weekday": "Thu",
+   "star": "KELT-7 b",
+   "vmag": 8.6,
+   "t_start": "00:35",
+   "t_in": "02:05",
+   "t_mid": "03:42",
+   "t_eg": "05:18",
+   "t_end": "06:48",
+   "elev_s": 73,
+   "elev_i": 67,
+   "elev_m": 53,
+   "elev_e": 38,
+   "elev_end": 24,
+   "airmass_min": 2.46,
+   "bjd_i": "11378.9268",
+   "bjd_m": "11378.9937",
+   "bjd_e": "11379.0605",
+   "moon": 18,
+   "moonsep": "122",
+   "obs_b": "60",
+   "sugg_s": "00:35",
+   "sugg_e": "05:36",
+   "depth": 9.2,
+   "margin": 5.4
+  },
+  {
+   "rank": 125,
+   "date": "2026-12-01",
+   "weekday": "Tue",
+   "star": "K2-232 b",
+   "vmag": 9.8,
+   "t_start": "21:48",
+   "t_in": "23:18",
+   "t_mid": "01:49",
+   "t_eg": "04:20",
+   "t_end": "05:50",
+   "elev_s": 45,
+   "elev_i": 55,
+   "elev_m": 55,
+   "elev_e": 35,
+   "elev_end": 21,
+   "airmass_min": 2.79,
+   "bjd_i": "11376.8105",
+   "bjd_m": "11376.9152",
+   "bjd_e": "11377.0200",
+   "moon": 37,
+   "moonsep": "100",
+   "obs_b": "51",
+   "sugg_s": "21:48",
+   "sugg_e": "04:22",
+   "depth": 9.7,
+   "margin": 3.3
+  },
+  {
+   "rank": 23,
+   "date": "2026-11-28",
+   "weekday": "Sat",
+   "star": "WASP-33 b",
+   "vmag": 8.1,
+   "t_start": "22:04",
+   "t_in": "23:34",
+   "t_mid": "01:00",
+   "t_eg": "02:25",
+   "t_end": "03:55",
+   "elev_s": 77,
+   "elev_i": 71,
+   "elev_m": 59,
+   "elev_e": 45,
+   "elev_end": 31,
+   "airmass_min": 1.94,
+   "bjd_i": "11373.8211",
+   "bjd_m": "11373.8805",
+   "bjd_e": "11373.9399",
+   "moon": 70,
+   "moonsep": "87",
+   "obs_b": "85",
+   "sugg_s": "22:03",
+   "sugg_e": "03:28",
+   "depth": 12.2,
+   "margin": 9.0
+  },
+  {
+   "rank": 55,
+   "date": "2026-11-28",
+   "weekday": "Sat",
+   "star": "HAT-P-22 b",
+   "vmag": 9.8,
+   "t_start": "00:06",
+   "t_in": "01:36",
+   "t_mid": "02:56",
+   "t_eg": "04:15",
+   "t_end": "05:45",
+   "elev_s": 35,
+   "elev_i": 47,
+   "elev_m": 59,
+   "elev_e": 71,
+   "elev_end": 86,
+   "airmass_min": 1.74,
+   "bjd_i": "11373.9025",
+   "bjd_m": "11373.9577",
+   "bjd_e": "11374.0129",
+   "moon": 69,
+   "moonsep": "36",
+   "obs_b": "100",
+   "sugg_s": "00:06",
+   "sugg_e": "05:45",
+   "depth": 14.4,
+   "margin": 4.8
+  },
+  {
+   "rank": 29,
+   "date": "2026-11-27",
+   "weekday": "Fri",
+   "star": "WASP-33 b",
+   "vmag": 8.1,
+   "t_start": "16:47",
+   "t_in": "18:17",
+   "t_mid": "19:43",
+   "t_eg": "21:08",
+   "t_end": "22:38",
+   "elev_s": 32,
+   "elev_i": 46,
+   "elev_m": 59,
+   "elev_e": 72,
+   "elev_end": 77,
+   "airmass_min": 1.89,
+   "bjd_i": "11372.6013",
+   "bjd_m": "11372.6606",
+   "bjd_e": "11372.7200",
+   "moon": 82,
+   "moonsep": "70",
+   "obs_b": "70",
+   "sugg_s": "17:42",
+   "sugg_e": "22:40",
+   "depth": 12.2,
+   "margin": 9.0
+  },
+  {
+   "rank": 78,
+   "date": "2026-11-27",
+   "weekday": "Fri",
+   "star": "TOI-1518 b",
+   "vmag": 9.0,
+   "t_start": "17:59",
+   "t_in": "19:29",
+   "t_mid": "20:41",
+   "t_eg": "21:53",
+   "t_end": "23:23",
+   "elev_s": 70,
+   "elev_i": 73,
+   "elev_m": 70,
+   "elev_e": 65,
+   "elev_end": 56,
+   "airmass_min": 1.21,
+   "bjd_i": "11372.6482",
+   "bjd_m": "11372.6982",
+   "bjd_e": "11372.7482",
+   "moon": 82,
+   "moonsep": "82",
+   "obs_b": "100",
+   "sugg_s": "17:58",
+   "sugg_e": "23:23",
+   "depth": 9.9,
+   "margin": 4.8
+  },
+  {
+   "rank": 45,
+   "date": "2026-11-25",
+   "weekday": "Wed",
+   "star": "KELT-7 b",
+   "vmag": 8.6,
+   "t_start": "19:42",
+   "t_in": "21:12",
+   "t_mid": "22:48",
+   "t_eg": "00:24",
+   "t_end": "01:54",
+   "elev_s": 29,
+   "elev_i": 43,
+   "elev_m": 58,
+   "elev_e": 71,
+   "elev_end": 72,
+   "airmass_min": 2.06,
+   "bjd_i": "11370.7225",
+   "bjd_m": "11370.7894",
+   "bjd_e": "11370.8562",
+   "moon": 96,
+   "moonsep": "10",
+   "obs_b": "78",
+   "sugg_s": "20:21",
+   "sugg_e": "01:54",
+   "depth": 9.2,
+   "margin": 5.4
+  },
+  {
+   "rank": 79,
+   "date": "2026-11-25",
+   "weekday": "Wed",
+   "star": "TOI-1518 b",
+   "vmag": 9.0,
+   "t_start": "20:19",
+   "t_in": "21:49",
+   "t_mid": "23:01",
+   "t_eg": "00:13",
+   "t_end": "01:43",
+   "elev_s": 72,
+   "elev_i": 66,
+   "elev_m": 59,
+   "elev_e": 52,
+   "elev_end": 44,
+   "airmass_min": 1.44,
+   "bjd_i": "11370.7456",
+   "bjd_m": "11370.7956",
+   "bjd_e": "11370.8456",
+   "moon": 96,
+   "moonsep": "67",
+   "obs_b": "100",
+   "sugg_s": "20:18",
+   "sugg_e": "01:43",
+   "depth": 9.9,
+   "margin": 4.8
+  },
+  {
+   "rank": 82,
+   "date": "2026-11-23",
+   "weekday": "Mon",
+   "star": "TOI-1518 b",
+   "vmag": 9.0,
+   "t_start": "22:39",
+   "t_in": "00:09",
+   "t_mid": "01:21",
+   "t_eg": "02:33",
+   "t_end": "04:03",
+   "elev_s": 62,
+   "elev_i": 53,
+   "elev_m": 46,
+   "elev_e": 40,
+   "elev_end": 34,
+   "airmass_min": 1.79,
+   "bjd_i": "11368.8430",
+   "bjd_m": "11368.8930",
+   "bjd_e": "11368.9430",
+   "moon": 100,
+   "moonsep": "57",
+   "obs_b": "90",
+   "sugg_s": "22:38",
+   "sugg_e": "03:46",
+   "depth": 9.9,
+   "margin": 4.8
+  },
+  {
+   "rank": 92,
+   "date": "2026-11-23",
+   "weekday": "Mon",
+   "star": "KELT-17 b",
+   "vmag": 9.2,
+   "t_start": "00:18",
+   "t_in": "01:48",
+   "t_mid": "03:32",
+   "t_eg": "05:16",
+   "t_end": "06:46",
+   "elev_s": 27,
+   "elev_i": 41,
+   "elev_m": 52,
+   "elev_e": 52,
+   "elev_end": 44,
+   "airmass_min": 2.2,
+   "bjd_i": "11368.9114",
+   "bjd_m": "11368.9839",
+   "bjd_e": "11369.0564",
+   "moon": 100,
+   "moonsep": "66",
+   "obs_b": "64",
+   "sugg_s": "01:08",
+   "sugg_e": "06:31",
+   "depth": 9.1,
+   "margin": 4.0
+  },
+  {
+   "rank": 17,
+   "date": "2026-11-22",
+   "weekday": "Sun",
+   "star": "WASP-33 b",
+   "vmag": 8.1,
+   "t_start": "19:41",
+   "t_in": "21:11",
+   "t_mid": "22:36",
+   "t_eg": "00:02",
+   "t_end": "01:32",
+   "elev_s": 56,
+   "elev_i": 70,
+   "elev_m": 78,
+   "elev_e": 71,
+   "elev_end": 57,
+   "airmass_min": 1.21,
+   "bjd_i": "11367.7218",
+   "bjd_m": "11367.7811",
+   "bjd_e": "11367.8405",
+   "moon": 97,
+   "moonsep": "18",
+   "obs_b": "100",
+   "sugg_s": "19:40",
+   "sugg_e": "01:33",
+   "depth": 12.2,
+   "margin": 9.0
+  },
+  {
+   "rank": 21,
+   "date": "2026-11-17",
+   "weekday": "Tue",
+   "star": "WASP-33 b",
+   "vmag": 8.1,
+   "t_start": "22:34",
+   "t_in": "00:04",
+   "t_mid": "01:30",
+   "t_eg": "02:55",
+   "t_end": "04:25",
+   "elev_s": 77,
+   "elev_i": 73,
+   "elev_m": 61,
+   "elev_e": 47,
+   "elev_end": 33,
+   "airmass_min": 1.84,
+   "bjd_i": "11362.8423",
+   "bjd_m": "11362.9017",
+   "bjd_e": "11362.9610",
+   "moon": 58,
+   "moonsep": "73",
+   "obs_b": "92",
+   "sugg_s": "22:33",
+   "sugg_e": "04:11",
+   "depth": 12.2,
+   "margin": 9.0
+  },
+  {
+   "rank": 24,
+   "date": "2026-11-16",
+   "weekday": "Mon",
+   "star": "WASP-33 b",
+   "vmag": 8.1,
+   "t_start": "17:18",
+   "t_in": "18:48",
+   "t_mid": "20:13",
+   "t_eg": "21:39",
+   "t_end": "23:09",
+   "elev_s": 30,
+   "elev_i": 44,
+   "elev_m": 57,
+   "elev_e": 70,
+   "elev_end": 78,
+   "airmass_min": 2.0,
+   "bjd_i": "11361.6224",
+   "bjd_m": "11361.6818",
+   "bjd_e": "11361.7412",
+   "moon": 46,
+   "moonsep": "87",
+   "obs_b": "80",
+   "sugg_s": "17:53",
+   "sugg_e": "23:10",
+   "depth": 12.2,
+   "margin": 9.0
+  },
+  {
+   "rank": 40,
+   "date": "2026-11-14",
+   "weekday": "Sat",
+   "star": "KELT-7 b",
+   "vmag": 8.6,
+   "t_start": "21:10",
+   "t_in": "22:40",
+   "t_mid": "00:16",
+   "t_eg": "01:52",
+   "t_end": "03:22",
+   "elev_s": 36,
+   "elev_i": 50,
+   "elev_m": 65,
+   "elev_e": 73,
+   "elev_end": 67,
+   "airmass_min": 1.7,
+   "bjd_i": "11359.7834",
+   "bjd_m": "11359.8503",
+   "bjd_e": "11359.9172",
+   "moon": 30,
+   "moonsep": "141",
+   "obs_b": "100",
+   "sugg_s": "21:10",
+   "sugg_e": "03:23",
+   "depth": 9.2,
+   "margin": 5.4
+  },
+  {
+   "rank": 9,
+   "date": "2026-11-11",
+   "weekday": "Wed",
+   "star": "WASP-33 b",
+   "vmag": 8.1,
+   "t_start": "20:11",
+   "t_in": "21:41",
+   "t_mid": "23:07",
+   "t_eg": "00:32",
+   "t_end": "02:02",
+   "elev_s": 54,
+   "elev_i": 68,
+   "elev_m": 77,
+   "elev_e": 73,
+   "elev_end": 59,
+   "airmass_min": 1.24,
+   "bjd_i": "11356.7429",
+   "bjd_m": "11356.8023",
+   "bjd_e": "11356.8617",
+   "moon": 8,
+   "moonsep": "141",
+   "obs_b": "100",
+   "sugg_s": "20:10",
+   "sugg_e": "02:03",
+   "depth": 12.2,
+   "margin": 9.0
+  },
+  {
+   "rank": 84,
+   "date": "2026-11-08",
+   "weekday": "Sun",
+   "star": "TOI-1518 b",
+   "vmag": 9.0,
+   "t_start": "17:21",
+   "t_in": "18:51",
+   "t_mid": "20:03",
+   "t_eg": "21:15",
+   "t_end": "22:45",
+   "elev_s": 60,
+   "elev_i": 68,
+   "elev_m": 72,
+   "elev_e": 72,
+   "elev_end": 67,
+   "airmass_min": 1.15,
+   "bjd_i": "11353.6221",
+   "bjd_m": "11353.6721",
+   "bjd_e": "11353.7221",
+   "moon": 0,
+   "moonsep": "125",
+   "obs_b": "78",
+   "sugg_s": "18:00",
+   "sugg_e": "22:45",
+   "depth": 9.9,
+   "margin": 4.8
+  },
+  {
+   "rank": 68,
+   "date": "2026-11-06",
+   "weekday": "Fri",
+   "star": "TOI-1518 b",
+   "vmag": 9.0,
+   "t_start": "19:41",
+   "t_in": "21:11",
+   "t_mid": "22:23",
+   "t_eg": "23:35",
+   "t_end": "01:05",
+   "elev_s": 71,
+   "elev_i": 73,
+   "elev_m": 69,
+   "elev_e": 63,
+   "elev_end": 54,
+   "airmass_min": 1.24,
+   "bjd_i": "11351.7195",
+   "bjd_m": "11351.7695",
+   "bjd_e": "11351.8195",
+   "moon": 4,
+   "moonsep": "123",
+   "obs_b": "100",
+   "sugg_s": "19:40",
+   "sugg_e": "01:05",
+   "depth": 9.9,
+   "margin": 4.8
+  },
+  {
+   "rank": 19,
+   "date": "2026-11-06",
+   "weekday": "Fri",
+   "star": "WASP-33 b",
+   "vmag": 8.1,
+   "t_start": "23:05",
+   "t_in": "00:35",
+   "t_mid": "02:00",
+   "t_eg": "03:26",
+   "t_end": "04:56",
+   "elev_s": 76,
+   "elev_i": 75,
+   "elev_m": 63,
+   "elev_e": 49,
+   "elev_end": 35,
+   "airmass_min": 1.74,
+   "bjd_i": "11351.8634",
+   "bjd_m": "11351.9228",
+   "bjd_e": "11351.9822",
+   "moon": 3,
+   "moonsep": "152",
+   "obs_b": "99",
+   "sugg_s": "23:03",
+   "sugg_e": "04:55",
+   "depth": 12.2,
+   "margin": 9.0
+  },
+  {
+   "rank": 27,
+   "date": "2026-11-05",
+   "weekday": "Thu",
+   "star": "WASP-33 b",
+   "vmag": 8.1,
+   "t_start": "17:48",
+   "t_in": "19:18",
+   "t_mid": "20:43",
+   "t_eg": "22:09",
+   "t_end": "23:39",
+   "elev_s": 28,
+   "elev_i": 42,
+   "elev_m": 55,
+   "elev_e": 69,
+   "elev_end": 78,
+   "airmass_min": 2.13,
+   "bjd_i": "11350.6436",
+   "bjd_m": "11350.7030",
+   "bjd_e": "11350.7623",
+   "moon": 10,
+   "moonsep": "138",
+   "obs_b": "73",
+   "sugg_s": "18:36",
+   "sugg_e": "23:40",
+   "depth": 12.2,
+   "margin": 9.0
+  },
+  {
+   "rank": 71,
+   "date": "2026-11-04",
+   "weekday": "Wed",
+   "star": "TOI-1518 b",
+   "vmag": 9.0,
+   "t_start": "22:01",
+   "t_in": "23:31",
+   "t_mid": "00:43",
+   "t_eg": "01:55",
+   "t_end": "03:25",
+   "elev_s": 71,
+   "elev_i": 64,
+   "elev_m": 57,
+   "elev_e": 50,
+   "elev_end": 42,
+   "airmass_min": 1.49,
+   "bjd_i": "11349.8169",
+   "bjd_m": "11349.8669",
+   "bjd_e": "11349.9169",
+   "moon": 15,
+   "moonsep": "114",
+   "obs_b": "100",
+   "sugg_s": "22:01",
+   "sugg_e": "03:25",
+   "depth": 9.9,
+   "margin": 4.8
+  },
+  {
+   "rank": 39,
+   "date": "2026-11-03",
+   "weekday": "Tue",
+   "star": "KELT-7 b",
+   "vmag": 8.6,
+   "t_start": "22:38",
+   "t_in": "00:08",
+   "t_mid": "01:45",
+   "t_eg": "03:21",
+   "t_end": "04:51",
+   "elev_s": 43,
+   "elev_i": 57,
+   "elev_m": 70,
+   "elev_e": 72,
+   "elev_end": 61,
+   "airmass_min": 1.47,
+   "bjd_i": "11348.8444",
+   "bjd_m": "11348.9112",
+   "bjd_e": "11348.9781",
+   "moon": 23,
+   "moonsep": "85",
+   "obs_b": "100",
+   "sugg_s": "22:38",
+   "sugg_e": "04:51",
+   "depth": 9.2,
+   "margin": 5.4
+  },
+  {
+   "rank": 64,
+   "date": "2026-11-02",
+   "weekday": "Mon",
+   "star": "HAT-P-1 b",
+   "vmag": 9.8,
+   "t_start": "17:23",
+   "t_in": "18:53",
+   "t_mid": "20:08",
+   "t_eg": "21:23",
+   "t_end": "22:53",
+   "elev_s": 55,
+   "elev_i": 69,
+   "elev_m": 78,
+   "elev_e": 75,
+   "elev_end": 62,
+   "airmass_min": 1.22,
+   "bjd_i": "11347.6244",
+   "bjd_m": "11347.6764",
+   "bjd_e": "11347.7285",
+   "moon": 35,
+   "moonsep": "128",
+   "obs_b": "75",
+   "sugg_s": "18:08",
+   "sugg_e": "22:53",
+   "depth": 14.4,
+   "margin": 4.8
+  },
+  {
+   "rank": 83,
+   "date": "2026-11-02",
+   "weekday": "Mon",
+   "star": "TOI-1518 b",
+   "vmag": 9.0,
+   "t_start": "00:21",
+   "t_in": "01:51",
+   "t_mid": "03:03",
+   "t_eg": "04:15",
+   "t_end": "05:45",
+   "elev_s": 60,
+   "elev_i": 51,
+   "elev_m": 45,
+   "elev_e": 39,
+   "elev_end": 33,
+   "airmass_min": 1.84,
+   "bjd_i": "11347.9143",
+   "bjd_m": "11347.9643",
+   "bjd_e": "11348.0143",
+   "moon": 32,
+   "moonsep": "102",
+   "obs_b": "80",
+   "sugg_s": "00:21",
+   "sugg_e": "05:09",
+   "depth": 9.9,
+   "margin": 4.8
+  },
+  {
+   "rank": 13,
+   "date": "2026-10-31",
+   "weekday": "Sat",
+   "star": "WASP-33 b",
+   "vmag": 8.1,
+   "t_start": "21:42",
+   "t_in": "23:12",
+   "t_mid": "00:37",
+   "t_eg": "01:03",
+   "t_end": "02:33",
+   "elev_s": 52,
+   "elev_i": 66,
+   "elev_m": 77,
+   "elev_e": 74,
+   "elev_end": 61,
+   "airmass_min": 1.27,
+   "bjd_i": "11345.7641",
+   "bjd_m": "11345.8235",
+   "bjd_e": "11345.8828",
+   "moon": 55,
+   "moonsep": "76",
+   "obs_b": "100",
+   "sugg_s": "21:40",
+   "sugg_e": "02:34",
+   "depth": 12.2,
+   "margin": 9.0
+  },
+  {
+   "rank": 18,
+   "date": "2026-10-26",
+   "weekday": "Mon",
+   "star": "WASP-33 b",
+   "vmag": 8.1,
+   "t_start": "00:35",
+   "t_in": "02:05",
+   "t_mid": "03:31",
+   "t_eg": "04:56",
+   "t_end": "06:26",
+   "elev_s": 75,
+   "elev_i": 76,
+   "elev_m": 65,
+   "elev_e": 51,
+   "elev_end": 37,
+   "airmass_min": 1.66,
+   "bjd_i": "11340.8846",
+   "bjd_m": "11340.9440",
+   "bjd_e": "11341.0034",
+   "moon": 98,
+   "moonsep": "17",
+   "obs_b": "100",
+   "sugg_s": "00:34",
+   "sugg_e": "06:28",
+   "depth": 12.2,
+   "margin": 9.0
+  },
+  {
+   "rank": 31,
+   "date": "2026-10-25",
+   "weekday": "Sun",
+   "star": "WASP-33 b",
+   "vmag": 8.1,
+   "t_start": "19:19",
+   "t_in": "20:49",
+   "t_mid": "22:14",
+   "t_eg": "23:40",
+   "t_end": "01:10",
+   "elev_s": 26,
+   "elev_i": 40,
+   "elev_m": 53,
+   "elev_e": 67,
+   "elev_end": 77,
+   "airmass_min": 2.28,
+   "bjd_i": "11339.6647",
+   "bjd_m": "11339.7241",
+   "bjd_e": "11339.7835",
+   "moon": 100,
+   "moonsep": "22",
+   "obs_b": "66",
+   "sugg_s": "20:19",
+   "sugg_e": "01:11",
+   "depth": 12.2,
+   "margin": 9.0
+  },
+  {
+   "rank": 56,
+   "date": "2026-10-24",
+   "weekday": "Sat",
+   "star": "HAT-P-1 b",
+   "vmag": 9.8,
+   "t_start": "20:02",
+   "t_in": "21:32",
+   "t_mid": "22:47",
+   "t_eg": "00:02",
+   "t_end": "01:32",
+   "elev_s": 65,
+   "elev_i": 77,
+   "elev_m": 77,
+   "elev_e": 67,
+   "elev_end": 52,
+   "airmass_min": 1.27,
+   "bjd_i": "11338.6938",
+   "bjd_m": "11338.7459",
+   "bjd_e": "11338.7979",
+   "moon": 99,
+   "moonsep": "40",
+   "obs_b": "100",
+   "sugg_s": "20:02",
+   "sugg_e": "01:33",
+   "depth": 14.4,
+   "margin": 4.8
+  },
+  {
+   "rank": 44,
+   "date": "2026-10-23",
+   "weekday": "Fri",
+   "star": "KELT-7 b",
+   "vmag": 8.6,
+   "t_start": "01:07",
+   "t_in": "02:37",
+   "t_mid": "04:14",
+   "t_eg": "05:50",
+   "t_end": "07:20",
+   "elev_s": 50,
+   "elev_i": 64,
+   "elev_m": 73,
+   "elev_e": 67,
+   "elev_end": 54,
+   "airmass_min": 1.31,
+   "bjd_i": "11337.9053",
+   "bjd_m": "11337.9722",
+   "bjd_e": "11338.0391",
+   "moon": 96,
+   "moonsep": "72",
+   "obs_b": "82",
+   "sugg_s": "01:07",
+   "sugg_e": "06:47",
+   "depth": 9.2,
+   "margin": 5.4
+  },
+  {
+   "rank": 3,
+   "date": "2026-10-22",
+   "weekday": "Thu",
+   "star": "HD 189733 b",
+   "vmag": 7.7,
+   "t_start": "19:56",
+   "t_in": "21:26",
+   "t_mid": "22:21",
+   "t_eg": "23:15",
+   "t_end": "00:45",
+   "elev_s": 62,
+   "elev_i": 53,
+   "elev_m": 45,
+   "elev_e": 36,
+   "elev_end": 22,
+   "airmass_min": 2.67,
+   "bjd_i": "11336.6864",
+   "bjd_m": "11336.7243",
+   "bjd_e": "11336.7623",
+   "moon": 89,
+   "moonsep": "56",
+   "obs_b": "55",
+   "sugg_s": "19:56",
+   "sugg_e": "23:25",
+   "depth": 24.0,
+   "margin": 21.2
+  },
+  {
+   "rank": 14,
+   "date": "2026-10-20",
+   "weekday": "Tue",
+   "star": "WASP-33 b",
+   "vmag": 8.1,
+   "t_start": "22:12",
+   "t_in": "23:42",
+   "t_mid": "01:08",
+   "t_eg": "02:33",
+   "t_end": "04:03",
+   "elev_s": 50,
+   "elev_i": 64,
+   "elev_m": 76,
+   "elev_e": 75,
+   "elev_end": 63,
+   "airmass_min": 1.31,
+   "bjd_i": "11334.7853",
+   "bjd_m": "11334.8446",
+   "bjd_e": "11334.9040",
+   "moon": 74,
+   "moonsep": "81",
+   "obs_b": "100",
+   "sugg_s": "22:11",
+   "sugg_e": "04:05",
+   "depth": 12.2,
+   "margin": 9.0
+  },
+  {
+   "rank": 77,
+   "date": "2026-10-18",
+   "weekday": "Sun",
+   "star": "TOI-1518 b",
+   "vmag": 9.0,
+   "t_start": "20:03",
+   "t_in": "21:33",
+   "t_mid": "22:45",
+   "t_eg": "23:57",
+   "t_end": "01:27",
+   "elev_s": 62,
+   "elev_i": 70,
+   "elev_m": 73,
+   "elev_e": 71,
+   "elev_end": 65,
+   "airmass_min": 1.13,
+   "bjd_i": "11332.6934",
+   "bjd_m": "11332.7434",
+   "bjd_e": "11332.7934",
+   "moon": 55,
+   "moonsep": "97",
+   "obs_b": "100",
+   "sugg_s": "20:03",
+   "sugg_e": "01:28",
+   "depth": 9.9,
+   "margin": 4.8
+  },
+  {
+   "rank": 75,
+   "date": "2026-10-16",
+   "weekday": "Fri",
+   "star": "TOI-1518 b",
+   "vmag": 9.0,
+   "t_start": "22:24",
+   "t_in": "23:54",
+   "t_mid": "01:06",
+   "t_eg": "02:18",
+   "t_end": "03:48",
+   "elev_s": 72,
+   "elev_i": 72,
+   "elev_m": 67,
+   "elev_e": 61,
+   "elev_end": 52,
+   "airmass_min": 1.27,
+   "bjd_i": "11330.7907",
+   "bjd_m": "11330.8407",
+   "bjd_e": "11330.8907",
+   "moon": 37,
+   "moonsep": "109",
+   "obs_b": "100",
+   "sugg_s": "22:23",
+   "sugg_e": "03:48",
+   "depth": 9.9,
+   "margin": 4.8
+  },
+  {
+   "rank": 51,
+   "date": "2026-10-15",
+   "weekday": "Thu",
+   "star": "HAT-P-1 b",
+   "vmag": 9.8,
+   "t_start": "21:42",
+   "t_in": "23:12",
+   "t_mid": "00:27",
+   "t_eg": "01:42",
+   "t_end": "03:12",
+   "elev_s": 75,
+   "elev_i": 78,
+   "elev_m": 68,
+   "elev_e": 56,
+   "elev_end": 42,
+   "airmass_min": 1.49,
+   "bjd_i": "11329.7632",
+   "bjd_m": "11329.8153",
+   "bjd_e": "11329.8673",
+   "moon": 28,
+   "moonsep": "99",
+   "obs_b": "100",
+   "sugg_s": "21:42",
+   "sugg_e": "03:12",
+   "depth": 14.4,
+   "margin": 4.8
+  },
+  {
+   "rank": 22,
+   "date": "2026-10-15",
+   "weekday": "Thu",
+   "star": "WASP-33 b",
+   "vmag": 8.1,
+   "t_start": "01:06",
+   "t_in": "02:36",
+   "t_mid": "04:02",
+   "t_eg": "05:27",
+   "t_end": "06:57",
+   "elev_s": 73,
+   "elev_i": 77,
+   "elev_m": 67,
+   "elev_e": 53,
+   "elev_end": 39,
+   "airmass_min": 1.59,
+   "bjd_i": "11329.9058",
+   "bjd_m": "11329.9651",
+   "bjd_e": "11330.0245",
+   "moon": 30,
+   "moonsep": "136",
+   "obs_b": "87",
+   "sugg_s": "01:05",
+   "sugg_e": "06:35",
+   "depth": 12.2,
+   "margin": 9.0
+  },
+  {
+   "rank": 34,
+   "date": "2026-10-14",
+   "weekday": "Wed",
+   "star": "WASP-33 b",
+   "vmag": 8.1,
+   "t_start": "19:50",
+   "t_in": "21:20",
+   "t_mid": "22:45",
+   "t_eg": "00:11",
+   "t_end": "01:41",
+   "elev_s": 24,
+   "elev_i": 38,
+   "elev_m": 51,
+   "elev_e": 65,
+   "elev_end": 76,
+   "airmass_min": 2.46,
+   "bjd_i": "11328.6859",
+   "bjd_m": "11328.7453",
+   "bjd_e": "11328.8047",
+   "moon": 19,
+   "moonsep": "149",
+   "obs_b": "59",
+   "sugg_s": "21:02",
+   "sugg_e": "01:42",
+   "depth": 12.2,
+   "margin": 9.0
+  },
+  {
+   "rank": 73,
+   "date": "2026-10-14",
+   "weekday": "Wed",
+   "star": "TOI-1518 b",
+   "vmag": 9.0,
+   "t_start": "00:44",
+   "t_in": "02:14",
+   "t_mid": "03:26",
+   "t_eg": "04:38",
+   "t_end": "06:08",
+   "elev_s": 70,
+   "elev_i": 62,
+   "elev_m": 55,
+   "elev_e": 48,
+   "elev_end": 40,
+   "airmass_min": 1.56,
+   "bjd_i": "11328.8881",
+   "bjd_m": "11328.9381",
+   "bjd_e": "11328.9881",
+   "moon": 21,
+   "moonsep": "119",
+   "obs_b": "100",
+   "sugg_s": "00:43",
+   "sugg_e": "06:08",
+   "depth": 9.9,
+   "margin": 4.8
+  },
+  {
+   "rank": 7,
+   "date": "2026-10-10",
+   "weekday": "Sat",
+   "star": "HD 209458 b",
+   "vmag": 7.7,
+   "t_start": "21:04",
+   "t_in": "22:34",
+   "t_mid": "00:06",
+   "t_eg": "01:38",
+   "t_end": "03:08",
+   "elev_s": 57,
+   "elev_i": 59,
+   "elev_m": 51,
+   "elev_e": 38,
+   "elev_end": 24,
+   "airmass_min": 2.46,
+   "bjd_i": "11324.7368",
+   "bjd_m": "11324.8008",
+   "bjd_e": "11324.8647",
+   "moon": 1,
+   "moonsep": "131",
+   "obs_b": "60",
+   "sugg_s": "21:03",
+   "sugg_e": "01:57",
+   "depth": 15.0,
+   "margin": 13.2
+  },
+  {
+   "rank": 8,
+   "date": "2026-10-09",
+   "weekday": "Fri",
+   "star": "WASP-33 b",
+   "vmag": 8.1,
+   "t_start": "22:43",
+   "t_in": "00:13",
+   "t_mid": "01:39",
+   "t_eg": "03:04",
+   "t_end": "04:34",
+   "elev_s": 48,
+   "elev_i": 62,
+   "elev_m": 74,
+   "elev_e": 76,
+   "elev_end": 65,
+   "airmass_min": 1.35,
+   "bjd_i": "11323.8064",
+   "bjd_m": "11323.8658",
+   "bjd_e": "11323.9252",
+   "moon": 0,
+   "moonsep": "143",
+   "obs_b": "100",
+   "sugg_s": "22:42",
+   "sugg_e": "04:36",
+   "depth": 12.2,
+   "margin": 9.0
+  },
+  {
+   "rank": 60,
+   "date": "2026-10-06",
+   "weekday": "Tue",
+   "star": "HAT-P-1 b",
+   "vmag": 9.8,
+   "t_start": "23:22",
+   "t_in": "00:52",
+   "t_mid": "02:07",
+   "t_eg": "03:22",
+   "t_end": "04:52",
+   "elev_s": 79,
+   "elev_i": 70,
+   "elev_m": 58,
+   "elev_e": 46,
+   "elev_end": 32,
+   "airmass_min": 1.89,
+   "bjd_i": "11320.8326",
+   "bjd_m": "11320.8847",
+   "bjd_e": "11320.9367",
+   "moon": 12,
+   "moonsep": "131",
+   "obs_b": "89",
+   "sugg_s": "23:21",
+   "sugg_e": "04:33",
+   "depth": 14.4,
+   "margin": 4.8
+  },
+  {
+   "rank": 33,
+   "date": "2026-10-04",
+   "weekday": "Sun",
+   "star": "WASP-33 b",
+   "vmag": 8.1,
+   "t_start": "01:37",
+   "t_in": "03:07",
+   "t_mid": "04:33",
+   "t_eg": "05:58",
+   "t_end": "07:28",
+   "elev_s": 72,
+   "elev_i": 77,
+   "elev_m": 68,
+   "elev_e": 55,
+   "elev_end": 41,
+   "airmass_min": 1.52,
+   "bjd_i": "11318.9269",
+   "bjd_m": "11318.9863",
+   "bjd_e": "11319.0457",
+   "moon": 28,
+   "moonsep": "81",
+   "obs_b": "61",
+   "sugg_s": "01:36",
+   "sugg_e": "06:18",
+   "depth": 12.2,
+   "margin": 9.0
+  },
+  {
+   "rank": 6,
+   "date": "2026-10-03",
+   "weekday": "Sat",
+   "star": "HD 209458 b",
+   "vmag": 7.7,
+   "t_start": "19:52",
+   "t_in": "21:22",
+   "t_mid": "22:54",
+   "t_eg": "00:26",
+   "t_end": "01:56",
+   "elev_s": 45,
+   "elev_i": 56,
+   "elev_m": 59,
+   "elev_e": 52,
+   "elev_end": 39,
+   "airmass_min": 1.59,
+   "bjd_i": "11317.6873",
+   "bjd_m": "11317.7513",
+   "bjd_e": "11317.8152",
+   "moon": 42,
+   "moonsep": "123",
+   "obs_b": "93",
+   "sugg_s": "20:04",
+   "sugg_e": "01:57",
+   "depth": 15.0,
+   "margin": 13.2
+  },
+  {
+   "rank": 37,
+   "date": "2026-10-03",
+   "weekday": "Sat",
+   "star": "WASP-33 b",
+   "vmag": 8.1,
+   "t_start": "20:21",
+   "t_in": "21:51",
+   "t_mid": "23:16",
+   "t_eg": "00:42",
+   "t_end": "02:12",
+   "elev_s": 23,
+   "elev_i": 36,
+   "elev_m": 49,
+   "elev_e": 63,
+   "elev_end": 75,
+   "airmass_min": 2.56,
+   "bjd_i": "11317.7071",
+   "bjd_m": "11317.7664",
+   "bjd_e": "11317.8258",
+   "moon": 41,
+   "moonsep": "65",
+   "obs_b": "53",
+   "sugg_s": "21:46",
+   "sugg_e": "02:13",
+   "depth": 12.2,
+   "margin": 9.0
+  },
+  {
+   "rank": 2,
+   "date": "2026-10-02",
+   "weekday": "Fri",
+   "star": "HD 189733 b",
+   "vmag": 7.7,
+   "t_start": "20:42",
+   "t_in": "22:12",
+   "t_mid": "23:06",
+   "t_eg": "00:01",
+   "t_end": "01:31",
+   "elev_s": 63,
+   "elev_i": 57,
+   "elev_m": 50,
+   "elev_e": 42,
+   "elev_end": 27,
+   "airmass_min": 2.2,
+   "bjd_i": "11316.7192",
+   "bjd_m": "11316.7572",
+   "bjd_e": "11316.7951",
+   "moon": 53,
+   "moonsep": "126",
+   "obs_b": "74",
+   "sugg_s": "20:41",
+   "sugg_e": "00:43",
+   "depth": 24.0,
+   "margin": 21.2
+  },
+  {
+   "rank": 86,
+   "date": "2026-09-29",
+   "weekday": "Tue",
+   "star": "TOI-1518 b",
+   "vmag": 9.0,
+   "t_start": "19:26",
+   "t_in": "20:56",
+   "t_mid": "22:08",
+   "t_eg": "23:20",
+   "t_end": "00:50",
+   "elev_s": 51,
+   "elev_i": 60,
+   "elev_m": 67,
+   "elev_e": 71,
+   "elev_end": 72,
+   "airmass_min": 1.29,
+   "bjd_i": "11313.6672",
+   "bjd_m": "11313.7172",
+   "bjd_e": "11313.7672",
+   "moon": 85,
+   "moonsep": "57",
+   "obs_b": "74",
+   "sugg_s": "20:13",
+   "sugg_e": "00:51",
+   "depth": 9.9,
+   "margin": 4.8
+  },
+  {
+   "rank": 15,
+   "date": "2026-09-28",
+   "weekday": "Mon",
+   "star": "WASP-33 b",
+   "vmag": 8.1,
+   "t_start": "23:15",
+   "t_in": "00:45",
+   "t_mid": "02:10",
+   "t_eg": "03:36",
+   "t_end": "05:06",
+   "elev_s": 46,
+   "elev_i": 60,
+   "elev_m": 73,
+   "elev_e": 77,
+   "elev_end": 67,
+   "airmass_min": 1.39,
+   "bjd_i": "11312.8276",
+   "bjd_m": "11312.8870",
+   "bjd_e": "11312.9463",
+   "moon": 91,
+   "moonsep": "18",
+   "obs_b": "100",
+   "sugg_s": "23:13",
+   "sugg_e": "05:07",
+   "depth": 12.2,
+   "margin": 9.0
+  },
+  {
+   "rank": 80,
+   "date": "2026-09-27",
+   "weekday": "Sun",
+   "star": "TOI-1518 b",
+   "vmag": 9.0,
+   "t_start": "21:47",
+   "t_in": "23:17",
+   "t_mid": "00:29",
+   "t_eg": "01:41",
+   "t_end": "03:11",
+   "elev_s": 64,
+   "elev_i": 71,
+   "elev_m": 73,
+   "elev_e": 70,
+   "elev_end": 63,
+   "airmass_min": 1.12,
+   "bjd_i": "11311.7646",
+   "bjd_m": "11311.8146",
+   "bjd_e": "11311.8646",
+   "moon": 97,
+   "moonsep": "57",
+   "obs_b": "100",
+   "sugg_s": "21:46",
+   "sugg_e": "03:11",
+   "depth": 9.9,
+   "margin": 4.8
+  },
+  {
+   "rank": 65,
+   "date": "2026-09-27",
+   "weekday": "Sun",
+   "star": "HAT-P-1 b",
+   "vmag": 9.8,
+   "t_start": "01:01",
+   "t_in": "02:31",
+   "t_mid": "03:46",
+   "t_eg": "05:01",
+   "t_end": "06:31",
+   "elev_s": 73,
+   "elev_i": 60,
+   "elev_m": 48,
+   "elev_e": 36,
+   "elev_end": 23,
+   "airmass_min": 2.56,
+   "bjd_i": "11311.9020",
+   "bjd_m": "11311.9541",
+   "bjd_e": "11312.0061",
+   "moon": 96,
+   "moonsep": "42",
+   "obs_b": "54",
+   "sugg_s": "01:01",
+   "sugg_e": "05:08",
+   "depth": 14.4,
+   "margin": 4.8
+  },
+  {
+   "rank": 5,
+   "date": "2026-09-26",
+   "weekday": "Sat",
+   "star": "KELT-20 b",
+   "vmag": 7.6,
+   "t_start": "19:25",
+   "t_in": "20:55",
+   "t_mid": "22:34",
+   "t_eg": "00:14",
+   "t_end": "01:44",
+   "elev_s": 67,
+   "elev_i": 71,
+   "elev_m": 61,
+   "elev_e": 46,
+   "elev_end": 31,
+   "airmass_min": 1.94,
+   "bjd_i": "11310.6655",
+   "bjd_m": "11310.7347",
+   "bjd_e": "11310.8039",
+   "moon": 100,
+   "moonsep": "73",
+   "obs_b": "57",
+   "sugg_s": "20:20",
+   "sugg_e": "01:21",
+   "depth": 15.7,
+   "margin": 14.5
+  },
+  {
+   "rank": 81,
+   "date": "2026-09-25",
+   "weekday": "Fri",
+   "star": "TOI-1518 b",
+   "vmag": 9.0,
+   "t_start": "00:07",
+   "t_in": "01:37",
+   "t_mid": "02:49",
+   "t_eg": "04:01",
+   "t_end": "05:31",
+   "elev_s": 73,
+   "elev_i": 71,
+   "elev_m": 66,
+   "elev_e": 59,
+   "elev_end": 50,
+   "airmass_min": 1.31,
+   "bjd_i": "11309.8620",
+   "bjd_m": "11309.9120",
+   "bjd_e": "11309.9620",
+   "moon": 100,
+   "moonsep": "66",
+   "obs_b": "100",
+   "sugg_s": "00:06",
+   "sugg_e": "05:31",
+   "depth": 9.9,
+   "margin": 4.8
+  },
+  {
+   "rank": 4,
+   "date": "2026-09-19",
+   "weekday": "Sat",
+   "star": "KELT-20 b",
+   "vmag": 7.6,
+   "t_start": "20:39",
+   "t_in": "22:09",
+   "t_mid": "23:48",
+   "t_eg": "01:28",
+   "t_end": "02:58",
+   "elev_s": 71,
+   "elev_i": 68,
+   "elev_m": 54,
+   "elev_e": 38,
+   "elev_end": 24,
+   "airmass_min": 2.46,
+   "bjd_i": "11303.7173",
+   "bjd_m": "11303.7865",
+   "bjd_e": "11303.8557",
+   "moon": 63,
+   "moonsep": "60",
+   "obs_b": "62",
+   "sugg_s": "20:38",
+   "sugg_e": "01:49",
+   "depth": 15.7,
+   "margin": 14.5
+  },
+  {
+   "rank": 12,
+   "date": "2026-09-17",
+   "weekday": "Thu",
+   "star": "WASP-33 b",
+   "vmag": 8.1,
+   "t_start": "23:46",
+   "t_in": "01:16",
+   "t_mid": "02:42",
+   "t_eg": "04:07",
+   "t_end": "05:37",
+   "elev_s": 44,
+   "elev_i": 58,
+   "elev_m": 71,
+   "elev_e": 78,
+   "elev_end": 69,
+   "airmass_min": 1.44,
+   "bjd_i": "11301.8487",
+   "bjd_m": "11301.9081",
+   "bjd_e": "11301.9675",
+   "moon": 45,
+   "moonsep": "144",
+   "obs_b": "100",
+   "sugg_s": "23:45",
+   "sugg_e": "05:39",
+   "depth": 12.2,
+   "margin": 9.0
+  },
+  {
+   "rank": 1,
+   "date": "2026-09-12",
+   "weekday": "Sat",
+   "star": "HD 189733 b",
+   "vmag": 7.7,
+   "t_start": "21:27",
+   "t_in": "22:57",
+   "t_mid": "23:52",
+   "t_eg": "00:46",
+   "t_end": "02:16",
+   "elev_s": 62,
+   "elev_i": 60,
+   "elev_m": 54,
+   "elev_e": 47,
+   "elev_end": 33,
+   "airmass_min": 1.84,
+   "bjd_i": "11296.7521",
+   "bjd_m": "11296.7900",
+   "bjd_e": "11296.8279",
+   "moon": 5,
+   "moonsep": "109",
+   "obs_b": "92",
+   "sugg_s": "21:27",
+   "sugg_e": "02:02",
+   "depth": 24.0,
+   "margin": 21.2
+  },
+  {
+   "rank": 69,
+   "date": "2026-09-08",
+   "weekday": "Tue",
+   "star": "TOI-1518 b",
+   "vmag": 9.0,
+   "t_start": "21:10",
+   "t_in": "22:40",
+   "t_mid": "23:52",
+   "t_eg": "01:04",
+   "t_end": "02:34",
+   "elev_s": 53,
+   "elev_i": 62,
+   "elev_m": 68,
+   "elev_e": 72,
+   "elev_end": 71,
+   "airmass_min": 1.25,
+   "bjd_i": "11292.7385",
+   "bjd_m": "11292.7885",
+   "bjd_e": "11292.8385",
+   "moon": 4,
+   "moonsep": "97",
+   "obs_b": "100",
+   "sugg_s": "21:09",
+   "sugg_e": "02:34",
+   "depth": 9.9,
+   "margin": 4.8
+  },
+  {
+   "rank": 72,
+   "date": "2026-09-06",
+   "weekday": "Sun",
+   "star": "TOI-1518 b",
+   "vmag": 9.0,
+   "t_start": "23:30",
+   "t_in": "01:00",
+   "t_mid": "02:12",
+   "t_eg": "03:24",
+   "t_end": "04:54",
+   "elev_s": 66,
+   "elev_i": 72,
+   "elev_m": 73,
+   "elev_e": 69,
+   "elev_end": 61,
+   "airmass_min": 1.14,
+   "bjd_i": "11290.8359",
+   "bjd_m": "11290.8859",
+   "bjd_e": "11290.9359",
+   "moon": 17,
+   "moonsep": "81",
+   "obs_b": "100",
+   "sugg_s": "23:30",
+   "sugg_e": "04:55",
+   "depth": 9.9,
+   "margin": 4.8
+  },
+  {
+   "rank": 25,
+   "date": "2026-09-06",
+   "weekday": "Sun",
+   "star": "WASP-33 b",
+   "vmag": 8.1,
+   "t_start": "00:18",
+   "t_in": "01:48",
+   "t_mid": "03:13",
+   "t_eg": "04:39",
+   "t_end": "06:09",
+   "elev_s": 42,
+   "elev_i": 57,
+   "elev_m": 70,
+   "elev_e": 78,
+   "elev_end": 70,
+   "airmass_min": 1.49,
+   "bjd_i": "11290.8699",
+   "bjd_m": "11290.9293",
+   "bjd_e": "11290.9887",
+   "moon": 17,
+   "moonsep": "70",
+   "obs_b": "79",
+   "sugg_s": "00:17",
+   "sugg_e": "05:32",
+   "depth": 12.2,
+   "margin": 9.0
+  }
+ ],
+ "stars": {
+  "HD 189733 b": {
+   "star": "HD 189733",
+   "alt": "V452 Vulpeculae, BD+22 3887, HIP 98505",
+   "constellation": "Vulpecula",
+   "ra": "20h 00m 43.71s",
+   "dec": "+22\u00b0 42' 35.2\"",
+   "vmag": "7.7",
+   "spectral": "K1.5 V",
+   "distance": "64.5 light-years (19.8 pc)",
+   "period": "2.219 days",
+   "duration": "1 hr 49 min",
+   "depth": "24.0 ppt (2.4%)",
+   "discovered": "2005",
+   "source": "Kokori et al. 2023; NASA Exoplanet Archive",
+   "note": "One of the brightest known transiting hot-Jupiter hosts, and a common first target for amateur exoplanet photometry.",
+   "desc": "HD 189733 is one of the brightest stars known to host a transiting hot Jupiter, and it doubles as its own variable star, cataloged as V452 Vulpeculae because starspots slowly modulate its brightness as the star rotates. Its planet, HD 189733 b, was discovered in 2005 and completes an orbit in just over two days, producing a deep, easily measured 2.4 percent dip in brightness. Because the star is so bright and the transit so deep, this system has become a standard first target for both professional atmospheric studies and amateur transit photometry.",
+   "margin": 21.2,
+   "n_events": 3,
+   "best_rank": 1
+  },
+  "WASP-33 b": {
+   "star": "WASP-33 (HD 15082)",
+   "alt": "HD 15082, V807 And, TOI-1599",
+   "constellation": "Andromeda",
+   "ra": "02h 26m 51.06s",
+   "dec": "+37\u00b0 33' 01.7\"",
+   "vmag": "8.1",
+   "spectral": "A5 (kA5hA8mF4, fast-rotating delta Scuti pulsator)",
+   "distance": "397 light-years (121.6 pc)",
+   "period": "1.220 days",
+   "duration": "2 hr 51 min",
+   "depth": "12.2 ppt (1.22%)",
+   "discovered": "2006 (candidate), 2010 (confirmed)",
+   "source": "NASA Exoplanet Archive; Herrero et al. 2011",
+   "note": "The first exoplanet host star ever identified as a delta Scuti pulsating variable, meaning the star itself flickers on a timescale similar to the transit.",
+   "desc": "WASP-33, also cataloged as HD 15082, is an A-type star spinning so quickly that its own light varies in brightness independent of its planet, making it the first star ever confirmed to be both a delta Scuti pulsating variable and an exoplanet host. Its planet, WASP-33 b, orbits in just 1.22 days on a retrograde, tilted path relative to the star's own spin. Because the star's pulsations ripple through the light curve, this target is scientifically interesting but genuinely more complex to analyze than most, since part of what shows up in the data is starlight variability, not just the planet.",
+   "margin": 9.0,
+   "n_events": 30,
+   "best_rank": 8
+  },
+  "HD 209458 b": {
+   "star": "HD 209458",
+   "alt": "Osiris (planet), V376 Peg, BD+18 4917",
+   "constellation": "Pegasus",
+   "ra": "not confirmed in sources consulted",
+   "dec": "not confirmed in sources consulted",
+   "vmag": "7.7",
+   "spectral": "G0 V (sometimes classified F9V)",
+   "distance": "150 light-years (47 pc)",
+   "period": "3.525 days",
+   "duration": "3 hr 4 min",
+   "depth": "15.0 ppt (1.5%)",
+   "discovered": "1999",
+   "source": "Charbonneau et al. 2000; Henry et al. 2000; NASA Exoplanet Archive",
+   "note": "Historic system: the first exoplanet transit ever observed, and the first exoplanet confirmed to have an atmosphere.",
+   "desc": "HD 209458 holds a permanent place in the history of exoplanet science. In 1999 it became the first star ever observed to have a planet transit in front of it, and its planet, nicknamed Osiris, went on to become the first exoplanet confirmed to have an atmosphere at all. The planet is only slightly less massive than Jupiter but noticeably larger, giving it a low density consistent with a puffed up, highly irradiated gas giant. Its brightness, magnitude 7.7, and its 1.5 percent transit depth make it a very approachable target for a modest amateur telescope.",
+   "margin": 13.2,
+   "n_events": 2,
+   "best_rank": 6
+  },
+  "KELT-20 b": {
+   "star": "KELT-20 (HD 185603, MASCARA-2)",
+   "alt": "HD 185603, HIP 96618, MASCARA-2",
+   "constellation": "Cygnus",
+   "ra": "19h 38m 38.735s",
+   "dec": "+31\u00b0 31' 09.22\"",
+   "vmag": "7.6",
+   "spectral": "A2 V",
+   "distance": "447 light-years (137.0 pc)",
+   "period": "3.474 days",
+   "duration": "3 hr 19 min",
+   "depth": "15.7 ppt (1.57%)",
+   "discovered": "2017",
+   "source": "Lund et al. 2017; NASA Exoplanet Archive",
+   "note": "One of the hottest known hosts of a transiting giant planet; the planet is classified as an ultra-hot Jupiter.",
+   "desc": "KELT-20 is a hot, fast spinning A-type star that hosts one of the most extreme planets in this catalog. KELT-20 b is classified as an ultra-hot Jupiter, meaning its dayside temperature is pushed to roughly 2300 Kelvin by the intense radiation of its host star. The star itself is quite young, only about 58 million years old, and is among the brightest known hosts of a transiting giant planet. Astronomers have already detected sodium, iron, and other metals directly in the planet's atmosphere using this same transit method.",
+   "margin": 14.5,
+   "n_events": 2,
+   "best_rank": 4
+  },
+  "KELT-4 A b": {
+   "star": "KELT-4 A",
+   "alt": "primary of a hierarchical triple star system (KELT-4 A/B/C)",
+   "constellation": "Leo",
+   "ra": "not confirmed in sources consulted",
+   "dec": "not confirmed in sources consulted",
+   "vmag": "10.0",
+   "spectral": "F-type",
+   "distance": "760 light-years (230 pc)",
+   "period": "2.990 days",
+   "duration": "3 hr 28 min",
+   "depth": "11.9 ppt (1.19%)",
+   "discovered": "2016",
+   "source": "Eastman et al. 2016; NASA Exoplanet Archive",
+   "note": "The brightest known host star of a hot Jupiter within a hierarchical triple star system.",
+   "desc": "KELT-4 A is the brightest known host star of a hot Jupiter that sits inside a hierarchical triple star system, meaning it has two additional stellar companions, KELT-4 B and C, orbiting the system as a close pair further out. The planet, KELT-4 A b, is a typical hot Jupiter on a three day orbit, discovered in 2016. Because two extra stars share the field of view, careful comparison star selection matters even more than usual when measuring this system's transit.",
+   "margin": 3.6,
+   "n_events": 28,
+   "best_rank": 97
+  },
+  "HAT-P-22 b": {
+   "star": "HAT-P-22 (HD 233731)",
+   "alt": "HD 233731, has a wide M-dwarf companion at 9 arcsec separation",
+   "constellation": "Ursa Major",
+   "ra": "10h 22m 43.59s",
+   "dec": "+50\u00b0 07' 42.1\"",
+   "vmag": "9.8",
+   "spectral": "G5 dwarf",
+   "distance": "267 light-years (81.5 pc)",
+   "period": "3.212 days",
+   "duration": "2 hr 39 min",
+   "depth": "14.4 ppt (1.44%)",
+   "discovered": "2010",
+   "source": "Bakos et al. 2011; NASA Exoplanet Archive",
+   "note": "Host star has the lowest mass among comparable hot-Jupiter hosts studied in its discovery sample.",
+   "desc": "HAT-P-22 is a G-type dwarf star very close in character to the Sun, located in the constellation Ursa Major, with a faint red dwarf companion orbiting far out in the same system. Its planet, HAT-P-22 b, is a genuinely massive hot Jupiter, over twice the mass of Jupiter itself, discovered in 2010. The host star has the lowest mass of any star in its original discovery survey's comparison sample, making this a useful benchmark system for studying how a lower mass star supports a heavy planet in a tight orbit.",
+   "margin": 4.8,
+   "n_events": 13,
+   "best_rank": 49
+  },
+  "KELT-17 b": {
+   "star": "KELT-17",
+   "alt": "a chemically peculiar Am star",
+   "constellation": "not confirmed in sources consulted",
+   "ra": "08h 22m 28.18s",
+   "dec": "+13\u00b0 44' 07.1\"",
+   "vmag": "9.2",
+   "spectral": "A-type (Am, chemically peculiar)",
+   "distance": "739 light-years (226.5 pc)",
+   "period": "3.081 days",
+   "duration": "3 hr 29 min",
+   "depth": "9.1 ppt (0.91%)",
+   "discovered": "2016",
+   "source": "Zhou et al. 2016; NASA Exoplanet Archive",
+   "note": "The first exoplanet host star unambiguously identified with the chemically peculiar Am-star class.",
+   "desc": "KELT-17 is an unusual host star known as an Am star, short for metallic-line A star, a class of chemically peculiar star whose atmosphere shows an overabundance of certain heavy elements like titanium, chromium, and iron. It was the first exoplanet host ever confirmed to belong to this specific chemical class. Its planet, KELT-17 b, orbits in just over three days and was discovered in 2016 using Doppler tomography, a technique that measures how tilted a planet's orbit is relative to its star's spin.",
+   "margin": 4.0,
+   "n_events": 5,
+   "best_rank": 90
+  },
+  "TOI-1518 b": {
+   "star": "TOI-1518",
+   "alt": "AG+66 1198, BD+66 1610, TIC 427761355",
+   "constellation": "Cepheus",
+   "ra": "23h 29m 04.22s",
+   "dec": "+67\u00b0 02' 05.4\"",
+   "vmag": "9.0",
+   "spectral": "F0 (main sequence)",
+   "distance": "747 light-years (229.0 pc)",
+   "period": "1.903 days",
+   "duration": "2 hr 24 min",
+   "depth": "9.9 ppt (0.99%)",
+   "discovered": "2021",
+   "source": "Cabot et al. 2021; NASA Exoplanet Archive",
+   "note": "An ultra-hot Jupiter with iron detected in its atmosphere; a promising target for professional emission spectroscopy.",
+   "desc": "TOI-1518 is a hot F0-type star discovered by NASA's TESS mission to host one of the more extreme ultra-hot Jupiters in this catalog. TOI-1518 b orbits in under two days and is inflated to nearly twice the radius of Jupiter, with iron directly detected in its atmosphere, a rare and notable find that makes it a strong candidate for future spectroscopy aimed at detecting a thermal inversion layer. At magnitude 9.0, it sits at the fainter end of what this project's search criteria allow, but its very deep transit helps compensate.",
+   "margin": 4.8,
+   "n_events": 22,
+   "best_rank": 68
+  },
+  "KELT-7 b": {
+   "star": "KELT-7",
+   "alt": "brightest host star among all KELT-survey discoveries",
+   "constellation": "not confirmed in sources consulted",
+   "ra": "05h 13m 10.94s",
+   "dec": "+33\u00b0 19' 04.6\"",
+   "vmag": "8.6",
+   "spectral": "F-type (rapid rotator)",
+   "distance": "446 light-years (136.7 pc)",
+   "period": "2.735 days",
+   "duration": "3 hr 13 min",
+   "depth": "9.2 ppt (0.92%)",
+   "discovered": "2015",
+   "source": "Bieryla et al. 2015; NASA Exoplanet Archive",
+   "note": "Orbits the brightest star of any planet discovered by the KELT survey.",
+   "desc": "KELT-7 orbits the brightest star of any planet discovered by the entire KELT survey, an F-type star spinning rapidly enough to make precise radial velocity measurements difficult. KELT-7 b is a substantial hot Jupiter, roughly 1.4 times the mass of Jupiter, discovered in 2015, and has since been studied with the James Webb Space Telescope, which found evidence of a metal-enriched atmosphere. Its brightness and depth make it one of the more forgiving targets in this catalog.",
+   "margin": 5.4,
+   "n_events": 11,
+   "best_rank": 38
+  },
+  "K2-232 b": {
+   "star": "K2-232",
+   "alt": "identified via NASA's K2 mission, Campaign 13",
+   "constellation": "not confirmed in sources consulted",
+   "ra": "04h 55m 04.03s",
+   "dec": "+18\u00b0 39' 15.6\"",
+   "vmag": "9.8",
+   "spectral": "late F-type",
+   "distance": "426 light-years (130.7 pc)",
+   "period": "11.2 days",
+   "duration": "5 hr 2 min",
+   "depth": "9.7 ppt (0.97%)",
+   "discovered": "2018",
+   "source": "Brahm et al. 2018; NASA Exoplanet Archive",
+   "note": "An eccentric warm Saturn, one of only a small number of well-characterized warm giant planets with a host star brighter than V=10.",
+   "desc": "K2-232 is a late F-type star observed by NASA's K2 mission, and its planet, K2-232 b, stands out for its unusually elongated, eccentric orbit rather than the nearly circular path most hot Jupiters follow. Classified as a warm Saturn, the planet takes over eleven days to complete one orbit, considerably longer than most targets in this catalog, and is one of only a handful of well characterized warm giant planets with a host star brighter than tenth magnitude. Its long period means suitable transit windows appear far less often than for the tighter orbiting hot Jupiters elsewhere in this list.",
+   "margin": 3.3,
+   "n_events": 2,
+   "best_rank": 125
+  },
+  "HAT-P-1 b": {
+   "star": "HAT-P-1",
+   "alt": "ADS 16402 A; part of a wide visual binary system with ADS 16402 B",
+   "constellation": "Lacerta",
+   "ra": "22h 57m 46.8s",
+   "dec": "+38\u00b0 40' 28\"",
+   "vmag": "9.8",
+   "spectral": "G0 V",
+   "distance": "approximately 450 light-years",
+   "period": "4.465 days",
+   "duration": "2 hr 30 min",
+   "depth": "14.4 ppt (1.44%)",
+   "discovered": "2006",
+   "source": "Bakos et al. 2007; Johnson et al. 2008; NASA Exoplanet Archive",
+   "note": "One member of a wide binary pair of nearly identical Sun-like stars, which allows unusually precise differential photometry.",
+   "desc": "HAT-P-1 is one half of a wide visual binary system, paired with an almost identical Sun-like star roughly 1500 astronomical units away, a companion close enough in brightness and color that astronomers have used it as a built in comparison star for unusually precise differential photometry. Its planet, HAT-P-1 b, was discovered in 2006 and is notably large and low density for its mass, a puzzle that helped motivate later theoretical models of how irradiation inflates close-in giant planets. The wide binary companion is a genuine practical advantage for amateur observers too, since a bright, reliable comparison star sits right in the same field.",
+   "margin": 4.8,
+   "n_events": 6,
+   "best_rank": 51
+  },
+  "KELT-19 A b": {
+   "star": "KELT-19 A",
+   "alt": "primary of a system with a distant bound stellar companion, KELT-19 B",
+   "constellation": "not confirmed in sources consulted",
+   "ra": "not confirmed in sources consulted",
+   "dec": "not confirmed in sources consulted",
+   "vmag": "9.9",
+   "spectral": "A-type (Am, chemically peculiar)",
+   "distance": "not confirmed in sources consulted",
+   "period": "4.6 days",
+   "duration": "4 hr 4 min",
+   "depth": "11.9 ppt (1.19%)",
+   "discovered": "2017",
+   "source": "Siverd et al. 2018; NASA Exoplanet Archive",
+   "note": "Hosts an ultra-hot Jupiter on a longer period than most KELT-survey discoveries.",
+   "desc": "KELT-19 A is another Am star, a chemically peculiar type of A-type star, and like KELT-17 it has a distant bound stellar companion, KELT-19 B, further out in the same system. Its planet, KELT-19 A b, is a substantial hot Jupiter of roughly four Jupiter masses on a 4.6 day orbit, discovered in 2017 as part of the same survey and follow-up program that found KELT-17 b. Because the host star spins rapidly, its physical parameters carry more uncertainty than most other stars in this catalog.",
+   "margin": 3.8,
+   "n_events": 2,
+   "best_rank": 95
+  }
+ }
+}</script>
+
+<script>
+const DATA = JSON.parse(document.getElementById('site-data').textContent);
+const EVENTS = DATA.events;
+
+function fmtNum(v){ return (v===null || v===undefined) ? '' : v; }
+
+function renderTable(tbodyId, rows, cols){
+  const tbody = document.getElementById(tbodyId);
+  tbody.innerHTML = '';
+  for(const e of rows){
+    const tr = document.createElement('tr');
+    if(e.rank <= 10) tr.style.background = '#fff3d6';
+    tr.onclick = () => showDetail(e);
+    tr.innerHTML = cols.map(c => `<td>${fmtNum(e[c])}</td>`).join('');
+    tbody.appendChild(tr);
+  }
+}
+
+const rankedCols = ['rank','margin','star','date','t_in','t_mid','t_eg','airmass_min','moon','obs_b','depth'];
+const chronCols = ['rank','star','date','t_mid','margin','moon','obs_b','depth'];
+
+let rankedSort = {key:'rank', dir:1};
+let chronSort = {key:'date', dir:1};
+
+function sortRows(key, dir, type){
+  return [...EVENTS].sort((a,b)=>{
+    let av=a[key], bv=b[key];
+    if(type==='num'){ av=Number(av); bv=Number(bv); }
+    if(av<bv) return -1*dir;
+    if(av>bv) return 1*dir;
+    return 0;
+  });
+}
+
+function wireSortable(tableId, cols, getState, setState, tbodyId){
+  const table = document.getElementById(tableId);
+  const headers = table.querySelectorAll('th');
+  headers.forEach(th => {
+    th.addEventListener('click', () => {
+      const key = th.dataset.key;
+      const type = th.dataset.type;
+      const state = getState();
+      const dir = (state.key === key) ? -state.dir : 1;
+      setState({key, dir});
+      headers.forEach(h=>h.classList.remove('sorted-asc','sorted-desc'));
+      th.classList.add(dir===1?'sorted-asc':'sorted-desc');
+      const sorted = sortRows(key, dir, type);
+      renderTable(tbodyId, sorted, cols);
+    });
+  });
+}
+
+renderTable('rankedBody', sortRows('rank',1,'num'), rankedCols);
+renderTable('chronBody', sortRows('date',1,'str'), chronCols);
+
+wireSortable('rankedTable', rankedCols, ()=>rankedSort, s=>rankedSort=s, 'rankedBody');
+wireSortable('chronTable', chronCols, ()=>chronSort, s=>chronSort=s, 'chronBody');
+
+function airmassNote(min_elev, airmass){
+  if(min_elev >= 45) return `Elevation stays comfortably high throughout, never dropping below ${min_elev}\u00b0 (airmass ${airmass}).`;
+  if(min_elev >= 30) return `Elevation dips to ${min_elev}\u00b0 at its lowest point (airmass ${airmass}), somewhat higher than the roughly 1.0-1.4 range typical of a well-placed target.`;
+  return `Elevation falls to ${min_elev}\u00b0 at its weakest point (airmass ${airmass}), high enough to meaningfully increase atmospheric extinction and scintillation noise.`;
+}
+
+function assess(e){
+  const min_elev = Math.min(e.elev_s, e.elev_i, e.elev_m, e.elev_e, e.elev_end);
+  const parts = [];
+  if(e.margin >= 10) parts.push(`At V=${e.vmag} with a ${e.depth} ppt transit depth, this target's estimated detection margin is ${e.margin} times the photometric noise floor, a wide margin that should make the dip clearly visible.`);
+  else if(e.margin >= 5) parts.push(`At V=${e.vmag} with a ${e.depth} ppt transit depth, this target's estimated detection margin is ${e.margin} times the photometric noise floor, a comfortable but not overwhelming margin.`);
+  else parts.push(`At V=${e.vmag} with a ${e.depth} ppt transit depth, this target's estimated detection margin is only ${e.margin} times the photometric noise floor, meaning careful focus, exposure, and comparison star selection matter more than usual here.`);
+  if(e.obs_b >= 90) parts.push('Nearly the entire transit and its baseline padding fall inside full darkness.');
+  else if(e.obs_b >= 70) parts.push('Most of the transit and baseline padding are observable, with a modest loss at one end of the session.');
+  else parts.push('A meaningful portion of the baseline is lost to daylight or low elevation, so this event should be treated as a partial session.');
+  if(e.moon <= 15) parts.push(`The Moon is only ${e.moon}% illuminated, which is favorable for background sky darkness.`);
+  else if(e.moon <= 60) parts.push(`The Moon is moderately illuminated at ${e.moon}%, a secondary factor worth noting but unlikely to be decisive on its own.`);
+  else parts.push(`The Moon is bright at ${e.moon}% illumination, which may raise sky background and slightly reduce photometric precision on fainter comparison stars.`);
+  parts.push(airmassNote(min_elev, e.airmass_min));
+  return parts.join(' ');
+}
+
+function showDetail(e){
+  document.getElementById('detailTitle').innerHTML = `Rank ${e.rank}: ${e.star}, ${e.date} (${e.weekday})`;
+  const rows = [
+    ['Local start of session', e.t_start],
+    ['Ingress', e.t_in],
+    ['Mid-transit', e.t_mid],
+    ['Egress', e.t_eg],
+    ['Suggested end of session', e.t_end],
+    ['Elevation at ingress / mid / egress', `${e.elev_i}\u00b0 / ${e.elev_m}\u00b0 / ${e.elev_e}\u00b0`],
+    ['Elevation at session start / end', `${e.elev_s}\u00b0 / ${e.elev_end}\u00b0`],
+    ['Airmass at minimum elevation', e.airmass_min],
+    ['BJD_TDB \u2212 2,450,000, ingress / mid / egress', `${e.bjd_i} / ${e.bjd_m} / ${e.bjd_e}`],
+    ['Moon illumination', `${e.moon}%, ${e.moonsep}\u00b0 separation`],
+    ['Percent of transit plus baseline observable', `${e.obs_b}%`],
+    ['Suggested observation window', `${e.sugg_s} to ${e.sugg_e}`],
+    ['Transit depth', `${e.depth} ppt`],
+    ['Estimated detection margin', `${e.margin}\u00d7 noise floor`],
+  ];
+  document.getElementById('detailTable').innerHTML = rows.map(r=>`<tr><td>${r[0]}</td><td>${r[1]}</td></tr>`).join('');
+  document.getElementById('detailAssessment').textContent = assess(e);
+  const box = document.getElementById('detailBox');
+  box.style.display = 'block';
+  box.scrollIntoView({behavior:'smooth', block:'center'});
+}
+
+function closeDetail(){
+  document.getElementById('detailBox').style.display = 'none';
+}
+
+function findSoonest(){
+  const now = new Date();
+  const upcoming = EVENTS
+    .map(e => ({e, d: new Date(e.date + 'T' + e.t_mid + ':00')}))
+    .filter(x => x.d >= now)
+    .sort((a,b) => a.d - b.d);
+  return upcoming.length ? upcoming[0].e : null;
+}
+
+function renderSoonest(){
+  const e = findSoonest();
+  const box = document.getElementById('soonBox');
+  if(!e){
+    box.innerHTML = 'No upcoming events found in the current catalog. The search window may need to be re-run.';
+    return;
+  }
+  box.innerHTML = `<h3>${e.star} &mdash; ${e.date} (${e.weekday})</h3>
+    <p>Mid-transit at ${e.t_mid} local time. Ranked #${e.rank} of 126, detection margin ${e.margin}&times;, moon ${e.moon}%, ${e.obs_b}% of transit and baseline observable.</p>
+    <p><a href="#" onclick="showDetail(EVENTS.find(x=>x.date==='${e.date}'&&x.star==='${e.star.replace(/'/g,"\\'")}'&&x.t_in==='${e.t_in}')); return false;">View full detail &rarr;</a></p>`;
+}
+
+renderSoonest();
+</script>
+
+</body>
+</html>
