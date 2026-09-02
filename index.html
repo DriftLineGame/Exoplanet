@@ -55,7 +55,7 @@
   th.sorted-desc::after{content:" \25BC";}
   tbody tr:nth-child(even){background:#fafafa;}
   tbody tr:hover{background:#fff3d6; cursor:pointer;}
-  .table-wrap{max-height:560px; overflow-y:auto; border:1px solid #999;}
+  .table-wrap{max-height:560px; overflow-y:auto; overflow-x:auto; border:1px solid #999;}
   .table-wrap table{margin:0;}
   .table-wrap th{top:0;}
 
@@ -174,9 +174,46 @@
   #backToTop:hover{background:#444;}
 
   .row-highlight{outline:3px solid #0645ad; outline-offset:-3px;}
+
+  /* accessibility */
+  a.skip-link{
+    position:absolute; left:-999px; top:auto;
+    background:#0645ad; color:#fff; padding:10px 16px; z-index:100;
+  }
+  a.skip-link:focus{left:10px; top:10px;}
+  :focus-visible{outline:3px solid #0645ad; outline-offset:2px;}
+  tbody tr:focus-visible{outline:3px solid #0645ad; outline-offset:-3px;}
+
+  /* quick jump */
+  .quick-jump{
+    margin:10px 0 18px;
+    font-size:0.88rem;
+  }
+  .quick-jump select{
+    font-family:inherit; font-size:0.86rem; padding:5px 8px;
+    border:1px solid #999;
+  }
+
+  /* light curve chart */
+  .chart-wrap{margin:12px 0 6px;}
+  .chart-wrap canvas{
+    width:100%; height:140px; display:block;
+    border:1px solid #ccc; background:#fff;
+  }
+  .chart-caption{
+    font-size:0.8rem; color:#555; margin-top:4px;
+    display:flex; justify-content:space-between; flex-wrap:wrap; gap:6px;
+  }
+  .chart-note{font-size:0.78rem; color:#777; margin-top:2px; font-style:italic;}
+
+  .data-timestamp{
+    background:#fffef2; border:1px solid #ddd; padding:8px 12px;
+    font-size:0.82rem; color:#555; margin:10px 0;
+  }
 </style>
 </head>
 <body>
+<a href="#overview" class="skip-link">Skip to main content</a>
 
 <h1>Project Ingress
 <span class="sub">Exoplanet Transit Observation Reference — interactive edition</span>
@@ -199,6 +236,7 @@
 <p><strong>Project Ingress</strong> is an attempt to detect an exoplanet transit using a commercially available telescope. The goal is to measure how far a consumer-grade instrument can be pushed before it hits its limit of precision, and to prove it by actually catching a transit.</p>
 <p>This page compiles every predicted exoplanet transit observable from Campbell River, British Columbia, cross-referenced against the NASA Exoplanet Archive and generated using the Swarthmore College Transit/Eclipse Observability tool (Tapir). It began as a printed reference booklet; this page mirrors that same data interactively, so the two big tables can be sorted however you need, and any event can be opened for full detail with one click.</p>
 <p class="small">Predicted times carry inherent uncertainty from each system's published orbital ephemeris. That uncertainty compounds with the number of orbits between now and the predicted date, so an event next week is far more reliable than one predicted months out. Always re-check a date shortly before relying on it.</p>
+<div class="data-timestamp">Underlying event data locked at time of search: <strong>September 1, 2026</strong>. Only the "Soonest Upcoming Event" box below updates live, using your device's current date; everything else reflects that fixed search.</div>
 </section>
 
 <section id="method">
@@ -223,8 +261,24 @@
 
 <section id="targets">
 <h2>Targets</h2>
-<p class="small">Click any star to expand its full profile. Margin is the estimated detection margin described above.</p>
-<details>
+<p class="small">Click any star to expand its full profile, including a simulated light curve showing roughly what its transit should look like when actually captured, based on its real detection margin.</p>
+<div class="quick-jump"><label for="starJump">Jump to star: </label>
+<select id="starJump" onchange="jumpToStar(this.value)">
+<option value="">Select a star...</option>
+<option value="star-0">HD 189733 b</option>
+<option value="star-1">WASP-33 b</option>
+<option value="star-2">HD 209458 b</option>
+<option value="star-3">KELT-20 b</option>
+<option value="star-4">KELT-4 A b</option>
+<option value="star-5">HAT-P-22 b</option>
+<option value="star-6">KELT-17 b</option>
+<option value="star-7">TOI-1518 b</option>
+<option value="star-8">KELT-7 b</option>
+<option value="star-9">K2-232 b</option>
+<option value="star-10">HAT-P-1 b</option>
+<option value="star-11">KELT-19 A b</option>
+</select></div>
+<details id="star-0">
 <summary>HD 189733 b <span class="badge">margin 21.2&times;</span> <span class="badge">rank 1</span></summary>
 <p class="desc">HD 189733 is one of the brightest stars known to host a transiting hot Jupiter, and it doubles as its own variable star, cataloged as V452 Vulpeculae because starspots slowly modulate its brightness as the star rotates. Its planet, HD 189733 b, was discovered in 2005 and completes an orbit in just over two days, producing a deep, easily measured 2.4 percent dip in brightness. Because the star is so bright and the transit so deep, this system has become a standard first target for both professional atmospheric studies and amateur transit photometry.</p>
 <table class="param-table">
@@ -240,13 +294,19 @@
 <tr><td>Transit duration</td><td>1 hr 49 min</td></tr>
 <tr><td>Transit depth</td><td>24.0 ppt (2.4%)</td></tr>
 <tr><td>Estimated detection margin</td><td>21.2&times; noise floor</td></tr>
+<tr><td>Expected photometric noise</td><td>&plusmn;1.132 ppt per 5-minute bin</td></tr>
 <tr><td>Discovery year</td><td>2005</td></tr>
 <tr><td>Data source</td><td>Kokori et al. 2023; NASA Exoplanet Archive</td></tr>
 <tr><td>Events in this catalog</td><td>3, best ranked is number 1</td></tr>
 </table>
+<div class="chart-wrap">
+<canvas id="chart-0" width="900" height="140" role="img" aria-label="Simulated light curve for HD 189733 b, showing a 24.0 parts per thousand dip against simulated noise at the expected precision for this target."></canvas>
+<div class="chart-caption"><span>Simulated transit, 24.0 ppt depth</span><span>Simulated noise &plusmn;1.132 ppt (margin 21.2&times;)</span></div>
+<div class="chart-note">Illustrative simulation based on this project's detection-margin formula, not an actual observation.</div>
+</div>
 <p class="view-events-link"><a href="#ranked" onclick="filterToStar('HD 189733 b'); return true;">View all 3 events for HD 189733 b in the ranked table &rarr;</a></p>
 </details>
-<details>
+<details id="star-1">
 <summary>WASP-33 b <span class="badge">margin 9.0&times;</span> <span class="badge">rank 8</span></summary>
 <p class="desc">WASP-33, also cataloged as HD 15082, is an A-type star spinning so quickly that its own light varies in brightness independent of its planet, making it the first star ever confirmed to be both a delta Scuti pulsating variable and an exoplanet host. Its planet, WASP-33 b, orbits in just 1.22 days on a retrograde, tilted path relative to the star's own spin. Because the star's pulsations ripple through the light curve, this target is scientifically interesting but genuinely more complex to analyze than most, since part of what shows up in the data is starlight variability, not just the planet.</p>
 <table class="param-table">
@@ -262,13 +322,19 @@
 <tr><td>Transit duration</td><td>2 hr 51 min</td></tr>
 <tr><td>Transit depth</td><td>12.2 ppt (1.22%)</td></tr>
 <tr><td>Estimated detection margin</td><td>9.0&times; noise floor</td></tr>
+<tr><td>Expected photometric noise</td><td>&plusmn;1.356 ppt per 5-minute bin</td></tr>
 <tr><td>Discovery year</td><td>2006 (candidate), 2010 (confirmed)</td></tr>
 <tr><td>Data source</td><td>NASA Exoplanet Archive; Herrero et al. 2011</td></tr>
 <tr><td>Events in this catalog</td><td>30, best ranked is number 8</td></tr>
 </table>
+<div class="chart-wrap">
+<canvas id="chart-1" width="900" height="140" role="img" aria-label="Simulated light curve for WASP-33 b, showing a 12.2 parts per thousand dip against simulated noise at the expected precision for this target."></canvas>
+<div class="chart-caption"><span>Simulated transit, 12.2 ppt depth</span><span>Simulated noise &plusmn;1.356 ppt (margin 9.0&times;)</span></div>
+<div class="chart-note">Illustrative simulation based on this project's detection-margin formula, not an actual observation.</div>
+</div>
 <p class="view-events-link"><a href="#ranked" onclick="filterToStar('WASP-33 b'); return true;">View all 30 events for WASP-33 b in the ranked table &rarr;</a></p>
 </details>
-<details>
+<details id="star-2">
 <summary>HD 209458 b <span class="badge">margin 13.2&times;</span> <span class="badge">rank 6</span></summary>
 <p class="desc">HD 209458 holds a permanent place in the history of exoplanet science. In 1999 it became the first star ever observed to have a planet transit in front of it, and its planet, nicknamed Osiris, went on to become the first exoplanet confirmed to have an atmosphere at all. The planet is only slightly less massive than Jupiter but noticeably larger, giving it a low density consistent with a puffed up, highly irradiated gas giant. Its brightness, magnitude 7.7, and its 1.5 percent transit depth make it a very approachable target for a modest amateur telescope.</p>
 <table class="param-table">
@@ -284,13 +350,19 @@
 <tr><td>Transit duration</td><td>3 hr 4 min</td></tr>
 <tr><td>Transit depth</td><td>15.0 ppt (1.5%)</td></tr>
 <tr><td>Estimated detection margin</td><td>13.2&times; noise floor</td></tr>
+<tr><td>Expected photometric noise</td><td>&plusmn;1.136 ppt per 5-minute bin</td></tr>
 <tr><td>Discovery year</td><td>1999</td></tr>
 <tr><td>Data source</td><td>Charbonneau et al. 2000; Henry et al. 2000; NASA Exoplanet Archive</td></tr>
 <tr><td>Events in this catalog</td><td>2, best ranked is number 6</td></tr>
 </table>
+<div class="chart-wrap">
+<canvas id="chart-2" width="900" height="140" role="img" aria-label="Simulated light curve for HD 209458 b, showing a 15.0 parts per thousand dip against simulated noise at the expected precision for this target."></canvas>
+<div class="chart-caption"><span>Simulated transit, 15.0 ppt depth</span><span>Simulated noise &plusmn;1.136 ppt (margin 13.2&times;)</span></div>
+<div class="chart-note">Illustrative simulation based on this project's detection-margin formula, not an actual observation.</div>
+</div>
 <p class="view-events-link"><a href="#ranked" onclick="filterToStar('HD 209458 b'); return true;">View all 2 events for HD 209458 b in the ranked table &rarr;</a></p>
 </details>
-<details>
+<details id="star-3">
 <summary>KELT-20 b <span class="badge">margin 14.5&times;</span> <span class="badge">rank 4</span></summary>
 <p class="desc">KELT-20 is a hot, fast spinning A-type star that hosts one of the most extreme planets in this catalog. KELT-20 b is classified as an ultra-hot Jupiter, meaning its dayside temperature is pushed to roughly 2300 Kelvin by the intense radiation of its host star. The star itself is quite young, only about 58 million years old, and is among the brightest known hosts of a transiting giant planet. Astronomers have already detected sodium, iron, and other metals directly in the planet's atmosphere using this same transit method.</p>
 <table class="param-table">
@@ -306,13 +378,19 @@
 <tr><td>Transit duration</td><td>3 hr 19 min</td></tr>
 <tr><td>Transit depth</td><td>15.7 ppt (1.57%)</td></tr>
 <tr><td>Estimated detection margin</td><td>14.5&times; noise floor</td></tr>
+<tr><td>Expected photometric noise</td><td>&plusmn;1.083 ppt per 5-minute bin</td></tr>
 <tr><td>Discovery year</td><td>2017</td></tr>
 <tr><td>Data source</td><td>Lund et al. 2017; NASA Exoplanet Archive</td></tr>
 <tr><td>Events in this catalog</td><td>2, best ranked is number 4</td></tr>
 </table>
+<div class="chart-wrap">
+<canvas id="chart-3" width="900" height="140" role="img" aria-label="Simulated light curve for KELT-20 b, showing a 15.7 parts per thousand dip against simulated noise at the expected precision for this target."></canvas>
+<div class="chart-caption"><span>Simulated transit, 15.7 ppt depth</span><span>Simulated noise &plusmn;1.083 ppt (margin 14.5&times;)</span></div>
+<div class="chart-note">Illustrative simulation based on this project's detection-margin formula, not an actual observation.</div>
+</div>
 <p class="view-events-link"><a href="#ranked" onclick="filterToStar('KELT-20 b'); return true;">View all 2 events for KELT-20 b in the ranked table &rarr;</a></p>
 </details>
-<details>
+<details id="star-4">
 <summary>KELT-4 A b <span class="badge">margin 3.6&times;</span> <span class="badge">rank 97</span></summary>
 <p class="desc">KELT-4 A is the brightest known host star of a hot Jupiter that sits inside a hierarchical triple star system, meaning it has two additional stellar companions, KELT-4 B and C, orbiting the system as a close pair further out. The planet, KELT-4 A b, is a typical hot Jupiter on a three day orbit, discovered in 2016. Because two extra stars share the field of view, careful comparison star selection matters even more than usual when measuring this system's transit.</p>
 <table class="param-table">
@@ -328,13 +406,19 @@
 <tr><td>Transit duration</td><td>3 hr 28 min</td></tr>
 <tr><td>Transit depth</td><td>11.9 ppt (1.19%)</td></tr>
 <tr><td>Estimated detection margin</td><td>3.6&times; noise floor</td></tr>
+<tr><td>Expected photometric noise</td><td>&plusmn;3.306 ppt per 5-minute bin</td></tr>
 <tr><td>Discovery year</td><td>2016</td></tr>
 <tr><td>Data source</td><td>Eastman et al. 2016; NASA Exoplanet Archive</td></tr>
 <tr><td>Events in this catalog</td><td>28, best ranked is number 97</td></tr>
 </table>
+<div class="chart-wrap">
+<canvas id="chart-4" width="900" height="140" role="img" aria-label="Simulated light curve for KELT-4 A b, showing a 11.9 parts per thousand dip against simulated noise at the expected precision for this target."></canvas>
+<div class="chart-caption"><span>Simulated transit, 11.9 ppt depth</span><span>Simulated noise &plusmn;3.306 ppt (margin 3.6&times;)</span></div>
+<div class="chart-note">Illustrative simulation based on this project's detection-margin formula, not an actual observation.</div>
+</div>
 <p class="view-events-link"><a href="#ranked" onclick="filterToStar('KELT-4 A b'); return true;">View all 28 events for KELT-4 A b in the ranked table &rarr;</a></p>
 </details>
-<details>
+<details id="star-5">
 <summary>HAT-P-22 b <span class="badge">margin 4.8&times;</span> <span class="badge">rank 49</span></summary>
 <p class="desc">HAT-P-22 is a G-type dwarf star very close in character to the Sun, located in the constellation Ursa Major, with a faint red dwarf companion orbiting far out in the same system. Its planet, HAT-P-22 b, is a genuinely massive hot Jupiter, over twice the mass of Jupiter itself, discovered in 2010. The host star has the lowest mass of any star in its original discovery survey's comparison sample, making this a useful benchmark system for studying how a lower mass star supports a heavy planet in a tight orbit.</p>
 <table class="param-table">
@@ -350,13 +434,19 @@
 <tr><td>Transit duration</td><td>2 hr 39 min</td></tr>
 <tr><td>Transit depth</td><td>14.4 ppt (1.44%)</td></tr>
 <tr><td>Estimated detection margin</td><td>4.8&times; noise floor</td></tr>
+<tr><td>Expected photometric noise</td><td>&plusmn;3.0 ppt per 5-minute bin</td></tr>
 <tr><td>Discovery year</td><td>2010</td></tr>
 <tr><td>Data source</td><td>Bakos et al. 2011; NASA Exoplanet Archive</td></tr>
 <tr><td>Events in this catalog</td><td>13, best ranked is number 49</td></tr>
 </table>
+<div class="chart-wrap">
+<canvas id="chart-5" width="900" height="140" role="img" aria-label="Simulated light curve for HAT-P-22 b, showing a 14.4 parts per thousand dip against simulated noise at the expected precision for this target."></canvas>
+<div class="chart-caption"><span>Simulated transit, 14.4 ppt depth</span><span>Simulated noise &plusmn;3.0 ppt (margin 4.8&times;)</span></div>
+<div class="chart-note">Illustrative simulation based on this project's detection-margin formula, not an actual observation.</div>
+</div>
 <p class="view-events-link"><a href="#ranked" onclick="filterToStar('HAT-P-22 b'); return true;">View all 13 events for HAT-P-22 b in the ranked table &rarr;</a></p>
 </details>
-<details>
+<details id="star-6">
 <summary>KELT-17 b <span class="badge">margin 4.0&times;</span> <span class="badge">rank 90</span></summary>
 <p class="desc">KELT-17 is an unusual host star known as an Am star, short for metallic-line A star, a class of chemically peculiar star whose atmosphere shows an overabundance of certain heavy elements like titanium, chromium, and iron. It was the first exoplanet host ever confirmed to belong to this specific chemical class. Its planet, KELT-17 b, orbits in just over three days and was discovered in 2016 using Doppler tomography, a technique that measures how tilted a planet's orbit is relative to its star's spin.</p>
 <table class="param-table">
@@ -372,13 +462,19 @@
 <tr><td>Transit duration</td><td>3 hr 29 min</td></tr>
 <tr><td>Transit depth</td><td>9.1 ppt (0.91%)</td></tr>
 <tr><td>Estimated detection margin</td><td>4.0&times; noise floor</td></tr>
+<tr><td>Expected photometric noise</td><td>&plusmn;2.275 ppt per 5-minute bin</td></tr>
 <tr><td>Discovery year</td><td>2016</td></tr>
 <tr><td>Data source</td><td>Zhou et al. 2016; NASA Exoplanet Archive</td></tr>
 <tr><td>Events in this catalog</td><td>5, best ranked is number 90</td></tr>
 </table>
+<div class="chart-wrap">
+<canvas id="chart-6" width="900" height="140" role="img" aria-label="Simulated light curve for KELT-17 b, showing a 9.1 parts per thousand dip against simulated noise at the expected precision for this target."></canvas>
+<div class="chart-caption"><span>Simulated transit, 9.1 ppt depth</span><span>Simulated noise &plusmn;2.275 ppt (margin 4.0&times;)</span></div>
+<div class="chart-note">Illustrative simulation based on this project's detection-margin formula, not an actual observation.</div>
+</div>
 <p class="view-events-link"><a href="#ranked" onclick="filterToStar('KELT-17 b'); return true;">View all 5 events for KELT-17 b in the ranked table &rarr;</a></p>
 </details>
-<details>
+<details id="star-7">
 <summary>TOI-1518 b <span class="badge">margin 4.8&times;</span> <span class="badge">rank 68</span></summary>
 <p class="desc">TOI-1518 is a hot F0-type star discovered by NASA's TESS mission to host one of the more extreme ultra-hot Jupiters in this catalog. TOI-1518 b orbits in under two days and is inflated to nearly twice the radius of Jupiter, with iron directly detected in its atmosphere, a rare and notable find that makes it a strong candidate for future spectroscopy aimed at detecting a thermal inversion layer. At magnitude 9.0, it sits at the fainter end of what this project's search criteria allow, but its very deep transit helps compensate.</p>
 <table class="param-table">
@@ -394,13 +490,19 @@
 <tr><td>Transit duration</td><td>2 hr 24 min</td></tr>
 <tr><td>Transit depth</td><td>9.9 ppt (0.99%)</td></tr>
 <tr><td>Estimated detection margin</td><td>4.8&times; noise floor</td></tr>
+<tr><td>Expected photometric noise</td><td>&plusmn;2.062 ppt per 5-minute bin</td></tr>
 <tr><td>Discovery year</td><td>2021</td></tr>
 <tr><td>Data source</td><td>Cabot et al. 2021; NASA Exoplanet Archive</td></tr>
 <tr><td>Events in this catalog</td><td>22, best ranked is number 68</td></tr>
 </table>
+<div class="chart-wrap">
+<canvas id="chart-7" width="900" height="140" role="img" aria-label="Simulated light curve for TOI-1518 b, showing a 9.9 parts per thousand dip against simulated noise at the expected precision for this target."></canvas>
+<div class="chart-caption"><span>Simulated transit, 9.9 ppt depth</span><span>Simulated noise &plusmn;2.062 ppt (margin 4.8&times;)</span></div>
+<div class="chart-note">Illustrative simulation based on this project's detection-margin formula, not an actual observation.</div>
+</div>
 <p class="view-events-link"><a href="#ranked" onclick="filterToStar('TOI-1518 b'); return true;">View all 22 events for TOI-1518 b in the ranked table &rarr;</a></p>
 </details>
-<details>
+<details id="star-8">
 <summary>KELT-7 b <span class="badge">margin 5.4&times;</span> <span class="badge">rank 38</span></summary>
 <p class="desc">KELT-7 orbits the brightest star of any planet discovered by the entire KELT survey, an F-type star spinning rapidly enough to make precise radial velocity measurements difficult. KELT-7 b is a substantial hot Jupiter, roughly 1.4 times the mass of Jupiter, discovered in 2015, and has since been studied with the James Webb Space Telescope, which found evidence of a metal-enriched atmosphere. Its brightness and depth make it one of the more forgiving targets in this catalog.</p>
 <table class="param-table">
@@ -416,13 +518,19 @@
 <tr><td>Transit duration</td><td>3 hr 13 min</td></tr>
 <tr><td>Transit depth</td><td>9.2 ppt (0.92%)</td></tr>
 <tr><td>Estimated detection margin</td><td>5.4&times; noise floor</td></tr>
+<tr><td>Expected photometric noise</td><td>&plusmn;1.704 ppt per 5-minute bin</td></tr>
 <tr><td>Discovery year</td><td>2015</td></tr>
 <tr><td>Data source</td><td>Bieryla et al. 2015; NASA Exoplanet Archive</td></tr>
 <tr><td>Events in this catalog</td><td>11, best ranked is number 38</td></tr>
 </table>
+<div class="chart-wrap">
+<canvas id="chart-8" width="900" height="140" role="img" aria-label="Simulated light curve for KELT-7 b, showing a 9.2 parts per thousand dip against simulated noise at the expected precision for this target."></canvas>
+<div class="chart-caption"><span>Simulated transit, 9.2 ppt depth</span><span>Simulated noise &plusmn;1.704 ppt (margin 5.4&times;)</span></div>
+<div class="chart-note">Illustrative simulation based on this project's detection-margin formula, not an actual observation.</div>
+</div>
 <p class="view-events-link"><a href="#ranked" onclick="filterToStar('KELT-7 b'); return true;">View all 11 events for KELT-7 b in the ranked table &rarr;</a></p>
 </details>
-<details>
+<details id="star-9">
 <summary>K2-232 b <span class="badge">margin 3.3&times;</span> <span class="badge">rank 125</span></summary>
 <p class="desc">K2-232 is a late F-type star observed by NASA's K2 mission, and its planet, K2-232 b, stands out for its unusually elongated, eccentric orbit rather than the nearly circular path most hot Jupiters follow. Classified as a warm Saturn, the planet takes over eleven days to complete one orbit, considerably longer than most targets in this catalog, and is one of only a handful of well characterized warm giant planets with a host star brighter than tenth magnitude. Its long period means suitable transit windows appear far less often than for the tighter orbiting hot Jupiters elsewhere in this list.</p>
 <table class="param-table">
@@ -438,13 +546,19 @@
 <tr><td>Transit duration</td><td>5 hr 2 min</td></tr>
 <tr><td>Transit depth</td><td>9.7 ppt (0.97%)</td></tr>
 <tr><td>Estimated detection margin</td><td>3.3&times; noise floor</td></tr>
+<tr><td>Expected photometric noise</td><td>&plusmn;2.939 ppt per 5-minute bin</td></tr>
 <tr><td>Discovery year</td><td>2018</td></tr>
 <tr><td>Data source</td><td>Brahm et al. 2018; NASA Exoplanet Archive</td></tr>
 <tr><td>Events in this catalog</td><td>2, best ranked is number 125</td></tr>
 </table>
+<div class="chart-wrap">
+<canvas id="chart-9" width="900" height="140" role="img" aria-label="Simulated light curve for K2-232 b, showing a 9.7 parts per thousand dip against simulated noise at the expected precision for this target."></canvas>
+<div class="chart-caption"><span>Simulated transit, 9.7 ppt depth</span><span>Simulated noise &plusmn;2.939 ppt (margin 3.3&times;)</span></div>
+<div class="chart-note">Illustrative simulation based on this project's detection-margin formula, not an actual observation.</div>
+</div>
 <p class="view-events-link"><a href="#ranked" onclick="filterToStar('K2-232 b'); return true;">View all 2 events for K2-232 b in the ranked table &rarr;</a></p>
 </details>
-<details>
+<details id="star-10">
 <summary>HAT-P-1 b <span class="badge">margin 4.8&times;</span> <span class="badge">rank 51</span></summary>
 <p class="desc">HAT-P-1 is one half of a wide visual binary system, paired with an almost identical Sun-like star roughly 1500 astronomical units away, a companion close enough in brightness and color that astronomers have used it as a built in comparison star for unusually precise differential photometry. Its planet, HAT-P-1 b, was discovered in 2006 and is notably large and low density for its mass, a puzzle that helped motivate later theoretical models of how irradiation inflates close-in giant planets. The wide binary companion is a genuine practical advantage for amateur observers too, since a bright, reliable comparison star sits right in the same field.</p>
 <table class="param-table">
@@ -460,13 +574,19 @@
 <tr><td>Transit duration</td><td>2 hr 30 min</td></tr>
 <tr><td>Transit depth</td><td>14.4 ppt (1.44%)</td></tr>
 <tr><td>Estimated detection margin</td><td>4.8&times; noise floor</td></tr>
+<tr><td>Expected photometric noise</td><td>&plusmn;3.0 ppt per 5-minute bin</td></tr>
 <tr><td>Discovery year</td><td>2006</td></tr>
 <tr><td>Data source</td><td>Bakos et al. 2007; Johnson et al. 2008; NASA Exoplanet Archive</td></tr>
 <tr><td>Events in this catalog</td><td>6, best ranked is number 51</td></tr>
 </table>
+<div class="chart-wrap">
+<canvas id="chart-10" width="900" height="140" role="img" aria-label="Simulated light curve for HAT-P-1 b, showing a 14.4 parts per thousand dip against simulated noise at the expected precision for this target."></canvas>
+<div class="chart-caption"><span>Simulated transit, 14.4 ppt depth</span><span>Simulated noise &plusmn;3.0 ppt (margin 4.8&times;)</span></div>
+<div class="chart-note">Illustrative simulation based on this project's detection-margin formula, not an actual observation.</div>
+</div>
 <p class="view-events-link"><a href="#ranked" onclick="filterToStar('HAT-P-1 b'); return true;">View all 6 events for HAT-P-1 b in the ranked table &rarr;</a></p>
 </details>
-<details>
+<details id="star-11">
 <summary>KELT-19 A b <span class="badge">margin 3.8&times;</span> <span class="badge">rank 95</span></summary>
 <p class="desc">KELT-19 A is another Am star, a chemically peculiar type of A-type star, and like KELT-17 it has a distant bound stellar companion, KELT-19 B, further out in the same system. Its planet, KELT-19 A b, is a substantial hot Jupiter of roughly four Jupiter masses on a 4.6 day orbit, discovered in 2017 as part of the same survey and follow-up program that found KELT-17 b. Because the host star spins rapidly, its physical parameters carry more uncertainty than most other stars in this catalog.</p>
 <table class="param-table">
@@ -482,10 +602,16 @@
 <tr><td>Transit duration</td><td>4 hr 4 min</td></tr>
 <tr><td>Transit depth</td><td>11.9 ppt (1.19%)</td></tr>
 <tr><td>Estimated detection margin</td><td>3.8&times; noise floor</td></tr>
+<tr><td>Expected photometric noise</td><td>&plusmn;3.132 ppt per 5-minute bin</td></tr>
 <tr><td>Discovery year</td><td>2017</td></tr>
 <tr><td>Data source</td><td>Siverd et al. 2018; NASA Exoplanet Archive</td></tr>
 <tr><td>Events in this catalog</td><td>2, best ranked is number 95</td></tr>
 </table>
+<div class="chart-wrap">
+<canvas id="chart-11" width="900" height="140" role="img" aria-label="Simulated light curve for KELT-19 A b, showing a 11.9 parts per thousand dip against simulated noise at the expected precision for this target."></canvas>
+<div class="chart-caption"><span>Simulated transit, 11.9 ppt depth</span><span>Simulated noise &plusmn;3.132 ppt (margin 3.8&times;)</span></div>
+<div class="chart-note">Illustrative simulation based on this project's detection-margin formula, not an actual observation.</div>
+</div>
 <p class="view-events-link"><a href="#ranked" onclick="filterToStar('KELT-19 A b'); return true;">View all 2 events for KELT-19 A b in the ranked table &rarr;</a></p>
 </details>
 </section><section id="soonest">
@@ -4374,6 +4500,8 @@ Project Ingress &middot; Campbell River Astronomy Club Research Team &middot; Ca
 <script>
 const DATA = JSON.parse(document.getElementById('site-data').textContent);
 const EVENTS = DATA.events;
+const STAR_ORDER = ["HD 189733 b","WASP-33 b","HD 209458 b","KELT-20 b","KELT-4 A b",
+  "HAT-P-22 b","KELT-17 b","TOI-1518 b","KELT-7 b","K2-232 b","HAT-P-1 b","KELT-19 A b"];
 
 function fmtNum(v){ return (v===null || v===undefined) ? '' : v; }
 
@@ -4403,6 +4531,15 @@ function renderTable(tbodyId, rows, cols){
     tr.dataset.tin = e.t_in;
     if(e.rank <= 10) tr.style.background = '#fff3d6';
     tr.onclick = () => showDetail(e);
+    tr.tabIndex = 0;
+    tr.setAttribute('role', 'button');
+    tr.setAttribute('aria-label', `View full detail for ${e.star} on ${e.date}`);
+    tr.addEventListener('keydown', (evt) => {
+      if(evt.key === 'Enter' || evt.key === ' '){
+        evt.preventDefault();
+        showDetail(e);
+      }
+    });
     tr.innerHTML = cols.map(c => `<td>${fmtNum(e[c])}</td>`).join('');
     tbody.appendChild(tr);
   }
@@ -4618,6 +4755,145 @@ function renderSoonest(){
 }
 
 renderSoonest();
+
+function jumpToStar(id){
+  if(!id) return;
+  const el = document.getElementById(id);
+  if(!el) return;
+  el.open = true;
+  el.scrollIntoView({behavior:'smooth', block:'start'});
+}
+
+// seeded PRNG (mulberry32) so each star's simulated noise pattern is stable across reloads
+function seedFromString(str){
+  let h = 1779033703 ^ str.length;
+  for(let i=0;i<str.length;i++){
+    h = Math.imul(h ^ str.charCodeAt(i), 3432918353);
+    h = (h << 13) | (h >>> 19);
+  }
+  return () => {
+    h = Math.imul(h ^ (h >>> 16), 2246822507);
+    h = Math.imul(h ^ (h >>> 13), 3266489909);
+    h ^= h >>> 16;
+    return (h >>> 0) / 4294967296;
+  };
+}
+function seededGaussian(rng){
+  // Box-Muller
+  let u = 0, v = 0;
+  while(u === 0) u = rng();
+  while(v === 0) v = rng();
+  return Math.sqrt(-2.0 * Math.log(u)) * Math.cos(2.0 * Math.PI * v);
+}
+
+function trueFlux(x){
+  // x in [0,1] across baseline-transit-baseline window; transit occupies middle third
+  if(x < 1/3 || x > 2/3) return 1.0;
+  const t = (x - 1/3) / (1/3); // 0..1 within transit window
+  // smoothed trapezoid: ramp in/out over first and last 20%, flat bottom between
+  let depth_frac;
+  if(t < 0.2) depth_frac = t/0.2;
+  else if(t > 0.8) depth_frac = (1-t)/0.2;
+  else depth_frac = 1.0;
+  return depth_frac;
+}
+
+function drawLightCurve(canvasId, depthPpt, noisePpt, starName){
+  const canvas = document.getElementById(canvasId);
+  if(!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const dpr = window.devicePixelRatio || 1;
+  // Fixed logical canvas size, independent of live layout measurement.
+  // A closed <details> panel reports zero size for its contents, so sizing
+  // this from getBoundingClientRect() was unreliable before the panel had
+  // ever been opened. CSS (width:100%) still scales it responsively on screen.
+  const W = 900;
+  const H = 140;
+  canvas.width = W * dpr;
+  canvas.height = H * dpr;
+  ctx.setTransform(dpr,0,0,dpr,0,0);
+  ctx.clearRect(0,0,W,H);
+
+  const depth = depthPpt / 1000;
+  const noise = noisePpt / 1000;
+  const rng = seedFromString(starName);
+
+  const marginTop = 14, marginBottom = 18;
+  const plotH = H - marginTop - marginBottom;
+
+  // Vertical scale must account for both depth and noise, so noisy low-margin
+  // stars don't get their scatter clipped off the top/bottom of the chart.
+  const pad = 0.15;
+  const fluxTop = 1.0 + 3*noise*(1+pad);
+  const fluxBottom = (1.0 - depth) - 3*noise*(1+pad);
+  const yScale = (f) => marginTop + (fluxTop - f) / (fluxTop - fluxBottom) * plotH;
+
+  // gridline at baseline
+  ctx.strokeStyle = '#e5e5e5';
+  ctx.beginPath();
+  ctx.moveTo(0, yScale(1.0));
+  ctx.lineTo(W, yScale(1.0));
+  ctx.stroke();
+
+  // true model curve (thin blue reference line)
+  ctx.strokeStyle = '#0645ad';
+  ctx.lineWidth = 1.3;
+  ctx.beginPath();
+  const steps = 200;
+  for(let i=0;i<=steps;i++){
+    const x = i/steps;
+    const f = 1 - depth * trueFlux(x);
+    const px = x*W, py = yScale(f);
+    if(i===0) ctx.moveTo(px,py); else ctx.lineTo(px,py);
+  }
+  ctx.stroke();
+
+  // simulated noisy data points
+  ctx.fillStyle = '#333';
+  const nPoints = 90;
+  for(let i=0;i<=nPoints;i++){
+    const x = i/nPoints;
+    const trueF = 1 - depth * trueFlux(x);
+    const noisyF = trueF + seededGaussian(rng) * noise;
+    const px = x*W, py = yScale(noisyF);
+    ctx.beginPath();
+    ctx.arc(px, py, 1.6, 0, Math.PI*2);
+    ctx.fill();
+  }
+
+  // axis labels
+  ctx.fillStyle = '#777';
+  ctx.font = '10px Georgia, serif';
+  ctx.fillText('baseline', 4, H-4);
+  ctx.fillText('ingress', W/3 - 18, H-4);
+  ctx.fillText('egress', 2*W/3 - 14, H-4);
+  ctx.fillText('baseline', W-48, H-4);
+  ctx.fillText('relative flux', 4, 12);
+}
+
+function renderAllCharts(){
+  STAR_ORDER.forEach((name, i) => {
+    const s = DATA.stars[name];
+    if(!s) return;
+    drawLightCurve(`chart-${i}`, s.depth_ppt, s.noise_ppt, name);
+  });
+}
+renderAllCharts();
+window.addEventListener('resize', () => {
+  clearTimeout(window._chartResizeTimer);
+  window._chartResizeTimer = setTimeout(renderAllCharts, 200);
+});
+// redraw a chart the first time its <details> is opened, since canvas has zero
+// width until the panel becomes visible
+document.querySelectorAll('#targets details').forEach((det, i) => {
+  det.addEventListener('toggle', () => {
+    if(det.open){
+      const name = STAR_ORDER[i];
+      const s = DATA.stars[name];
+      if(s) drawLightCurve(`chart-${i}`, s.depth_ppt, s.noise_ppt, name);
+    }
+  });
+});
 
 window.addEventListener('scroll', () => {
   document.getElementById('backToTop').style.display = (window.scrollY > 600) ? 'block' : 'none';
