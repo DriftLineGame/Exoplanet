@@ -227,6 +227,7 @@
   <a href="#soonest">Soonest event</a>
   <a href="#ranked">Ranked table</a>
   <a href="#chron">Chronological table</a>
+  <a href="#limitations">Limitations</a>
   <a href="#glossary">Glossary</a>
   <a href="#sources">Sources</a>
 </nav>
@@ -257,6 +258,9 @@
 <p>Each event is ranked by an estimated detection margin: how many multiples of the expected photometric noise floor the transit depth represents on a 30mm optical system. A 10 second, in-focus exposure of a V=7.7 star was measured to collect roughly 26,000 electrons on the sensor. Scaling that to any other magnitude, and binning across a fixed 5 minute window, gives an expected precision at that magnitude. The margin is simply the transit depth divided by that expected precision.</p>
 <div class="formula">M(V, d) = d &times; 883.2 &times; 10<sup>&minus;0.2(V &minus; 7.7)</sup></div>
 <p class="small">V is the host star's apparent magnitude, d is the transit depth as a decimal fraction, M is the resulting margin. Ties are broken first by percent of transit plus baseline observable, then by moon illumination.</p>
+
+<h3>Simulated light curves</h3>
+<p>Every chart on this page, in each star's profile and in the printed reference this site mirrors, shares one fixed grid: the same horizontal and vertical scale across every target, so a shorter, shallower transit appears visibly narrower and shallower than a longer, deeper one when compared side by side. Ingress and egress are modeled as a smooth transition rather than a hard-edged shape, consistent with the gradual way a planet's disk covers and uncovers its star, though the model does not include stellar limb darkening. Simulated data points carry random noise scaled to each target's own detection margin, so a low-margin target's chart shows visibly more scatter than a high-margin one, and each star's plotted points span only that star's own baseline-and-transit window, not the full grid.</p>
 </section>
 
 <section id="targets">
@@ -689,22 +693,58 @@
   <div class="assessment" id="detailAssessment"></div>
 </div>
 
+<section id="limitations">
+<h2>Limitations</h2>
+<p>The margin-based ranking on this page measures one thing: how strong a transit's signal should be relative to instrument noise. It does not account for weather, and that's worth being direct about.</p>
+<p>Historical climate averages for Campbell River show the sky clear or better, meaning partly cloudy or less, for close to half of an average day in September, the start of this catalog's search window, and closer to a fifth of an average day by January, the middle of it. September averages about 47% clear-or-better sky, October about 36%, and January, the cloudiest month on record, only about 22.5%. These figures describe an average day, not specifically the night, so they're a seasonal trend, not a forecast for any single date.</p>
+<p>Combining that with an event's own percent of transit plus baseline observable gives a rougher, more honest picture of real odds. HD 189733 b's September 12 event, rank 1 in this catalog, is 92% geometrically observable in a month averaging roughly 47% clear-or-better sky:</p>
+<div class="formula">0.92 &times; 0.47 &asymp; 0.43</div>
+<p>Even the single best ranked night in the entire catalog carries a real world success probability closer to two in five than to certain, once weather is factored in. This is a seasonal average, not a forecast, and doesn't account for cloud clustering, equipment reliability, or human error, none of which have a solid regional figure behind them. A strong rank is necessary but not sufficient for a successful night.</p>
+<p class="small">Source: historical climate averages for Campbell River, BC, compiled from long-term station data (approximately 1990-2020).</p>
+</section>
+
 <section id="glossary">
 <h2>Glossary</h2>
+<h3>Observational and timing terms</h3>
 <dl>
+<dt>Transit</dt><dd>The event this whole page is built around: a planet passing directly between its host star and an observer, blocking a small, measurable fraction of the star's light.</dd>
+<dt>Occultation</dt><dd>A related but distinct event in which one body is completely hidden behind another. A transit is a partial blocking by a smaller foreground body; an occultation is a full disappearance behind a larger one.</dd>
+<dt>Light curve</dt><dd>A graph of a star's brightness over time. The core data product of this entire project: a transit shows up as a temporary dip in an otherwise flat light curve.</dd>
+<dt>Photometry</dt><dd>The general technique of measuring an object's brightness. Differential photometry is one specific approach to it.</dd>
 <dt>Ingress</dt><dd>The beginning of a transit, when the planet first begins to cross in front of the star.</dd>
 <dt>Egress</dt><dd>The end of a transit, when the planet finishes crossing the star's disk.</dd>
 <dt>Mid-transit</dt><dd>The moment the planet is at the center of its crossing, when brightness is lowest.</dd>
 <dt>Transit depth</dt><dd>The fraction of starlight blocked at mid-transit, in parts per thousand (ppt) or percent.</dd>
+<dt>Parts per thousand (ppt)</dt><dd>A unit for very small fractions. A depth of 10 ppt means the star dims by 1.0% at mid-transit.</dd>
 <dt>Baseline</dt><dd>Observation time before ingress and after egress, used to establish the star's normal brightness.</dd>
 <dt>BJD_TDB &minus; 2,450,000</dt><dd>Barycentric Julian Date with 2,450,000 subtracted to keep figures short. Add it back for the full date.</dd>
+<dt>Julian Date</dt><dd>A continuous count of days used in astronomy instead of the calendar, avoiding the ambiguity of months and years when timing events precisely.</dd>
+<dt>Right ascension</dt><dd>A star's east-west position on the sky, astronomy's equivalent of longitude, measured in hours, minutes, and seconds.</dd>
+<dt>Declination</dt><dd>A star's north-south position on the sky, astronomy's equivalent of latitude, measured in degrees, arcminutes, and arcseconds.</dd>
 <dt>Elevation / Airmass</dt><dd>Elevation is the star's angle above the horizon. Airmass (1/sin of elevation) measures how much atmosphere its light passes through; higher airmass means more distortion and noise.</dd>
 <dt>Nautical twilight</dt><dd>The point at which the Sun is 12&deg; below the horizon, used as this project's definition of usable darkness.</dd>
-<dt>V magnitude</dt><dd>Apparent brightness as seen from Earth. Lower numbers are brighter; each step of 1 is about 2.5&times; dimmer.</dd>
+<dt>Differential photometry</dt><dd>A measurement technique comparing a target star's brightness against nearby comparison stars in the same image, canceling out atmospheric and instrumental variation.</dd>
+<dt>Ephemeris</dt><dd>A table or formula predicting the position or timing of an astronomical event, based on a known orbital period and reference epoch.</dd>
 <dt>Detection margin</dt><dd>How many multiples of the expected photometric noise floor a transit's depth represents on this project's instrument. See the Method section above for the formula.</dd>
+<dt>Aperture</dt><dd>The diameter of a telescope's main light-collecting lens or mirror. A larger aperture gathers more light, directly improving how faint or shallow a transit it can detect.</dd>
+</dl>
+<h3>Astrophysical terms</h3>
+<dl>
+<dt>Exoplanet</dt><dd>A planet orbiting a star other than the Sun. Every planet catalogued here is an exoplanet.</dd>
+<dt>Host star</dt><dd>The star a given exoplanet orbits, and the star an observer actually points a telescope at, since the planet itself is not directly visible.</dd>
+<dt>V magnitude</dt><dd>Apparent brightness as seen from Earth. Lower numbers are brighter; each step of 1 is about 2.5&times; dimmer.</dd>
+<dt>Spectral type</dt><dd>A classification of a star by surface temperature and color, from hottest (O, B, A) through intermediate (F, G) to coolest (K, M).</dd>
+<dt>Parallax</dt><dd>The tiny apparent shift in a star's position as Earth orbits the Sun, used to measure stellar distance directly and precisely.</dd>
+<dt>Solar mass / solar radius</dt><dd>Units of mass and size defined relative to the Sun, used throughout astronomy to describe other stars in familiar terms.</dd>
+<dt>Orbital period</dt><dd>The time a planet takes to complete one full orbit of its star, and the interval at which its transits repeat.</dd>
+<dt>Orbital eccentricity</dt><dd>A measure of how stretched, rather than circular, a planet's orbit is. Most hot Jupiters here have nearly circular orbits; a few do not.</dd>
+<dt>Impact parameter</dt><dd>How close to the center of the star's disk a planet's path crosses, as seen from Earth. A planet crossing dead center produces a longer, deeper transit than one skimming the star's edge.</dd>
+<dt>Limb darkening</dt><dd>The real effect of a star appearing dimmer toward its edge than its center. It gently rounds the bottom of a real transit's light curve; the simulated charts on this page do not model it.</dd>
 <dt>Hot Jupiter / Ultra-hot Jupiter</dt><dd>A gas giant orbiting very close to its star, with short periods and high temperatures. "Ultra-hot" hosts are typically hot A or F-type stars exceeding ~2200K on the dayside.</dd>
+<dt>Warm Saturn / warm Jupiter</dt><dd>A giant planet on a longer, more distant orbit than a typical hot Jupiter, usually taking a week or more to complete one orbit, and correspondingly cooler.</dd>
 <dt>Am star</dt><dd>Short for metallic-line A star: a chemically peculiar A-type star with an excess of certain heavy elements in its atmosphere.</dd>
 <dt>Delta Scuti variable</dt><dd>A class of pulsating star that brightens and dims on a timescale of hours from internal oscillation, unrelated to any orbiting planet.</dd>
+<dt>TESS Object of Interest (TOI)</dt><dd>A candidate planet identified by NASA's Transiting Exoplanet Survey Satellite that has not yet been fully confirmed through follow-up observation.</dd>
 </dl>
 </section>
 
@@ -717,7 +757,7 @@
 
 <footer>
 Project Ingress &middot; Campbell River Astronomy Club Research Team &middot; Campbell River, BC
-<br><span class="small">Site last updated: September 2, 2026 at 18:08 UTC</span>
+<br><span class="small">Site last updated: September 3, 2026 at 19:12 UTC</span>
 </footer>
 
 <button id="backToTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">&uarr; Top</button>
@@ -4834,20 +4874,29 @@ function seededGaussian(rng){
   return Math.sqrt(-2.0 * Math.log(u)) * Math.cos(2.0 * Math.PI * v);
 }
 
-function trueFlux(x){
-  // x in [0,1] across baseline-transit-baseline window; transit occupies middle third.
-  // Returns the dimming fraction: 0 = no dimming (baseline), 1 = full transit depth.
-  if(x < 1/3 || x > 2/3) return 0.0;
-  const t = (x - 1/3) / (1/3); // 0..1 within transit window
-  // smoothed trapezoid: ramp in/out over first and last 20%, flat bottom between
-  let depth_frac;
-  if(t < 0.2) depth_frac = t/0.2;
-  else if(t > 0.8) depth_frac = (1-t)/0.2;
-  else depth_frac = 1.0;
-  return depth_frac;
+// Standardized grid, shared by every chart, matching the printed reference booklet exactly.
+// Derived from the most demanding star in the catalog (K2-232 b's baseline+transit window,
+// and the combined depth/noise extremes across all 12 stars).
+const GRID_HALF_WIN_MIN = 245;
+const GRID_Y_BOTTOM = 0.968;
+const GRID_Y_TOP = 1.018;
+const BASELINE_MIN = 90;
+
+function trueFlux(t_min, duration_min, transitionFrac){
+  // t_min: minutes from mid-transit. Returns dimming fraction 0..1.
+  // Smooth tanh-based ingress/egress transition, matching the booklet's chart methodology:
+  // a closer approximation of a real transit than a hard-edged linear ramp, though it still
+  // does not model stellar limb darkening.
+  if(transitionFrac === undefined) transitionFrac = 0.22;
+  const half = duration_min / 2;
+  const transition = Math.max(duration_min * transitionFrac, 1e-6);
+  const k = 4.4 / transition;
+  const left = 0.5 * (1 + Math.tanh(k * (t_min + half)));
+  const right = 0.5 * (1 + Math.tanh(k * (half - t_min)));
+  return left * right;
 }
 
-function drawLightCurve(canvasId, depthPpt, noisePpt, starName){
+function drawLightCurve(canvasId, depthPpt, noisePpt, durationHr, starName){
   const canvas = document.getElementById(canvasId);
   if(!canvas) return;
   const ctx = canvas.getContext('2d');
@@ -4865,66 +4914,82 @@ function drawLightCurve(canvasId, depthPpt, noisePpt, starName){
 
   const depth = depthPpt / 1000;
   const noise = noisePpt / 1000;
+  const durationMin = durationHr * 60;
+  const halfTransit = durationMin / 2;
+  const halfWin = BASELINE_MIN + halfTransit;
   const rng = seedFromString(starName);
 
   const marginTop = 14, marginBottom = 18;
   const plotH = H - marginTop - marginBottom;
 
-  // Vertical scale must account for both depth and noise, so noisy low-margin
-  // stars don't get their scatter clipped off the top/bottom of the chart.
-  const pad = 0.15;
-  const fluxTop = 1.0 + 3*noise*(1+pad);
-  const fluxBottom = (1.0 - depth) - 3*noise*(1+pad);
-  const yScale = (f) => marginTop + (fluxTop - f) / (fluxTop - fluxBottom) * plotH;
+  // Fixed vertical AND horizontal scale, identical across every chart, so a shorter,
+  // shallower transit is visibly narrower and shallower than a longer, deeper one.
+  const xScale = (t) => W/2 + (t / GRID_HALF_WIN_MIN) * (W/2);
+  const yScale = (f) => marginTop + (GRID_Y_TOP - f) / (GRID_Y_TOP - GRID_Y_BOTTOM) * plotH;
 
-  // gridline at baseline
-  ctx.strokeStyle = '#e5e5e5';
+  const bottom = 1 - depth;
+
+  // dotted reference lines with this star's real numeric values
+  ctx.setLineDash([2,2]);
+  ctx.strokeStyle = '#d8dae2';
+  ctx.lineWidth = 0.8;
   ctx.beginPath();
-  ctx.moveTo(0, yScale(1.0));
-  ctx.lineTo(W, yScale(1.0));
+  ctx.moveTo(0, yScale(1.0)); ctx.lineTo(W, yScale(1.0));
+  ctx.moveTo(0, yScale(bottom)); ctx.lineTo(W, yScale(bottom));
   ctx.stroke();
+  ctx.setLineDash([1,2]);
+  ctx.beginPath();
+  ctx.moveTo(xScale(-halfTransit), marginTop); ctx.lineTo(xScale(-halfTransit), H-marginBottom);
+  ctx.moveTo(xScale(halfTransit), marginTop); ctx.lineTo(xScale(halfTransit), H-marginBottom);
+  ctx.stroke();
+  ctx.setLineDash([]);
 
-  // true model curve (thin blue reference line)
+  // true model curve (thin blue reference line), only drawn across the standardized grid
   ctx.strokeStyle = '#0645ad';
   ctx.lineWidth = 1.3;
   ctx.beginPath();
-  const steps = 200;
+  const steps = 300;
   for(let i=0;i<=steps;i++){
-    const x = i/steps;
-    const f = 1 - depth * trueFlux(x);
-    const px = x*W, py = yScale(f);
+    const t = -GRID_HALF_WIN_MIN + (i/steps) * (2*GRID_HALF_WIN_MIN);
+    const f = 1 - depth * trueFlux(t, durationMin);
+    const px = xScale(t), py = yScale(f);
     if(i===0) ctx.moveTo(px,py); else ctx.lineTo(px,py);
   }
   ctx.stroke();
 
-  // simulated noisy data points
-  ctx.fillStyle = '#333';
+  // simulated noisy data points, spanning only this star's own real baseline+transit window,
+  // not the full standardized grid; the surrounding blank space reflects that a shorter
+  // session simply does not run that long
+  ctx.fillStyle = '#333333';
   const nPoints = 90;
   for(let i=0;i<=nPoints;i++){
-    const x = i/nPoints;
-    const trueF = 1 - depth * trueFlux(x);
+    const t = -halfWin + (i/nPoints) * (2*halfWin);
+    const trueF = 1 - depth * trueFlux(t, durationMin);
     const noisyF = trueF + seededGaussian(rng) * noise;
-    const px = x*W, py = yScale(noisyF);
+    const px = xScale(t), py = yScale(noisyF);
     ctx.beginPath();
     ctx.arc(px, py, 1.6, 0, Math.PI*2);
     ctx.fill();
   }
 
-  // axis labels
-  ctx.fillStyle = '#777';
-  ctx.font = '10px Georgia, serif';
-  ctx.fillText('baseline', 4, H-4);
-  ctx.fillText('ingress', W/3 - 18, H-4);
-  ctx.fillText('egress', 2*W/3 - 14, H-4);
-  ctx.fillText('baseline', W-48, H-4);
+  // real numeric axis labels, matching the printed booklet
+  ctx.fillStyle = '#5b5f77';
+  ctx.font = '9px Georgia, serif';
+  ctx.textAlign = 'left';
   ctx.fillText('relative flux', 4, 12);
+  ctx.fillText(bottom.toFixed(4), 4, yScale(bottom) - 3);
+  ctx.fillText((1.0).toFixed(4), 4, yScale(1.0) - 3);
+  ctx.textAlign = 'center';
+  const xticks = [-GRID_HALF_WIN_MIN, -halfTransit, 0, halfTransit, GRID_HALF_WIN_MIN];
+  xticks.forEach(v => ctx.fillText(Math.round(v).toString(), xScale(v), H-4));
+  ctx.textAlign = 'left';
 }
 
 function renderAllCharts(){
   STAR_ORDER.forEach((name, i) => {
     const s = DATA.stars[name];
     if(!s) return;
-    drawLightCurve(`chart-${i}`, s.depth_ppt, s.noise_ppt, name);
+    drawLightCurve(`chart-${i}`, s.depth_ppt, s.noise_ppt, s.duration_hr, name);
   });
 }
 renderAllCharts();
@@ -4939,7 +5004,7 @@ document.querySelectorAll('#targets details').forEach((det, i) => {
     if(det.open){
       const name = STAR_ORDER[i];
       const s = DATA.stars[name];
-      if(s) drawLightCurve(`chart-${i}`, s.depth_ppt, s.noise_ppt, name);
+      if(s) drawLightCurve(`chart-${i}`, s.depth_ppt, s.noise_ppt, s.duration_hr, name);
     }
   });
 });
